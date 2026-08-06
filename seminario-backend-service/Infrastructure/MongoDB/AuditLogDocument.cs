@@ -15,6 +15,8 @@ public class AuditLogDocument
     public int? UserId { get; set; }
     public string? Username { get; set; }
     public string? IpAddress { get; set; }
+    public int? ActorUserId { get; set; }
+    public string? ActorUsername { get; set; }
 
     public AuditChanges? Changes { get; set; }
 

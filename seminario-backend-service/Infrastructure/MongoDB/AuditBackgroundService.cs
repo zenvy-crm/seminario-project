@@ -34,6 +34,8 @@ public class AuditBackgroundService : BackgroundService
                     UserId = evt.UserId,
                     Username = evt.Username,
                     IpAddress = evt.IpAddress,
+                    ActorUserId = evt.ActorUserId,
+                    ActorUsername = evt.ActorUsername,
                     Timestamp = evt.Timestamp,
                     Changes = (evt.Before is null && evt.After is null)
                         ? null

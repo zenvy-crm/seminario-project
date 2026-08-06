@@ -1,5 +1,6 @@
 using System.Threading.Channels;
 using Microsoft.AspNetCore.Http;
+using Seminario.Api;
 using Seminario.Application.Audit;
 using Seminario.Application.Interfaces;
 
@@ -19,13 +20,21 @@ public class AuditChannel : IAuditLogger
 
     public void Enqueue(AuditEvent auditEvent)
     {
-        auditEvent.IpAddress ??= GetClientIpAddress();
+        var context = _httpContextAccessor.HttpContext;
+
+        auditEvent.IpAddress ??= GetClientIpAddress(context);
+
+        if (auditEvent.ActorUserId is null && context?.User.Identity?.IsAuthenticated == true)
+        {
+            auditEvent.ActorUserId = context.User.GetUserId();
+            auditEvent.ActorUsername = context.User.FindFirst("username")?.Value;
+        }
+
         _channel.Writer.TryWrite(auditEvent);
     }
 
-    private string? GetClientIpAddress()
+    private static string? GetClientIpAddress(HttpContext? context)
     {
-        var context = _httpContextAccessor.HttpContext;
         if (context is null)
         {
             return null;
