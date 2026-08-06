@@ -29,6 +29,14 @@ export const documentsApi = {
     return data;
   },
 
+  async getBlob(userId: number, documentId: number): Promise<Blob> {
+    if (USE_MOCK) {
+      throw new Error("Descarga no disponible en modo mock.");
+    }
+    const { data } = await api.get(`/users/${userId}/documents/${documentId}/content`, { responseType: "blob" });
+    return data;
+  },
+
   async remove(userId: number, documentId: number): Promise<void> {
     if (USE_MOCK) {
       await delay(400);

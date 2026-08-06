@@ -3,9 +3,11 @@ import { Box, Typography, Grid, Button, Divider } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { FileText } from "lucide-react";
 import { usersApi } from "../../api/usersApi";
-import { User } from "../../types";
+import { documentsApi } from "../../api/documentsApi";
+import { AppDocument, User } from "../../types";
 import { RoleBadge, StatusBadge } from "../../components/common/Badges";
 import { LoadingState, ErrorState, EmptyState } from "../../components/common/StateViews";
+import { useToast } from "../../components/common/ToastProvider";
 import Blueprint from "../../theme/Blueprint";
 import { industryColors } from "../../theme/industryTheme";
 
@@ -16,12 +18,35 @@ function formatBytes(bytes: number) {
 export default function UserDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { showToast } = useToast();
   const [user, setUser] = useState<User | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     usersApi.getUser(Number(id)).then(setUser).catch(() => setError("No fue posible cargar la información."));
   }, [id]);
+
+  const openBlob = async (doc: AppDocument, forceDownload: boolean) => {
+    // La ventana se abre de forma sincronica (antes del await) para que el navegador
+    // no la bloquee por perder la cadena de gesto del usuario.
+    const viewerWindow = forceDownload ? null : window.open("", "_blank");
+    try {
+      const blob = await documentsApi.getBlob(Number(id), doc.id);
+      const url = window.URL.createObjectURL(blob);
+      if (forceDownload) {
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = doc.fileName;
+        link.click();
+      } else if (viewerWindow) {
+        viewerWindow.location.href = url;
+      }
+      setTimeout(() => window.URL.revokeObjectURL(url), 30000);
+    } catch {
+      viewerWindow?.close();
+      showToast("No fue posible obtener el documento.", "error");
+    }
+  };
 
   if (error) return <ErrorState message={error} />;
   if (!user) return <LoadingState />;
@@ -57,8 +82,8 @@ export default function UserDetail() {
                 <Typography variant="body2" fontWeight={600}>{doc.fileName}</Typography>
                 <Typography variant="caption" color="text.secondary">{formatBytes(doc.sizeBytes)}</Typography>
               </Box>
-              <Button size="small" variant="outlined">Ver</Button>
-              <Button size="small" variant="outlined">Descargar</Button>
+              <Button size="small" variant="outlined" onClick={() => openBlob(doc, false)}>Ver</Button>
+              <Button size="small" variant="outlined" onClick={() => openBlob(doc, true)}>Descargar</Button>
             </Box>
           </Box>
         ))}
