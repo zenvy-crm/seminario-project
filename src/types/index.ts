@@ -23,6 +23,8 @@ export interface User {
   status: UserStatus;
   createdAt: string;
   lastLoginAt?: string;
+  isLocked?: boolean;
+  lockedUntil?: string;
   documents?: AppDocument[];
 }
 

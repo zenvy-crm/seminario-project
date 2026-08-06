@@ -4,13 +4,16 @@ import { Search, MoreVertical, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { usersApi } from "../../api/usersApi";
 import { User, Role, UserStatus } from "../../types";
-import { RoleBadge, StatusBadge } from "../../components/common/Badges";
+import { RoleBadge, StatusBadge, LockedBadge } from "../../components/common/Badges";
 import { LoadingState, EmptyState, ErrorState } from "../../components/common/StateViews";
 import ConfirmDialog from "../../components/common/ConfirmDialog";
 import { useToast } from "../../components/common/ToastProvider";
 import { industryColors } from "../../theme/industryTheme";
 
-type PendingAction = { type: "status" | "role"; user: User; value: UserStatus | Role } | null;
+type PendingAction =
+  | { type: "status" | "role"; user: User; value: UserStatus | Role }
+  | { type: "unlock"; user: User }
+  | null;
 
 export default function UsersList() {
   const navigate = useNavigate();
@@ -43,7 +46,8 @@ export default function UsersList() {
     if (!pending) return;
     try {
       if (pending.type === "status") await usersApi.changeStatus(pending.user.id, pending.value as UserStatus);
-      else await usersApi.changeRole(pending.user.id, pending.value as Role);
+      else if (pending.type === "role") await usersApi.changeRole(pending.user.id, pending.value as Role);
+      else await usersApi.unlockUser(pending.user.id);
       showToast("Usuario actualizado correctamente.");
       setPending(null);
       load();
@@ -107,7 +111,12 @@ export default function UsersList() {
                     <TableCell>{u.firstName} {u.lastName}</TableCell>
                     <TableCell>{u.email}</TableCell>
                     <TableCell><RoleBadge role={u.role} /></TableCell>
-                    <TableCell><StatusBadge status={u.status} /></TableCell>
+                    <TableCell>
+                      <Box display="flex" gap={0.5} flexWrap="wrap">
+                        <StatusBadge status={u.status} />
+                        {u.isLocked && <LockedBadge />}
+                      </Box>
+                    </TableCell>
                     <TableCell>{new Date(u.createdAt).toLocaleDateString("es-ES")}</TableCell>
                     <TableCell align="right">
                       <IconButton size="small" onClick={(e) => setMenuAnchor({ el: e.currentTarget, user: u })}>
@@ -141,12 +150,29 @@ export default function UsersList() {
         <MenuItem onClick={() => { setPending({ type: "role", user: menuAnchor!.user, value: menuAnchor!.user.role === "ADMIN" ? "USER" : "ADMIN" }); setMenuAnchor(null); }}>
           Cambiar rol
         </MenuItem>
+        {menuAnchor?.user.isLocked && (
+          <MenuItem onClick={() => { setPending({ type: "unlock", user: menuAnchor!.user }); setMenuAnchor(null); }}>
+            Desbloquear
+          </MenuItem>
+        )}
       </Menu>
 
       <ConfirmDialog
         open={!!pending}
-        title={pending?.type === "status" ? (pending.value === "INACTIVE" ? "¿Deseas desactivar este usuario?" : "¿Deseas activar este usuario?") : "¿Deseas cambiar el rol de este usuario?"}
-        description={pending?.type === "status" ? "Esta acción impedirá que el usuario pueda iniciar sesión." : `El usuario pasará a tener el rol ${pending?.value}.`}
+        title={
+          pending?.type === "status"
+            ? (pending.value === "INACTIVE" ? "¿Deseas desactivar este usuario?" : "¿Deseas activar este usuario?")
+            : pending?.type === "role"
+            ? "¿Deseas cambiar el rol de este usuario?"
+            : "¿Deseas desbloquear este usuario?"
+        }
+        description={
+          pending?.type === "status"
+            ? "Esta acción impedirá que el usuario pueda iniciar sesión."
+            : pending?.type === "role"
+            ? `El usuario pasará a tener el rol ${pending.value}.`
+            : "Se reiniciará el contador de intentos fallidos y podrá iniciar sesión de inmediato."
+        }
         onCancel={() => setPending(null)}
         onConfirm={applyAction}
       />

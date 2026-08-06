@@ -98,4 +98,16 @@ export const usersApi = {
   async changeRole(id: number, role: Role): Promise<User> {
     return usersApi.updateUser(id, { role });
   },
+
+  async unlockUser(id: number): Promise<User> {
+    if (USE_MOCK) {
+      await delay(400);
+      const idx = db.users.findIndex((u) => u.id === id);
+      if (idx === -1) throw new Error("Usuario no encontrado.");
+      db.users[idx] = { ...db.users[idx], isLocked: false, lockedUntil: undefined };
+      return db.users[idx];
+    }
+    const { data } = await api.patch<User>(`/users/${id}/unlock`);
+    return data;
+  },
 };
