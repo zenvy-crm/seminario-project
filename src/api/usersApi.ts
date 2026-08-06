@@ -35,7 +35,13 @@ export const usersApi = {
       const start = (page - 1) * pageSize;
       return { items: items.slice(start, start + pageSize), total: items.length, page, pageSize };
     }
-    const { data } = await api.get<PaginatedResponse<User>>("/users", { params: query });
+    const { data } = await api.get<PaginatedResponse<User>>("/users", {
+      params: {
+        ...query,
+        role: query.role && query.role !== "ALL" ? query.role : undefined,
+        status: query.status && query.status !== "ALL" ? query.status : undefined,
+      },
+    });
     return data;
   },
 
