@@ -1,7 +1,10 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Seminario.Api.Middleware;
+using Seminario.Application.Common;
 using Seminario.Application.Interfaces;
 using Seminario.Application.Services;
 using Seminario.Infrastructure.Auth;
@@ -22,6 +25,27 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.InvalidModelStateResponseFactory = context =>
+    {
+        var errors = context.ModelState
+            .Where(e => e.Value?.Errors.Count > 0)
+            .SelectMany(e => e.Value!.Errors.Select(err => err.ErrorMessage))
+            .ToList();
+
+        var response = new ApiErrorResponse
+        {
+            Success = false,
+            Message = "Los datos enviados no son validos",
+            StatusCode = StatusCodes.Status422UnprocessableEntity,
+            Errors = errors
+        };
+
+        return new UnprocessableEntityObjectResult(response);
+    };
+});
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -47,6 +71,33 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
             ValidateLifetime = true,
             ClockSkew = TimeSpan.FromSeconds(30)
+        };
+
+        options.Events = new JwtBearerEvents
+        {
+            OnChallenge = async context =>
+            {
+                context.HandleResponse();
+                context.Response.ContentType = "application/json";
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                await context.Response.WriteAsJsonAsync(new ApiErrorResponse
+                {
+                    Success = false,
+                    Message = "No autenticado. Inicie sesion nuevamente.",
+                    StatusCode = StatusCodes.Status401Unauthorized
+                });
+            },
+            OnForbidden = async context =>
+            {
+                context.Response.ContentType = "application/json";
+                context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                await context.Response.WriteAsJsonAsync(new ApiErrorResponse
+                {
+                    Success = false,
+                    Message = "No tiene permisos para realizar esta accion.",
+                    StatusCode = StatusCodes.Status403Forbidden
+                });
+            }
         };
     });
 builder.Services.AddAuthorization();
@@ -80,6 +131,8 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Configure the HTTP request pipeline.
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
