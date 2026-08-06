@@ -1,6 +1,25 @@
-@seminario_backend_service_HostAddress = http://localhost:5182
+@host = http://localhost:5000
 
-GET {{seminario_backend_service_HostAddress}}/weatherforecast/
-Accept: application/json
+### Login
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "Admin#2026!"
+}
+
+### Verificar MFA (el codigo se imprime en la consola del backend)
+POST {{host}}/api/auth/mfa/verify
+Content-Type: application/json
+
+{
+  "mfaToken": "REEMPLAZAR",
+  "code": "REEMPLAZAR"
+}
+
+### Perfil (requiere Authorization: Bearer <accessToken>)
+GET {{host}}/api/profile
+Authorization: Bearer REEMPLAZAR
 
 ###
