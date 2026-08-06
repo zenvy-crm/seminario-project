@@ -34,6 +34,14 @@ public class DocumentsController : ControllerBase
         return Ok(await _documentService.UploadAsync(userId, file));
     }
 
+    [HttpGet("{documentId:int}/content")]
+    public async Task<IActionResult> Download(int userId, int documentId)
+    {
+        EnsureSelfOrAdmin(userId);
+        var file = await _documentService.DownloadAsync(userId, documentId);
+        return File(file.Content, file.ContentType);
+    }
+
     [HttpDelete("{documentId:int}")]
     public async Task<IActionResult> Delete(int userId, int documentId)
     {

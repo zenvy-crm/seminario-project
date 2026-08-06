@@ -28,7 +28,7 @@ public static class UserMappings
             MimeType = d.ContentType,
             SizeBytes = d.FileSize,
             UploadedAt = d.CreatedAt,
-            Url = $"/api/users/{d.UserId}/documents/{d.Id}"
+            Url = $"/api/users/{d.UserId}/documents/{d.Id}/content"
         }).ToList()
     };
 }

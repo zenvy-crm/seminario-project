@@ -8,4 +8,5 @@ public interface IFileStorageService
 {
     Task ValidateOnlyAsync(IFormFile file);
     Task<StoredFile> ValidateAndStoreAsync(IFormFile file, int userId);
+    Task<byte[]> ReadAsync(string storagePath);
 }

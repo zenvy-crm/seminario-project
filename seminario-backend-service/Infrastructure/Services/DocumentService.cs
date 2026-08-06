@@ -83,6 +83,15 @@ public class DocumentService : IDocumentService
         return documents.Select(ToDto).ToList();
     }
 
+    public async Task<DownloadedFile> DownloadAsync(int userId, int documentId)
+    {
+        var document = await _db.UserDocuments.FirstOrDefaultAsync(d => d.Id == documentId && d.UserId == userId)
+            ?? throw new NotFoundException("El documento no existe");
+
+        var content = await _fileStorage.ReadAsync(document.StoragePath);
+        return new DownloadedFile(content, document.ContentType, document.FileName);
+    }
+
     public async Task DeleteAsync(int userId, int documentId)
     {
         var document = await _db.UserDocuments.FirstOrDefaultAsync(d => d.Id == documentId && d.UserId == userId)
@@ -108,6 +117,6 @@ public class DocumentService : IDocumentService
         MimeType = document.ContentType,
         SizeBytes = document.FileSize,
         UploadedAt = document.CreatedAt,
-        Url = $"/api/users/{document.UserId}/documents/{document.Id}"
+        Url = $"/api/users/{document.UserId}/documents/{document.Id}/content"
     };
 }
