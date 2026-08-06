@@ -66,6 +66,7 @@ builder.Services.AddScoped<IRefreshTokenStore, RefreshTokenStore>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IMfaService, MfaService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IFileStorageService, FileStorageService>();
 builder.Services.AddScoped<IDocumentService, DocumentService>();
 
