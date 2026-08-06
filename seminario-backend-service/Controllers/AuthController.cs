@@ -13,12 +13,14 @@ public class AuthController : ControllerBase
 
     private readonly IAuthService _authService;
     private readonly IDocumentService _documentService;
+    private readonly IFileStorageService _fileStorageService;
     private readonly IWebHostEnvironment _env;
 
-    public AuthController(IAuthService authService, IDocumentService documentService, IWebHostEnvironment env)
+    public AuthController(IAuthService authService, IDocumentService documentService, IFileStorageService fileStorageService, IWebHostEnvironment env)
     {
         _authService = authService;
         _documentService = documentService;
+        _fileStorageService = fileStorageService;
         _env = env;
     }
 
@@ -27,6 +29,11 @@ public class AuthController : ControllerBase
     [Consumes("multipart/form-data")]
     public async Task<ActionResult<AuthResponseDto>> Register([FromForm] RegisterRequestDto dto, IFormFile? document)
     {
+        if (document is not null)
+        {
+            await _fileStorageService.ValidateOnlyAsync(document);
+        }
+
         var (response, userId) = await _authService.RegisterAsync(dto);
 
         if (document is not null)

@@ -6,5 +6,6 @@ public record StoredFile(string OriginalFileName, string StoredFileName, string 
 
 public interface IFileStorageService
 {
+    Task ValidateOnlyAsync(IFormFile file);
     Task<StoredFile> ValidateAndStoreAsync(IFormFile file, int userId);
 }

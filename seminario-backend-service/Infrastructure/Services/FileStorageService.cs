@@ -23,7 +23,28 @@ public class FileStorageService : IFileStorageService
         _uploadsRoot = Path.Combine(env.ContentRootPath, "uploads");
     }
 
+    public async Task ValidateOnlyAsync(IFormFile file)
+    {
+        await ValidateAsync(file);
+    }
+
     public async Task<StoredFile> ValidateAndStoreAsync(IFormFile file, int userId)
+    {
+        var (originalName, extension, expectedContentType, content) = await ValidateAsync(file);
+
+        var userFolder = Path.Combine(_uploadsRoot, userId.ToString());
+        Directory.CreateDirectory(userFolder);
+
+        var storedFileName = $"{Guid.NewGuid():N}{extension.ToLowerInvariant()}";
+        var fullPath = Path.Combine(userFolder, storedFileName);
+        await File.WriteAllBytesAsync(fullPath, content);
+
+        var relativePath = Path.Combine(userId.ToString(), storedFileName).Replace('\\', '/');
+
+        return new StoredFile(originalName, storedFileName, expectedContentType, content.LongLength, relativePath);
+    }
+
+    private static async Task<(string OriginalName, string Extension, string ExpectedContentType, byte[] Content)> ValidateAsync(IFormFile file)
     {
         if (file.Length == 0)
         {
@@ -58,16 +79,7 @@ public class FileStorageService : IFileStorageService
             throw new ValidationApiException("El contenido del archivo no corresponde con su extension", new List<string> { "file" });
         }
 
-        var userFolder = Path.Combine(_uploadsRoot, userId.ToString());
-        Directory.CreateDirectory(userFolder);
-
-        var storedFileName = $"{Guid.NewGuid():N}{extension.ToLowerInvariant()}";
-        var fullPath = Path.Combine(userFolder, storedFileName);
-        await File.WriteAllBytesAsync(fullPath, content);
-
-        var relativePath = Path.Combine(userId.ToString(), storedFileName).Replace('\\', '/');
-
-        return new StoredFile(originalName, storedFileName, expectedContentType, content.LongLength, relativePath);
+        return (originalName, extension, expectedContentType, content);
     }
 
     private static bool MatchesFileSignature(byte[] content, string extension)
