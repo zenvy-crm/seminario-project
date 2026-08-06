@@ -33,3 +33,9 @@ El segundo factor es un codigo temporal (OTP) de 6 digitos, valido por 5 minutos
 ## Auditoria
 
 Los eventos de auditoria (login, cambios de usuario, documentos, etc.) se encolan en memoria y se escriben de forma asincrona a la coleccion `audit_logs` de MongoDB mediante un `BackgroundService`. Una falla temporal de MongoDB no afecta la respuesta de la operacion principal.
+
+## Documentos: validaciones y limitacion conocida
+
+Cada archivo subido se valida por extension, Content-Type declarado, tamano maximo (5MB), longitud y caracteres del nombre, y firma binaria real (magic bytes) para PDF/JPEG. Esto bloquea archivos con extension incorrecta, contenido que no coincide con la extension declarada, y nombres de archivo maliciosos (path traversal, bytes de control).
+
+**Limitacion conocida:** no se inspecciona el contenido interno de los PDF aceptados. Un PDF valido puede llevar JavaScript embebido (`/JavaScript`, `/OpenAction`, `/AA`) que algunos lectores de PDF vulnerables podrian ejecutar al abrirlo. Sanitizar esto requeriria una libreria de parseo de PDF (ej. iText7, que es AGPL o de pago) o un escaner de malware externo (ej. ClamAV), lo cual se considero fuera de alcance para este proyecto.
