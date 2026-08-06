@@ -1,0 +1,21 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+
+## Visual Studio
+.vs/
+
+## Claude / editor local settings
+.claude/settings.local.json
+
+## Entorno y secretos
+.env
+appsettings.Development.local.json
+
+## Archivos subidos por usuarios (documentos)
+uploads/
+
+## Logs
+*.log

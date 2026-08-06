@@ -1,0 +1,6 @@
+@seminario_backend_service_HostAddress = http://localhost:5182
+
+GET {{seminario_backend_service_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
