@@ -84,7 +84,7 @@ public class AuthService : IAuthService
         return (response, user.Id);
     }
 
-    public async Task<AuthResult> LoginAsync(LoginRequestDto dto, string? ipAddress)
+    public async Task<AuthResult> LoginAsync(LoginRequestDto dto)
     {
         var user = await _userRepository.GetByUsernameAsync(dto.Username);
 
@@ -94,8 +94,7 @@ public class AuthService : IAuthService
             {
                 EventType = AuditEventTypes.LoginFailed,
                 Entity = "User",
-                Username = dto.Username,
-                IpAddress = ipAddress
+                Username = dto.Username
             });
             throw new UnauthorizedApiException("Usuario o contrasena invalidos");
         }
@@ -108,8 +107,7 @@ public class AuthService : IAuthService
                 Entity = "User",
                 EntityId = user.Id.ToString(),
                 UserId = user.Id,
-                Username = user.Username,
-                IpAddress = ipAddress
+                Username = user.Username
             });
             throw new ForbiddenException("La cuenta se encuentra inactiva. Contacte al administrador.");
         }
@@ -123,8 +121,7 @@ public class AuthService : IAuthService
                 Entity = "User",
                 EntityId = user.Id.ToString(),
                 UserId = user.Id,
-                Username = user.Username,
-                IpAddress = ipAddress
+                Username = user.Username
             });
             throw new UnauthorizedApiException("Usuario o contrasena invalidos");
         }
@@ -141,7 +138,7 @@ public class AuthService : IAuthService
         return new AuthResult(response, null);
     }
 
-    public async Task<AuthResult> VerifyMfaAsync(MfaVerifyRequestDto dto, string? ipAddress)
+    public async Task<AuthResult> VerifyMfaAsync(MfaVerifyRequestDto dto)
     {
         var user = await _mfaService.VerifyAsync(dto.MfaToken, dto.Code);
 
@@ -155,8 +152,7 @@ public class AuthService : IAuthService
             Entity = "User",
             EntityId = user.Id.ToString(),
             UserId = user.Id,
-            Username = user.Username,
-            IpAddress = ipAddress
+            Username = user.Username
         });
         _auditLogger.Enqueue(new AuditEvent
         {
@@ -164,15 +160,14 @@ public class AuthService : IAuthService
             Entity = "User",
             EntityId = user.Id.ToString(),
             UserId = user.Id,
-            Username = user.Username,
-            IpAddress = ipAddress
+            Username = user.Username
         });
 
         var (response, refreshToken) = await IssueSessionAsync(user);
         return new AuthResult(response, refreshToken);
     }
 
-    public async Task<AuthResult> RefreshAsync(string refreshToken, string? ipAddress)
+    public async Task<AuthResult> RefreshAsync(string refreshToken)
     {
         if (string.IsNullOrWhiteSpace(refreshToken))
         {

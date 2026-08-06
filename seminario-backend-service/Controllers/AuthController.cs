@@ -41,7 +41,7 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<ActionResult<AuthResponseDto>> Login([FromBody] LoginRequestDto dto)
     {
-        var result = await _authService.LoginAsync(dto, HttpContext.Connection.RemoteIpAddress?.ToString());
+        var result = await _authService.LoginAsync(dto);
         SetRefreshCookieIfPresent(result.RefreshToken);
         return Ok(result.Response);
     }
@@ -50,7 +50,7 @@ public class AuthController : ControllerBase
     [HttpPost("mfa/verify")]
     public async Task<ActionResult<AuthResponseDto>> VerifyMfa([FromBody] MfaVerifyRequestDto dto)
     {
-        var result = await _authService.VerifyMfaAsync(dto, HttpContext.Connection.RemoteIpAddress?.ToString());
+        var result = await _authService.VerifyMfaAsync(dto);
         SetRefreshCookieIfPresent(result.RefreshToken);
         return Ok(result.Response);
     }
@@ -60,7 +60,7 @@ public class AuthController : ControllerBase
     public async Task<ActionResult<AuthResponseDto>> Refresh()
     {
         var refreshToken = Request.Cookies[RefreshCookieName] ?? string.Empty;
-        var result = await _authService.RefreshAsync(refreshToken, HttpContext.Connection.RemoteIpAddress?.ToString());
+        var result = await _authService.RefreshAsync(refreshToken);
         SetRefreshCookieIfPresent(result.RefreshToken);
         return Ok(result.Response);
     }
