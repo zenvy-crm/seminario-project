@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Seminario.Application.Interfaces;
+using Seminario.Infrastructure.MongoDB;
 using Seminario.Infrastructure.Persistence;
 
 DotNetEnv.Env.TraversePath().Load();
@@ -14,6 +16,11 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.Configure<MongoSettings>(builder.Configuration.GetSection("MongoDB"));
+builder.Services.AddSingleton<AuditChannel>();
+builder.Services.AddSingleton<IAuditLogger>(sp => sp.GetRequiredService<AuditChannel>());
+builder.Services.AddHostedService<AuditBackgroundService>();
 
 var app = builder.Build();
 
