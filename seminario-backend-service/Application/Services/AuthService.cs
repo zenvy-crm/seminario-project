@@ -10,6 +10,9 @@ namespace Seminario.Application.Services;
 
 public class AuthService : IAuthService
 {
+    private const int MaxFailedLoginAttempts = 3;
+    private const int LockoutMinutes = 5;
+
     private readonly IUserRepository _userRepository;
     private readonly IRefreshTokenStore _refreshTokenStore;
     private readonly ITokenService _tokenService;
@@ -112,9 +115,42 @@ public class AuthService : IAuthService
             throw new ForbiddenException("La cuenta se encuentra inactiva. Contacte al administrador.");
         }
 
+        if (user.LockedUntil.HasValue)
+        {
+            if (user.LockedUntil > DateTime.UtcNow)
+            {
+                _auditLogger.Enqueue(new AuditEvent
+                {
+                    EventType = AuditEventTypes.LoginFailed,
+                    Entity = "User",
+                    EntityId = user.Id.ToString(),
+                    UserId = user.Id,
+                    Username = user.Username
+                });
+                throw new ForbiddenException("La cuenta esta bloqueada temporalmente por demasiados intentos fallidos. Intente nuevamente mas tarde o contacte a un administrador.");
+            }
+
+            // El bloqueo temporal ya expiro: se desbloquea automaticamente antes de continuar.
+            user.FailedLoginAttempts = 0;
+            user.LockedUntil = null;
+            await _userRepository.SaveChangesAsync();
+
+            _auditLogger.Enqueue(new AuditEvent
+            {
+                EventType = AuditEventTypes.AccountUnlocked,
+                Entity = "User",
+                EntityId = user.Id.ToString(),
+                UserId = user.Id,
+                Username = user.Username,
+                After = new { reason = "auto" }
+            });
+        }
+
         var verification = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, dto.Password);
         if (verification == PasswordVerificationResult.Failed)
         {
+            user.FailedLoginAttempts++;
+
             _auditLogger.Enqueue(new AuditEvent
             {
                 EventType = AuditEventTypes.LoginFailed,
@@ -123,7 +159,33 @@ public class AuthService : IAuthService
                 UserId = user.Id,
                 Username = user.Username
             });
+
+            if (user.FailedLoginAttempts >= MaxFailedLoginAttempts)
+            {
+                user.LockedUntil = DateTime.UtcNow.AddMinutes(LockoutMinutes);
+                await _userRepository.SaveChangesAsync();
+
+                _auditLogger.Enqueue(new AuditEvent
+                {
+                    EventType = AuditEventTypes.AccountLocked,
+                    Entity = "User",
+                    EntityId = user.Id.ToString(),
+                    UserId = user.Id,
+                    Username = user.Username,
+                    After = new { lockedUntil = user.LockedUntil, failedAttempts = user.FailedLoginAttempts }
+                });
+
+                throw new ForbiddenException($"Ha superado el numero de intentos permitidos. La cuenta fue bloqueada por {LockoutMinutes} minutos.");
+            }
+
+            await _userRepository.SaveChangesAsync();
             throw new UnauthorizedApiException("Usuario o contrasena invalidos");
+        }
+
+        if (user.FailedLoginAttempts > 0)
+        {
+            user.FailedLoginAttempts = 0;
+            await _userRepository.SaveChangesAsync();
         }
 
         var mfaToken = await _mfaService.GenerateAsync(user.Id);

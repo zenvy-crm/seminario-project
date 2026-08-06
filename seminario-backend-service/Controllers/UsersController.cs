@@ -56,4 +56,10 @@ public class UsersController : ControllerBase
     {
         return Ok(await _userService.UpdateAsync(id, new UpdateUserDto { Role = dto.Role }));
     }
+
+    [HttpPatch("{id:int}/unlock")]
+    public async Task<ActionResult<UserDto>> Unlock(int id)
+    {
+        return Ok(await _userService.UnlockAsync(id));
+    }
 }

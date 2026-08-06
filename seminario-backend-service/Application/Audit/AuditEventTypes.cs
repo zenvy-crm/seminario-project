@@ -8,6 +8,8 @@ public static class AuditEventTypes
     public const string MfaFailed = "MFA_FAILED";
     public const string Logout = "LOGOUT";
     public const string AccountDisabled = "ACCOUNT_DISABLED";
+    public const string AccountLocked = "ACCOUNT_LOCKED";
+    public const string AccountUnlocked = "ACCOUNT_UNLOCKED";
 
     public const string UserCreated = "USER_CREATED";
     public const string UserUpdated = "USER_UPDATED";

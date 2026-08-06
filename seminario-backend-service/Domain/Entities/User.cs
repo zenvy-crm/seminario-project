@@ -23,6 +23,9 @@ public class User
     public DateTime UpdatedAt { get; set; }
     public DateTime? LastLoginAt { get; set; }
 
+    public int FailedLoginAttempts { get; set; }
+    public DateTime? LockedUntil { get; set; }
+
     public ICollection<UserDocument> Documents { get; set; } = new List<UserDocument>();
     public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
     public ICollection<MfaCode> MfaCodes { get; set; } = new List<MfaCode>();

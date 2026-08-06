@@ -14,5 +14,7 @@ public class UserDto
     public string Status { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
     public DateTime? LastLoginAt { get; set; }
+    public bool IsLocked { get; set; }
+    public DateTime? LockedUntil { get; set; }
     public List<DocumentDto>? Documents { get; set; }
 }

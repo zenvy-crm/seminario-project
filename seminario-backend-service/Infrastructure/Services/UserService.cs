@@ -86,6 +86,8 @@ public class UserService : IUserService
             EventType = AuditEventTypes.UserCreated,
             Entity = "User",
             EntityId = user.Id.ToString(),
+            UserId = user.Id,
+            Username = user.Username,
             After = new { user.Username, user.Email, Role = role.Name }
         });
 
@@ -153,6 +155,8 @@ public class UserService : IUserService
                 EventType = AuditEventTypes.UserUpdated,
                 Entity = "User",
                 EntityId = user.Id.ToString(),
+                UserId = user.Id,
+                Username = user.Username,
                 Before = before,
                 After = after
             });
@@ -168,6 +172,8 @@ public class UserService : IUserService
                 EventType = AuditEventTypes.UserRoleChanged,
                 Entity = "User",
                 EntityId = user.Id.ToString(),
+                UserId = user.Id,
+                Username = user.Username,
                 Before = new { role = user.Role.Name },
                 After = new { role = newRole.Name }
             });
@@ -183,6 +189,8 @@ public class UserService : IUserService
                 EventType = AuditEventTypes.UserStatusChanged,
                 Entity = "User",
                 EntityId = user.Id.ToString(),
+                UserId = user.Id,
+                Username = user.Username,
                 Before = new { status = user.Status.ToString() },
                 After = new { status = newStatus.ToString() }
             });
@@ -192,6 +200,34 @@ public class UserService : IUserService
 
         user.UpdatedAt = DateTime.UtcNow;
         await _userRepository.SaveChangesAsync();
+
+        return user.ToDto();
+    }
+
+    public async Task<UserDto> UnlockAsync(int id)
+    {
+        var user = await _userRepository.GetByIdAsync(id)
+            ?? throw new NotFoundException("El usuario no existe");
+
+        if (user.LockedUntil is null && user.FailedLoginAttempts == 0)
+        {
+            return user.ToDto();
+        }
+
+        user.FailedLoginAttempts = 0;
+        user.LockedUntil = null;
+        user.UpdatedAt = DateTime.UtcNow;
+        await _userRepository.SaveChangesAsync();
+
+        _auditLogger.Enqueue(new AuditEvent
+        {
+            EventType = AuditEventTypes.AccountUnlocked,
+            Entity = "User",
+            EntityId = user.Id.ToString(),
+            UserId = user.Id,
+            Username = user.Username,
+            After = new { reason = "manual" }
+        });
 
         return user.ToDto();
     }

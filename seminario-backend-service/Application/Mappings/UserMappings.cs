@@ -19,6 +19,8 @@ public static class UserMappings
         Status = user.Status.ToString(),
         CreatedAt = user.CreatedAt,
         LastLoginAt = user.LastLoginAt,
+        IsLocked = user.LockedUntil > DateTime.UtcNow,
+        LockedUntil = user.LockedUntil,
         Documents = user.Documents?.Select(d => new DocumentDto
         {
             Id = d.Id,
