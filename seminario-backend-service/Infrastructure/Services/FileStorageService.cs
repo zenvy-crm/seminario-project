@@ -8,6 +8,7 @@ namespace Seminario.Infrastructure.Services;
 public class FileStorageService : IFileStorageService
 {
     private const long MaxFileSizeBytes = 5 * 1024 * 1024;
+    private const int MaxFileNameLength = 200;
 
     private static readonly Dictionary<string, string> AllowedExtensionsToContentType = new(StringComparer.OrdinalIgnoreCase)
     {
@@ -57,6 +58,17 @@ public class FileStorageService : IFileStorageService
         }
 
         var originalName = Path.GetFileName(file.FileName);
+
+        if (string.IsNullOrWhiteSpace(originalName) || originalName.Any(c => char.IsControl(c)))
+        {
+            throw new ValidationApiException("El nombre del archivo no es valido", new List<string> { "file" });
+        }
+
+        if (originalName.Length > MaxFileNameLength)
+        {
+            throw new ValidationApiException($"El nombre del archivo no puede superar los {MaxFileNameLength} caracteres", new List<string> { "file" });
+        }
+
         var extension = Path.GetExtension(originalName);
 
         if (string.IsNullOrEmpty(extension) || !AllowedExtensionsToContentType.TryGetValue(extension, out var expectedContentType))
@@ -80,6 +92,18 @@ public class FileStorageService : IFileStorageService
         }
 
         return (originalName, extension, expectedContentType, content);
+    }
+
+    public async Task<byte[]> ReadAsync(string storagePath)
+    {
+        var fullPath = Path.GetFullPath(Path.Combine(_uploadsRoot, storagePath));
+
+        if (!fullPath.StartsWith(Path.GetFullPath(_uploadsRoot), StringComparison.OrdinalIgnoreCase) || !File.Exists(fullPath))
+        {
+            throw new NotFoundException("El archivo no existe");
+        }
+
+        return await File.ReadAllBytesAsync(fullPath);
     }
 
     private static bool MatchesFileSignature(byte[] content, string extension)
