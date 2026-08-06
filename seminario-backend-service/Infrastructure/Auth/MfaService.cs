@@ -58,13 +58,21 @@ public class MfaService : IMfaService
             .Include(m => m.User).ThenInclude(u => u.Role)
             .FirstOrDefaultAsync(m => m.MfaToken == mfaToken);
 
-        if (mfaCode is null || mfaCode.IsUsed || mfaCode.IsExpired)
+        if (mfaCode is null)
         {
+            LogMfaFailed(null, null);
+            throw new UnauthorizedApiException("El codigo de verificacion es invalido o expiro");
+        }
+
+        if (mfaCode.IsUsed || mfaCode.IsExpired)
+        {
+            LogMfaFailed(mfaCode.UserId, mfaCode.User.Username);
             throw new UnauthorizedApiException("El codigo de verificacion es invalido o expiro");
         }
 
         if (mfaCode.Attempts >= MfaCode.MaxAttempts)
         {
+            LogMfaFailed(mfaCode.UserId, mfaCode.User.Username);
             throw new UnauthorizedApiException("Se supero el numero maximo de intentos, solicite un nuevo codigo");
         }
 
@@ -74,15 +82,7 @@ public class MfaService : IMfaService
             mfaCode.Attempts++;
             await _db.SaveChangesAsync();
 
-            _auditLogger.Enqueue(new AuditEvent
-            {
-                EventType = AuditEventTypes.MfaFailed,
-                Entity = "User",
-                EntityId = mfaCode.UserId.ToString(),
-                UserId = mfaCode.UserId,
-                Username = mfaCode.User.Username
-            });
-
+            LogMfaFailed(mfaCode.UserId, mfaCode.User.Username);
             throw new UnauthorizedApiException("El codigo de verificacion es incorrecto");
         }
 
@@ -90,5 +90,17 @@ public class MfaService : IMfaService
         await _db.SaveChangesAsync();
 
         return mfaCode.User;
+    }
+
+    private void LogMfaFailed(int? userId, string? username)
+    {
+        _auditLogger.Enqueue(new AuditEvent
+        {
+            EventType = AuditEventTypes.MfaFailed,
+            Entity = "User",
+            EntityId = userId?.ToString(),
+            UserId = userId,
+            Username = username
+        });
     }
 }
