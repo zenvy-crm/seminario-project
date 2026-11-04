@@ -63,7 +63,7 @@ public class OrdenCompraService : IOrdenCompraService
         }
 
         // Compatibilidad con el formulario actual (solo Monto): se convierte en UNA linea.
-        var lineas = dto.Lineas ?? new List<CreateLineaOrdenDto>();
+        var lineas = dto.Lineas ?? [];
 
         // La validacion de modelo no revisa elementos null dentro de la lista ("lineas":[null]).
         if (lineas.Any(l => l is null))
@@ -79,10 +79,10 @@ public class OrdenCompraService : IOrdenCompraService
                     ["La orden debe traer al menos una linea en 'lineas' o un Monto mayor a cero"]);
             }
 
-            lineas = new List<CreateLineaOrdenDto>
-            {
+            lineas =
+            [
                 new() { Descripcion = DescripcionMontoGlobal, Cantidad = 1, PrecioUnitario = dto.Monto.Value }
-            };
+            ];
         }
 
         var json = JsonSerializer.Serialize(new
@@ -475,7 +475,7 @@ ORDER BY p.partition_number;";
         if (recortado.Length is < 3 or > 200)
         {
             throw new ValidationApiException("Datos invalidos",
-                new List<string> { $"{campo} debe tener entre 3 y 200 caracteres sin contar espacios (en el cuerpo 'motivo' o en ?motivo=)" });
+                [$"{campo} debe tener entre 3 y 200 caracteres sin contar espacios (en el cuerpo 'motivo' o en ?motivo=)"]);
         }
 
         return recortado;
