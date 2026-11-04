@@ -7,6 +7,7 @@ using Seminario.Application.Audit;
 using Seminario.Application.DTOs.Operaciones;
 using Seminario.Application.Interfaces;
 using Seminario.Domain.Enums;
+using Seminario.Infrastructure.Logging;
 using Seminario.Infrastructure.Persistence;
 
 namespace Seminario.Infrastructure.Services;
@@ -121,8 +122,7 @@ public class SeedDataService : ISeedDataService
             insertados += enEsteLote;
             lotes++;
 
-            _logger.LogInformation("Stress test: {Insertados}/{Total} ordenes insertadas ({Lotes} lotes)",
-                insertados, request.Cantidad, lotes);
+            _logger.StressTestAvance(insertados, request.Cantidad, lotes);
         }
 
         cronometro.Stop();

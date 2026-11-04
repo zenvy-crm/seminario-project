@@ -4,6 +4,7 @@ using Seminario.Api;
 using Seminario.Application.Audit;
 using Seminario.Application.Interfaces;
 using Seminario.Domain.Enums;
+using Seminario.Infrastructure.Logging;
 
 namespace Seminario.Infrastructure.MongoDB;
 
@@ -54,16 +55,12 @@ public class AuditChannel : IAuditLogger
                 }
                 catch (Exception ex) when (intento < EsperasReintento.Length)
                 {
-                    _logger.LogWarning(ex,
-                        "Fallo el intento {Intento} de guardar la auditoria {EventType} de {EntityId} en MongoDB; se reintenta en {Espera} ms",
-                        intento + 1, auditEvent.EventType, auditEvent.EntityId, EsperasReintento[intento].TotalMilliseconds);
+                    _logger.AuditoriaReintento(ex, intento + 1, auditEvent.EventType, auditEvent.EntityId, EsperasReintento[intento].TotalMilliseconds);
                     await Task.Delay(EsperasReintento[intento]);
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex,
-                        "No se pudo guardar la auditoria {EventType} de {EntityId} en MongoDB despues de {Intentos} intentos",
-                        auditEvent.EventType, auditEvent.EntityId, intento + 1);
+                    _logger.AuditoriaDescartada(ex, auditEvent.EventType, auditEvent.EntityId, intento + 1);
                     return;
                 }
             }

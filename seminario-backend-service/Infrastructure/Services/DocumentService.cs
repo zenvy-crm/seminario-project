@@ -1,4 +1,5 @@
 using System.Data;
+using System.Globalization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Seminario.Application.Audit;
@@ -94,7 +95,7 @@ public class DocumentService : IDocumentService
                 {
                     EventType = AuditEventTypes.DocumentUploaded,
                     Entity = "UserDocument",
-                    EntityId = document.Id.ToString(),
+                    EntityId = document.Id.ToString(CultureInfo.InvariantCulture),
                     UserId = userId,
                     After = new { document.FileName, document.ContentType, document.FileSize }
                 };
@@ -192,7 +193,7 @@ public class DocumentService : IDocumentService
                 {
                     EventType = AuditEventTypes.DocumentDeleted,
                     Entity = "UserDocument",
-                    EntityId = documentId.ToString(),
+                    EntityId = documentId.ToString(CultureInfo.InvariantCulture),
                     UserId = userId,
                     Before = new { document.FileName, document.ContentType, IsDeleted = false },
                     After = new { IsDeleted = true, document.DeletedAt, document.DeletedByUserId }

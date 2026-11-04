@@ -1,3 +1,4 @@
+using System.Globalization;
 using Seminario.Application.Audit;
 using Seminario.Application.Common;
 using Seminario.Application.DTOs;
@@ -84,7 +85,7 @@ public class ProfileService : IProfileService
             {
                 EventType = AuditEventTypes.UserUpdated,
                 Entity = "User",
-                EntityId = user.Id.ToString(),
+                EntityId = user.Id.ToString(CultureInfo.InvariantCulture),
                 UserId = user.Id,
                 Username = user.Username,
                 Before = before,
@@ -114,7 +115,7 @@ public class ProfileService : IProfileService
         {
             EventType = AuditEventTypes.PasswordChanged,
             Entity = "User",
-            EntityId = user.Id.ToString(),
+            EntityId = user.Id.ToString(CultureInfo.InvariantCulture),
             UserId = user.Id,
             Username = user.Username
         });

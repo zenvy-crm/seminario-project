@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.RateLimiting;
@@ -37,7 +38,7 @@ public static class RateLimitingExtensions
             options.OnRejected = async (context, cancellationToken) =>
             {
                 context.HttpContext.Response.Headers.RetryAfter =
-                    ((int)AuthWindow.TotalSeconds).ToString();
+                    ((int)AuthWindow.TotalSeconds).ToString(CultureInfo.InvariantCulture);
                 context.HttpContext.Response.ContentType = "application/json";
 
                 await context.HttpContext.Response.WriteAsJsonAsync(new ApiErrorResponse

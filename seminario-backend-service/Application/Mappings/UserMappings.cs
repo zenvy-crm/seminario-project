@@ -1,3 +1,4 @@
+using System.Globalization;
 using Seminario.Application.DTOs;
 using Seminario.Domain.Entities;
 
@@ -13,7 +14,7 @@ public static class UserMappings
         Username = user.Username,
         Email = user.Email,
         Phone = user.Phone,
-        BirthDate = user.BirthDate?.ToString("yyyy-MM-dd"),
+        BirthDate = user.BirthDate?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
         Identification = user.IdentificationNumber,
         Role = user.Role.Name,
         Status = user.Status.ToString(),
