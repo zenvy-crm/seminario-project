@@ -3,3 +3,9 @@ dist
 .env
 .env.local
 *.log
+.claude/
+.idea/
+*.tsbuildinfo
+coverage/
+vite.config.js
+vite.config.d.ts

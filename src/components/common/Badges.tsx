@@ -2,7 +2,7 @@ import { Chip } from "@mui/material";
 import { Role, UserStatus } from "../../types";
 
 export function RoleBadge({ role }: { role: Role }) {
-  return <Chip label={role} size="small" color={role === "ADMIN" ? "primary" : "default"} variant={role === "ADMIN" ? "filled" : "outlined"} />;
+  return <Chip label={role} size="small" color={role === "USER" ? "default" : "primary"} variant={role === "ADMIN" ? "filled" : "outlined"} />;
 }
 
 export function StatusBadge({ status }: { status: UserStatus }) {

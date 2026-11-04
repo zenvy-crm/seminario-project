@@ -24,7 +24,7 @@ export default function Mfa() {
     try {
       const result = await verifyMfa(mfaToken, code.trim());
       if (!result.success) { setError(result.error ?? "Código inválido."); return; }
-      navigate("/dashboard", { replace: true });
+      navigate("/operaciones", { replace: true });
     } catch {
       setError("Error de servidor. Intenta nuevamente.");
     } finally {

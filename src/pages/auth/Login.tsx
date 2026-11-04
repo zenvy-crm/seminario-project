@@ -32,9 +32,12 @@ export default function Login() {
         navigate("/mfa", { state: { mfaToken: result.mfaToken, username: values.username } });
         return;
       }
-      navigate(location.state?.from?.pathname ?? "/dashboard", { replace: true });
-    } catch {
-      setError("No fue posible conectar con el servidor. Intenta más tarde.");
+      navigate(location.state?.from?.pathname ?? "/operaciones", { replace: true });
+    } catch (e: any) {
+      // Con respuesta (401 credenciales, 403 cuenta bloqueada, 429 demasiados intentos) se
+      // muestra el mensaje del backend; el generico queda solo para cuando no hay respuesta.
+      const mensaje = e?.response?.data?.message;
+      setError(e?.response ? mensaje ?? "No fue posible iniciar sesión." : "No fue posible conectar con el servidor. Intenta más tarde.");
     } finally {
       setSubmitting(false);
     }
@@ -56,17 +59,12 @@ export default function Login() {
         </Box>
 
         <Box mt={3} display="flex" flexDirection="column" gap={1} alignItems="center">
-          <Typography variant="body2">
-            ¿No tienes cuenta? <MLink component={Link} to="/register">Regístrate</MLink>
-          </Typography>
+          {/*<Typography variant="body2">*/}
+          {/*  ¿No tienes cuenta? <MLink component={Link} to="/register">Regístrate</MLink>*/}
+          {/*</Typography>*/}
           <Typography variant="body2" color="text.secondary">¿Olvidaste tu contraseña?</Typography>
         </Box>
 
-        <Box mt={3} pt={2} borderTop={`1px solid ${industryColors.border}`}>
-          <Typography variant="caption" color="text.secondary">
-            Demo: admin@bowpi.com / Admin123! (ADMIN) · jperez@bowpi.com / User123! (USER) · Código MFA: 123456
-          </Typography>
-        </Box>
       </Blueprint>
     </Box>
   );

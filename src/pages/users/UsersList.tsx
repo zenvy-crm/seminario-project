@@ -77,6 +77,7 @@ export default function UsersList() {
         <Select size="small" value={role} onChange={(e) => { setRole(e.target.value as Role | "ALL"); setPage(0); }} sx={{ minWidth: 140 }}>
           <MenuItem value="ALL">Todos los roles</MenuItem>
           <MenuItem value="ADMIN">ADMIN</MenuItem>
+          <MenuItem value="INTERMEDIO">INTERMEDIO</MenuItem>
           <MenuItem value="USER">USER</MenuItem>
         </Select>
         <Select size="small" value={status} onChange={(e) => { setStatus(e.target.value as UserStatus | "ALL"); setPage(0); }} sx={{ minWidth: 140 }}>

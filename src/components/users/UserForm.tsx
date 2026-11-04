@@ -11,7 +11,7 @@ const baseFields = {
   phone: z.string().optional(),
   birthDate: z.string().optional(),
   identification: z.string().min(1, "Campo obligatorio."),
-  role: z.enum(["USER", "ADMIN"]),
+  role: z.enum(["USER", "INTERMEDIO", "ADMIN"]),
   status: z.enum(["ACTIVE", "INACTIVE"]),
 };
 
@@ -54,6 +54,7 @@ export default function UserForm({ mode, defaultValues, onSubmit, submitError, s
             <Controller name="role" control={control} render={({ field }) => (
               <Select label="Rol" {...field}>
                 <MenuItem value="USER">USER</MenuItem>
+                <MenuItem value="INTERMEDIO">INTERMEDIO</MenuItem>
                 <MenuItem value="ADMIN">ADMIN</MenuItem>
               </Select>
             )} />
