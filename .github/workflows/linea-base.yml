@@ -132,3 +132,39 @@ jobs:
       - name: Pruebas existentes
         run: |
           echo "PRUEBAS_FRONTEND=$(find src -name '*.test.ts*' -o -name '*.spec.ts*' | wc -l)"
+
+  linea-base-sonar:
+    # Primer analisis de SonarCloud sobre el codigo SIN intervenir (backend + frontend, sin pruebas).
+    # Queda como punto de partida en el historial de actividad de SonarCloud.
+    runs-on: ubuntu-latest
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref_frontend }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - name: Analisis SonarCloud de la linea base
+        run: |
+          dotnet tool install --global dotnet-sonarscanner
+          dotnet sonarscanner begin \
+            /k:"zenvy-crm_seminario-project" /o:"zenvy-crm" \
+            /d:sonar.host.url="https://sonarcloud.io" /d:sonar.token="$SONAR_TOKEN" \
+            /v:"linea-base" \
+            /d:sonar.exclusions="**/Migrations/**,**/bin/**,**/obj/**,frontend/_ds/**,frontend/dist/**,docs/**" \
+            /d:sonar.cpd.exclusions="**/Migrations/**" \
+            /d:sonar.scanner.scanAll=true
+          dotnet build seminario-backend-service/seminario-backend-service.csproj -c Release
+          dotnet sonarscanner end /d:sonar.token="$SONAR_TOKEN"
+      - name: Resultado de la linea base en SonarCloud
+        run: |
+          sleep 20
+          curl -s -u "$SONAR_TOKEN:" "https://sonarcloud.io/api/measures/component?component=zenvy-crm_seminario-project&metricKeys=ncloc,bugs,vulnerabilities,code_smells,security_hotspots,coverage,duplicated_lines_density,sqale_index,sqale_rating,reliability_rating,security_rating" \
+            | jq -r '.component.measures[] | "SONAR_LB \(.metric)=\(.value)"'
