@@ -1,0 +1,1537 @@
+{
+  "statistics": {
+    "detectionDate": "2026-11-04T04:37:50.193Z",
+    "formats": {
+      "csharp": {
+        "sources": {
+          "seminario-backend-service/Infrastructure/Persistence/Configurations/UserDocumentConfiguration.cs": {
+            "lines": 38,
+            "tokens": 412,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/Persistence/Configurations/UserConfiguration.cs": {
+            "lines": 33,
+            "tokens": 419,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/Persistence/Configurations/RoleConfiguration.cs": {
+            "lines": 17,
+            "tokens": 167,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/Persistence/Configurations/RefreshTokenConfiguration.cs": {
+            "lines": 21,
+            "tokens": 200,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/Persistence/Configurations/PresupuestoBodegaConfiguration.cs": {
+            "lines": 29,
+            "tokens": 245,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/Persistence/Configurations/OrdenCompraDetalleConfiguration.cs": {
+            "lines": 43,
+            "tokens": 403,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/Persistence/Configurations/OrdenCompraConfiguration.cs": {
+            "lines": 58,
+            "tokens": 676,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/Persistence/Configurations/MfaCodeConfiguration.cs": {
+            "lines": 22,
+            "tokens": 225,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/DTOs/Users/UserQueryDto.cs": {
+            "lines": 12,
+            "tokens": 154,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/DTOs/Users/UpdateUserDto.cs": {
+            "lines": 28,
+            "tokens": 233,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 14,
+            "duplicatedTokens": 123,
+            "percentage": 50,
+            "percentageTokens": 52.79,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/DTOs/Users/CreateUserDto.cs": {
+            "lines": 38,
+            "tokens": 368,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 31,
+            "duplicatedTokens": 324,
+            "percentage": 81.58,
+            "percentageTokens": 88.04,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/DTOs/Users/ChangeStatusDto.cs": {
+            "lines": 9,
+            "tokens": 66,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/DTOs/Users/ChangeRoleDto.cs": {
+            "lines": 9,
+            "tokens": 66,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/DTOs/Reportes/ReporteDtos.cs": {
+            "lines": 95,
+            "tokens": 1022,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 6,
+            "duplicatedTokens": 100,
+            "percentage": 6.32,
+            "percentageTokens": 9.78,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/DTOs/Profile/UpdateProfileDto.cs": {
+            "lines": 22,
+            "tokens": 176,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 14,
+            "duplicatedTokens": 123,
+            "percentage": 63.64,
+            "percentageTokens": 69.89,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/DTOs/Profile/ChangePasswordDto.cs": {
+            "lines": 13,
+            "tokens": 118,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/DTOs/Operaciones/OrdenCompraDtos.cs": {
+            "lines": 210,
+            "tokens": 1949,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/DTOs/Auth/RegisterRequestDto.cs": {
+            "lines": 40,
+            "tokens": 416,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 31,
+            "duplicatedTokens": 324,
+            "percentage": 77.5,
+            "percentageTokens": 77.88,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/DTOs/Auth/MfaVerifyRequestDto.cs": {
+            "lines": 12,
+            "tokens": 103,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/DTOs/Auth/LoginRequestDto.cs": {
+            "lines": 12,
+            "tokens": 103,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/DTOs/Auth/AuthResponseDto.cs": {
+            "lines": 26,
+            "tokens": 304,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/Services/UserService.cs": {
+            "lines": 234,
+            "tokens": 2283,
+            "sources": 1,
+            "clones": 5,
+            "duplicatedLines": 76,
+            "duplicatedTokens": 727,
+            "percentage": 32.48,
+            "percentageTokens": 31.84,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/Services/SeedDataService.cs": {
+            "lines": 175,
+            "tokens": 1555,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/Services/ReporteService.cs": {
+            "lines": 411,
+            "tokens": 4106,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 6,
+            "duplicatedTokens": 100,
+            "percentage": 1.46,
+            "percentageTokens": 2.44,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/Services/ProfileService.cs": {
+            "lines": 122,
+            "tokens": 1087,
+            "sources": 1,
+            "clones": 3,
+            "duplicatedLines": 57,
+            "duplicatedTokens": 547,
+            "percentage": 46.72,
+            "percentageTokens": 50.32,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/Services/OrdenCompraService.cs": {
+            "lines": 651,
+            "tokens": 5711,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/Services/FileStorageService.cs": {
+            "lines": 155,
+            "tokens": 1535,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/Services/DocumentService.cs": {
+            "lines": 232,
+            "tokens": 1973,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/Repositories/UserRepository.cs": {
+            "lines": 85,
+            "tokens": 1084,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/Repositories/RefreshTokenStore.cs": {
+            "lines": 35,
+            "tokens": 285,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/Persistence/OrdenCompraSqlObjects.cs": {
+            "lines": 44,
+            "tokens": 309,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/Persistence/DbSeeder.cs": {
+            "lines": 108,
+            "tokens": 1010,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/Persistence/AppDbContextFactory.cs": {
+            "lines": 28,
+            "tokens": 167,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/Persistence/AppDbContext.cs": {
+            "lines": 23,
+            "tokens": 267,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/MongoDB/MongoSettings.cs": {
+            "lines": 8,
+            "tokens": 95,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/MongoDB/MongoAuditStore.cs": {
+            "lines": 66,
+            "tokens": 643,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/MongoDB/AuditLogDocument.cs": {
+            "lines": 65,
+            "tokens": 562,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/MongoDB/AuditChannel.cs": {
+            "lines": 113,
+            "tokens": 965,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/MongoDB/AuditBackgroundService.cs": {
+            "lines": 33,
+            "tokens": 271,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/Health/SqlServerHealthCheck.cs": {
+            "lines": 45,
+            "tokens": 314,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/Health/MongoHealthCheck.cs": {
+            "lines": 45,
+            "tokens": 354,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/Auth/TokenService.cs": {
+            "lines": 62,
+            "tokens": 569,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/Auth/MfaService.cs": {
+            "lines": 102,
+            "tokens": 847,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/Auth/JwtSettings.cs": {
+            "lines": 10,
+            "tokens": 134,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Infrastructure/Auth/BcryptPasswordHasher.cs": {
+            "lines": 63,
+            "tokens": 412,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Domain/Enums/UserStatus.cs": {
+            "lines": 7,
+            "tokens": 25,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Domain/Enums/RoleName.cs": {
+            "lines": 35,
+            "tokens": 268,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Domain/Enums/OrdenEstado.cs": {
+            "lines": 18,
+            "tokens": 160,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Domain/Entities/UserDocument.cs": {
+            "lines": 32,
+            "tokens": 341,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Domain/Entities/User.cs": {
+            "lines": 32,
+            "tokens": 471,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 7,
+            "duplicatedTokens": 136,
+            "percentage": 21.88,
+            "percentageTokens": 28.87,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Domain/Entities/Role.cs": {
+            "lines": 10,
+            "tokens": 110,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Domain/Entities/RefreshToken.cs": {
+            "lines": 15,
+            "tokens": 180,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Domain/Entities/PresupuestoBodega.cs": {
+            "lines": 19,
+            "tokens": 155,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Domain/Entities/OrdenCompraDetalle.cs": {
+            "lines": 35,
+            "tokens": 301,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Domain/Entities/OrdenCompra.cs": {
+            "lines": 45,
+            "tokens": 450,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Domain/Entities/MfaCode.cs": {
+            "lines": 20,
+            "tokens": 228,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/Services/AuthService.cs": {
+            "lines": 342,
+            "tokens": 2710,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 19,
+            "duplicatedTokens": 180,
+            "percentage": 5.56,
+            "percentageTokens": 6.64,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/Mappings/UserMappings.cs": {
+            "lines": 34,
+            "tokens": 317,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/Interfaces/IUserService.cs": {
+            "lines": 14,
+            "tokens": 126,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/Interfaces/IUserRepository.cs": {
+            "lines": 16,
+            "tokens": 216,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/Interfaces/ITokenService.cs": {
+            "lines": 11,
+            "tokens": 79,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/Interfaces/IReporteService.cs": {
+            "lines": 20,
+            "tokens": 125,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/Interfaces/IRefreshTokenStore.cs": {
+            "lines": 11,
+            "tokens": 73,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/Interfaces/IProfileService.cs": {
+            "lines": 11,
+            "tokens": 88,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/Interfaces/IPasswordHasher.cs": {
+            "lines": 23,
+            "tokens": 85,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/Interfaces/IOrdenCompraService.cs": {
+            "lines": 39,
+            "tokens": 276,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/Interfaces/IMfaService.cs": {
+            "lines": 9,
+            "tokens": 61,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/Interfaces/IFileStorageService.cs": {
+            "lines": 19,
+            "tokens": 152,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/Interfaces/IDocumentService.cs": {
+            "lines": 16,
+            "tokens": 144,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/Interfaces/IAuthService.cs": {
+            "lines": 12,
+            "tokens": 107,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/Interfaces/IAuditStore.cs": {
+            "lines": 9,
+            "tokens": 58,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/Interfaces/IAuditLogger.cs": {
+            "lines": 16,
+            "tokens": 84,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/DTOs/UserDto.cs": {
+            "lines": 20,
+            "tokens": 324,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 7,
+            "duplicatedTokens": 136,
+            "percentage": 35,
+            "percentageTokens": 41.98,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/DTOs/DocumentDto.cs": {
+            "lines": 11,
+            "tokens": 141,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/Common/UsuarioSesion.cs": {
+            "lines": 13,
+            "tokens": 78,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/Common/PagedResult.cs": {
+            "lines": 9,
+            "tokens": 99,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/Common/ApiException.cs": {
+            "lines": 48,
+            "tokens": 491,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/Common/ApiErrorResponse.cs": {
+            "lines": 9,
+            "tokens": 108,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/Audit/AuditEventTypes.cs": {
+            "lines": 36,
+            "tokens": 393,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Application/Audit/AuditEvent.cs": {
+            "lines": 40,
+            "tokens": 355,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Api/Middleware/ExceptionHandlingMiddleware.cs": {
+            "lines": 49,
+            "tokens": 359,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Controllers/UsersController.cs": {
+            "lines": 65,
+            "tokens": 602,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Controllers/SeedDataController.cs": {
+            "lines": 33,
+            "tokens": 220,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Controllers/ReportesController.cs": {
+            "lines": 58,
+            "tokens": 407,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Controllers/ProfileController.cs": {
+            "lines": 40,
+            "tokens": 313,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Controllers/OperacionesController.cs": {
+            "lines": 114,
+            "tokens": 953,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Controllers/HealthController.cs": {
+            "lines": 82,
+            "tokens": 690,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Controllers/DocumentsController.cs": {
+            "lines": 63,
+            "tokens": 474,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Controllers/AuthController.cs": {
+            "lines": 105,
+            "tokens": 864,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Api/RoleClaimsExtensions.cs": {
+            "lines": 40,
+            "tokens": 355,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Api/RateLimitingExtensions.cs": {
+            "lines": 54,
+            "tokens": 387,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Api/RateLimitPolicies.cs": {
+            "lines": 10,
+            "tokens": 41,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Api/ClaimsPrincipalExtensions.cs": {
+            "lines": 14,
+            "tokens": 137,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Api/AuthorizationPolicies.cs": {
+            "lines": 37,
+            "tokens": 243,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "seminario-backend-service/Program.cs": {
+            "lines": 206,
+            "tokens": 1733,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          }
+        },
+        "total": {
+          "lines": 5728,
+          "tokens": 51520,
+          "sources": 95,
+          "clones": 10,
+          "duplicatedLines": 134,
+          "duplicatedTokens": 1410,
+          "percentage": 2.34,
+          "percentageTokens": 2.74,
+          "newDuplicatedLines": 0,
+          "newClones": 0
+        }
+      }
+    },
+    "total": {
+      "lines": 5728,
+      "tokens": 51520,
+      "sources": 95,
+      "clones": 10,
+      "duplicatedLines": 134,
+      "duplicatedTokens": 1410,
+      "percentage": 2.34,
+      "percentageTokens": 2.74,
+      "newDuplicatedLines": 0,
+      "newClones": 0
+    }
+  },
+  "duplicates": [
+    {
+      "format": "csharp",
+      "lines": 15,
+      "fragment": "{\n    [MaxLength(100)]\n    public string? FirstName { get; set; }\n\n    [MaxLength(100)]\n    public string? LastName { get; set; }\n\n    [EmailAddress(ErrorMessage = \"El correo no tiene un formato valido\")]\n    [MaxLength(150)]\n    public string? Email { get; set; }\n\n    [MaxLength(30)]\n    public string? Phone { get; set; }\n\n    [",
+      "tokens": 123,
+      "firstFile": {
+        "name": "seminario-backend-service/Application/DTOs/Profile/UpdateProfileDto.cs",
+        "start": 6,
+        "end": 20,
+        "startLoc": {
+          "line": 6,
+          "column": 1,
+          "position": 28
+        },
+        "endLoc": {
+          "line": 20,
+          "column": 6,
+          "position": 151
+        }
+      },
+      "secondFile": {
+        "name": "seminario-backend-service/Application/DTOs/Users/UpdateUserDto.cs",
+        "start": 6,
+        "end": 20,
+        "startLoc": {
+          "line": 6,
+          "column": 1,
+          "position": 28
+        },
+        "endLoc": {
+          "line": 20,
+          "column": 11,
+          "position": 151
+        }
+      }
+    },
+    {
+      "format": "csharp",
+      "lines": 12,
+      "fragment": "{\n    [Required(ErrorMessage = \"El nombre es obligatorio\")]\n    [MaxLength(100)]\n    public string FirstName { get; set; } = string.Empty;\n\n    [Required(ErrorMessage = \"El apellido es obligatorio\")]\n    [MaxLength(100)]\n    public string LastName { get; set; } = string.Empty;\n\n    [Required(ErrorMessage = \"El nombre de usuario es obligatorio\")]\n    [MaxLength(50)]\n    [",
+      "tokens": 113,
+      "firstFile": {
+        "name": "seminario-backend-service/Application/DTOs/Auth/RegisterRequestDto.cs",
+        "start": 6,
+        "end": 17,
+        "startLoc": {
+          "line": 6,
+          "column": 1,
+          "position": 28
+        },
+        "endLoc": {
+          "line": 17,
+          "column": 6,
+          "position": 141
+        }
+      },
+      "secondFile": {
+        "name": "seminario-backend-service/Application/DTOs/Users/CreateUserDto.cs",
+        "start": 6,
+        "end": 17,
+        "startLoc": {
+          "line": 6,
+          "column": 1,
+          "position": 28
+        },
+        "endLoc": {
+          "line": 17,
+          "column": 11,
+          "position": 141
+        }
+      }
+    },
+    {
+      "format": "csharp",
+      "lines": 21,
+      "fragment": ")]\n    public string Username { get; set; } = string.Empty;\n\n    [Required(ErrorMessage = \"El correo es obligatorio\")]\n    [EmailAddress(ErrorMessage = \"El correo no tiene un formato valido\")]\n    [MaxLength(150)]\n    public string Email { get; set; } = string.Empty;\n\n    [MaxLength(30)]\n    public string? Phone { get; set; }\n\n    public string? BirthDate { get; set; }\n\n    [MaxLength(50)]\n    public string? Identification { get; set; }\n\n    [Required(ErrorMessage = \"La contrasena es obligatoria\")]\n    [MinLength(8, ErrorMessage = \"La contrasena debe tener al menos 8 caracteres\")]\n    public string Password { get; set; } = string.Empty;\n\n    [",
+      "tokens": 211,
+      "firstFile": {
+        "name": "seminario-backend-service/Application/DTOs/Auth/RegisterRequestDto.cs",
+        "start": 17,
+        "end": 37,
+        "startLoc": {
+          "line": 17,
+          "column": 142,
+          "position": 152
+        },
+        "endLoc": {
+          "line": 37,
+          "column": 6,
+          "position": 363
+        }
+      },
+      "secondFile": {
+        "name": "seminario-backend-service/Application/DTOs/Users/CreateUserDto.cs",
+        "start": 16,
+        "end": 36,
+        "startLoc": {
+          "line": 16,
+          "column": 18,
+          "position": 137
+        },
+        "endLoc": {
+          "line": 36,
+          "column": 75,
+          "position": 348
+        }
+      }
+    },
+    {
+      "format": "csharp",
+      "lines": 7,
+      "fragment": "{ get; set; }\n        public decimal? Monto { get; set; }\n        public DateTime FechaBaja { get; set; }\n        public int? UsuarioBajaId { get; set; }\n        public string? UsuarioBaja { get; set; }\n        public string? Motivo { get; set; }\n    }",
+      "tokens": 100,
+      "firstFile": {
+        "name": "seminario-backend-service/Infrastructure/Services/ReporteService.cs",
+        "start": 388,
+        "end": 394,
+        "startLoc": {
+          "line": 388,
+          "column": 30,
+          "position": 3828
+        },
+        "endLoc": {
+          "line": 394,
+          "column": 6,
+          "position": 3928
+        }
+      },
+      "secondFile": {
+        "name": "seminario-backend-service/Application/DTOs/Reportes/ReporteDtos.cs",
+        "start": 73,
+        "end": 80,
+        "startLoc": {
+          "line": 73,
+          "column": 28,
+          "position": 788
+        },
+        "endLoc": {
+          "line": 80,
+          "column": 102,
+          "position": 889
+        }
+      }
+    },
+    {
+      "format": "csharp",
+      "lines": 9,
+      "fragment": ")\n            ?? throw new NotFoundException(\"El usuario no existe\");\n\n        var before = new Dictionary<string, object?>();\n        var after = new Dictionary<string, object?>();\n\n        if (dto.Email is not null && dto.Email != user.Email)\n        {\n            if (await _userRepository.EmailExistsAsync(dto.Email, userId",
+      "tokens": 105,
+      "firstFile": {
+        "name": "seminario-backend-service/Infrastructure/Services/ProfileService.cs",
+        "start": 33,
+        "end": 41,
+        "startLoc": {
+          "line": 33,
+          "column": 61,
+          "position": 273
+        },
+        "endLoc": {
+          "line": 41,
+          "column": 73,
+          "position": 378
+        }
+      },
+      "secondFile": {
+        "name": "seminario-backend-service/Infrastructure/Services/UserService.cs",
+        "start": 99,
+        "end": 107,
+        "startLoc": {
+          "line": 99,
+          "column": 57,
+          "position": 955
+        },
+        "endLoc": {
+          "line": 107,
+          "column": 69,
+          "position": 1060
+        }
+      }
+    },
+    {
+      "format": "csharp",
+      "lines": 38,
+      "fragment": "))\n            {\n                throw new ConflictException(\"El correo ya esta registrado por otro usuario\");\n            }\n            before[\"email\"] = user.Email;\n            after[\"email\"] = dto.Email;\n            user.Email = dto.Email;\n        }\n\n        if (dto.FirstName is not null && dto.FirstName != user.FirstName)\n        {\n            before[\"firstName\"] = user.FirstName;\n            after[\"firstName\"] = dto.FirstName;\n            user.FirstName = dto.FirstName;\n        }\n\n        if (dto.LastName is not null && dto.LastName != user.LastName)\n        {\n            before[\"lastName\"] = user.LastName;\n            after[\"lastName\"] = dto.LastName;\n            user.LastName = dto.LastName;\n        }\n\n        if (dto.Phone is not null && dto.Phone != user.Phone)\n        {\n            before[\"phone\"] = user.Phone;\n            after[\"phone\"] = dto.Phone;\n            user.Phone = dto.Phone;\n        }\n\n        if (dto.Identification is not null && dto.Identification != user.IdentificationNumber)\n        {\n            before[\"identification\"] = user.IdentificationNumber;\n            after[\"identification\"] = dto.Identification;\n            user.IdentificationNumber = dto.Identification;\n        }\n\n        if (before",
+      "tokens": 354,
+      "firstFile": {
+        "name": "seminario-backend-service/Infrastructure/Services/ProfileService.cs",
+        "start": 41,
+        "end": 78,
+        "startLoc": {
+          "line": 41,
+          "column": 73,
+          "position": 379
+        },
+        "endLoc": {
+          "line": 78,
+          "column": 19,
+          "position": 733
+        }
+      },
+      "secondFile": {
+        "name": "seminario-backend-service/Infrastructure/Services/UserService.cs",
+        "start": 107,
+        "end": 144,
+        "startLoc": {
+          "line": 107,
+          "column": 69,
+          "position": 1061
+        },
+        "endLoc": {
+          "line": 144,
+          "column": 16,
+          "position": 1415
+        }
+      }
+    },
+    {
+      "format": "csharp",
+      "lines": 13,
+      "fragment": "_auditLogger.Enqueue(new AuditEvent\n            {\n                EventType = AuditEventTypes.UserUpdated,\n                Entity = \"User\",\n                EntityId = user.Id.ToString(),\n                UserId = user.Id,\n                Username = user.Username,\n                Before = before,\n                After = after\n            });\n        }\n\n        return",
+      "tokens": 88,
+      "firstFile": {
+        "name": "seminario-backend-service/Infrastructure/Services/ProfileService.cs",
+        "start": 83,
+        "end": 95,
+        "startLoc": {
+          "line": 83,
+          "column": 13,
+          "position": 769
+        },
+        "endLoc": {
+          "line": 95,
+          "column": 15,
+          "position": 857
+        }
+      },
+      "secondFile": {
+        "name": "seminario-backend-service/Infrastructure/Services/UserService.cs",
+        "start": 153,
+        "end": 165,
+        "startLoc": {
+          "line": 153,
+          "column": 13,
+          "position": 1520
+        },
+        "endLoc": {
+          "line": 165,
+          "column": 11,
+          "position": 1608
+        }
+      }
+    },
+    {
+      "format": "csharp",
+      "lines": 10,
+      "fragment": ";\n\n        _auditLogger.Enqueue(new AuditEvent\n        {\n            EventType = AuditEventTypes.UserCreated,\n            Entity = \"User\",\n            EntityId = user.Id.ToString(),\n            UserId = user.Id,\n            Username = user.Username,\n            After = new { user.Username, user.Email, Role = userRole",
+      "tokens": 90,
+      "firstFile": {
+        "name": "seminario-backend-service/Application/Services/AuthService.cs",
+        "start": 69,
+        "end": 78,
+        "startLoc": {
+          "line": 69,
+          "column": 45,
+          "position": 556
+        },
+        "endLoc": {
+          "line": 78,
+          "column": 69,
+          "position": 646
+        }
+      },
+      "secondFile": {
+        "name": "seminario-backend-service/Infrastructure/Services/UserService.cs",
+        "start": 82,
+        "end": 91,
+        "startLoc": {
+          "line": 82,
+          "column": 25,
+          "position": 800
+        },
+        "endLoc": {
+          "line": 91,
+          "column": 65,
+          "position": 890
+        }
+      }
+    },
+    {
+      "format": "csharp",
+      "lines": 11,
+      "fragment": ";\n            await _userRepository.SaveChangesAsync();\n\n            _auditLogger.Enqueue(new AuditEvent\n            {\n                EventType = AuditEventTypes.AccountUnlocked,\n                Entity = \"User\",\n                EntityId = user.Id.ToString(),\n                UserId = user.Id,\n                Username = user.Username,\n                After = new { reason = \"auto\"",
+      "tokens": 90,
+      "firstFile": {
+        "name": "seminario-backend-service/Application/Services/AuthService.cs",
+        "start": 136,
+        "end": 146,
+        "startLoc": {
+          "line": 136,
+          "column": 36,
+          "position": 1071
+        },
+        "endLoc": {
+          "line": 146,
+          "column": 46,
+          "position": 1161
+        }
+      },
+      "secondFile": {
+        "name": "seminario-backend-service/Infrastructure/Services/UserService.cs",
+        "start": 219,
+        "end": 229,
+        "startLoc": {
+          "line": 219,
+          "column": 41,
+          "position": 2170
+        },
+        "endLoc": {
+          "line": 229,
+          "column": 44,
+          "position": 2260
+        }
+      }
+    },
+    {
+      "format": "csharp",
+      "lines": 8,
+      "fragment": "{\n    public int Id { get; set; }\n    public string FirstName { get; set; } = string.Empty;\n    public string LastName { get; set; } = string.Empty;\n    public string Username { get; set; } = string.Empty;\n    public string Email { get; set; } = string.Empty;\n    public string? Phone { get; set; }\n    public string",
+      "tokens": 136,
+      "firstFile": {
+        "name": "seminario-backend-service/Application/DTOs/UserDto.cs",
+        "start": 4,
+        "end": 11,
+        "startLoc": {
+          "line": 4,
+          "column": 1,
+          "position": 16
+        },
+        "endLoc": {
+          "line": 11,
+          "column": 18,
+          "position": 152
+        }
+      },
+      "secondFile": {
+        "name": "seminario-backend-service/Domain/Entities/User.cs",
+        "start": 6,
+        "end": 13,
+        "startLoc": {
+          "line": 6,
+          "column": 1,
+          "position": 26
+        },
+        "endLoc": {
+          "line": 13,
+          "column": 20,
+          "position": 162
+        }
+      }
+    }
+  ]
+}
