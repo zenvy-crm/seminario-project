@@ -1,0 +1,31 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "seminario-backend-service", "seminario-backend-service\seminario-backend-service.csproj", "{4472BD72-4000-586A-90B3-92DF7F3C8A1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seminario.UnitTests", "tests\Seminario.UnitTests\Seminario.UnitTests.csproj", "{5851244C-7386-5313-9B51-962E7017E193}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seminario.IntegrationTests", "tests\Seminario.IntegrationTests\Seminario.IntegrationTests.csproj", "{C9410069-283E-5CBF-B4CC-755FA73D4869}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4472BD72-4000-586A-90B3-92DF7F3C8A1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4472BD72-4000-586A-90B3-92DF7F3C8A1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4472BD72-4000-586A-90B3-92DF7F3C8A1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4472BD72-4000-586A-90B3-92DF7F3C8A1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5851244C-7386-5313-9B51-962E7017E193}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5851244C-7386-5313-9B51-962E7017E193}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5851244C-7386-5313-9B51-962E7017E193}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5851244C-7386-5313-9B51-962E7017E193}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9410069-283E-5CBF-B4CC-755FA73D4869}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9410069-283E-5CBF-B4CC-755FA73D4869}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9410069-283E-5CBF-B4CC-755FA73D4869}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9410069-283E-5CBF-B4CC-755FA73D4869}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
