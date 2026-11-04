@@ -1041,3 +1041,15 @@ R  README.md -> docs/README-backend.md
  M seminario-backend-service/Infrastructure/Services/OrdenCompraService.cs
 ```
 
+### G64 — Fase 4 · Commit — documentación SQA, últimos code smells y bitácoras
+- Fecha/hora: 2026-11-03 23:35:15 (America/Guatemala)
+- Codigo de salida: 0
+```bash
+$ git -c user.name='Alder Solis' -c user.email='alder.solis@bowpi.com' commit -q -m 'docs: SQA Plan, matriz de pruebas, linea base, reporte de mejora, manual tecnico, README con badges' -m '- refactor: expresiones de coleccion en OrdenCompraService/OrdenCompraDtos (ultimos 5 IDE0028 de SonarCloud).
+- docs/evidencias: bitacoras de comandos (local y GitHub).
+- El README tecnico del backend pasa a docs/README-backend.md.' -m 'Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>' && git push -q 2>&1 | grep -v 'acknowledgments\|negotiation'; git log --oneline -1
+```
+```text
+5a60764 docs: SQA Plan, matriz de pruebas, linea base, reporte de mejora, manual tecnico, README con badges
+```
+

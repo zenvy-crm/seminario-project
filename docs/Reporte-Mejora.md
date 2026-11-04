@@ -25,7 +25,7 @@
 | Archivos fuera del formato `dotnet format` | 1 (al aplicar `.editorconfig`) | **0** | −1 |
 | Bugs (SonarCloud) | 3 | **0** | −3 |
 | Vulnerabilidades (SonarCloud) | 4 | **0** | −4 |
-| Code smells (SonarCloud) | 11 | 5 *info* (corregidos en el último commit, ver §4) | −6 / −11 |
+| Code smells (SonarCloud) | 11 | **0** | −11 |
 | Calificación de confiabilidad | **E** | **A** | E → A |
 | Calificación de seguridad | **C** | **A** | C → A |
 | Calificación de mantenibilidad | A | A | = |
@@ -41,7 +41,7 @@ xychart-beta
     x-axis ["Bugs", "Vulnerabilidades", "Code smells", "Deuda (min)"]
     y-axis "Cantidad" 0 --> 20
     bar [3, 4, 11, 17]
-    bar [0, 0, 5, 0]
+    bar [0, 0, 0, 0]
 ```
 
 ```mermaid
@@ -110,7 +110,7 @@ Durante la intervención solo falló una prueba en el pipeline: **UT-TKN-01**. L
 
 | # | Elemento | Severidad | Decisión |
 |---|---|---|---|
-| D1 | 5 code smells *info* `IDE0028` (inicialización de colecciones) en `OrdenCompraService` y `OrdenCompraDtos` | Info | Corregidos en el último commit del PR. Se confirman en el análisis final de SonarCloud. |
+| D1 | 5 code smells *info* `IDE0028` en `OrdenCompraService` y `OrdenCompraDtos` | Info | **Corregidos**: SonarCloud confirma 0 code smells en el [run 41780174068](https://github.com/zenvy-crm/seminario-project/actions/runs/41780174068). |
 | D2 | Duplicación backend de 2.32 % (jscpd): `ProfileService` y `UserService` repiten la actualización de datos personales con auditoría | Menor | Pendiente: extraer un `UserFieldUpdater` común. Está por debajo del umbral de 3 % del Quality Gate. |
 | D3 | Páginas de React (`src/pages`) sin pruebas automatizadas, salvo `comunes.ts` | Media | Fuera del alcance de cobertura (§7.3 del plan). Siguiente paso: pruebas E2E con Playwright o Cypress. |
 | D4 | `SeedDataService` y `SeedDataController` (stress test) en 0 % de cobertura | Baja | Herramienta de carga masiva que tarda minutos. Las pruebas de carga están fuera del alcance del proyecto. |
