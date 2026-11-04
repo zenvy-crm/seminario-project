@@ -48,11 +48,13 @@ public class UserRepository : IUserRepository
             // La intercalacion de SQL Server (SQL_Latin1_General_CP1_CI_AS) ya compara sin distinguir
             // mayusculas: ToLower() en las columnas impedia usar indices y dependia de la cultura (CA1304/CA1862).
             var term = search.Trim();
+#pragma warning disable CA1862 // EF Core traduce Contains a LIKE; la sobrecarga con StringComparison no es traducible a SQL.
             query = query.Where(u =>
                 u.Username.Contains(term) ||
                 u.Email.Contains(term) ||
                 u.FirstName.Contains(term) ||
                 u.LastName.Contains(term));
+#pragma warning restore CA1862
         }
 
         if (!string.IsNullOrWhiteSpace(role))

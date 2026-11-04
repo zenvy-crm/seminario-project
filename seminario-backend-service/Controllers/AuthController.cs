@@ -82,7 +82,7 @@ public class AuthController : ControllerBase
     {
         var refreshToken = Request.Cookies[RefreshCookieName];
         await _authService.LogoutAsync(refreshToken);
-        Response.Cookies.Delete(RefreshCookieName, new CookieOptions { Path = "/api/auth" });
+        Response.Cookies.Delete(RefreshCookieName, OpcionesCookie(DateTimeOffset.UnixEpoch));
         return Ok(new { success = true });
     }
 
@@ -93,13 +93,19 @@ public class AuthController : ControllerBase
             return;
         }
 
-        Response.Cookies.Append(RefreshCookieName, refreshToken, new CookieOptions
-        {
-            HttpOnly = true,
-            Secure = !_env.IsDevelopment(),
-            SameSite = SameSiteMode.Lax,
-            Path = "/api/auth",
-            Expires = DateTimeOffset.UtcNow.AddDays(7)
-        });
+        Response.Cookies.Append(RefreshCookieName, refreshToken, OpcionesCookie(DateTimeOffset.UtcNow.AddDays(7)));
     }
+
+    /// <summary>
+    /// Opciones unicas de la cookie del refresh token: HttpOnly (no la lee JavaScript) y Secure siempre.
+    /// Los navegadores aceptan cookies Secure en http://localhost, asi que desarrollo sigue funcionando.
+    /// </summary>
+    private static CookieOptions OpcionesCookie(DateTimeOffset expira) => new()
+    {
+        HttpOnly = true,
+        Secure = true,
+        SameSite = SameSiteMode.Lax,
+        Path = "/api/auth",
+        Expires = expira
+    };
 }

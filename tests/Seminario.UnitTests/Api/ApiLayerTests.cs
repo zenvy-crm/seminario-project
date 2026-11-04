@@ -19,6 +19,9 @@ namespace Seminario.UnitTests.Api;
 [Trait("Category", "Unit")]
 public class ExceptionHandlingMiddlewareTests
 {
+    private static readonly JsonSerializerOptions Json = new() { PropertyNameCaseInsensitive = true };
+    private static readonly string[] ErroresEsperados = ["campo"];
+
     private static async Task<(int Status, ApiErrorResponse Body)> Ejecutar(RequestDelegate siguiente)
     {
         var context = new DefaultHttpContext();
@@ -28,8 +31,7 @@ public class ExceptionHandlingMiddlewareTests
         await middleware.InvokeAsync(context);
 
         context.Response.Body.Position = 0;
-        var body = await JsonSerializer.DeserializeAsync<ApiErrorResponse>(context.Response.Body,
-            new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        var body = await JsonSerializer.DeserializeAsync<ApiErrorResponse>(context.Response.Body, Json);
         return (context.Response.StatusCode, body!);
     }
 
@@ -42,7 +44,7 @@ public class ExceptionHandlingMiddlewareTests
         Assert.Equal(422, status);
         Assert.False(body.Success);
         Assert.Equal("Datos invalidos", body.Message);
-        Assert.Equal(new[] { "campo" }, body.Errors);
+        Assert.Equal(ErroresEsperados, body.Errors);
     }
 
     [Fact(DisplayName = "UT-API-02 Excepcion no controlada responde 500 sin filtrar detalles internos")]

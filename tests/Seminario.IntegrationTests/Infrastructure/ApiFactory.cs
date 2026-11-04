@@ -79,7 +79,12 @@ public sealed class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
     /// <summary>Cliente HTTP con una IP de origen propia (el rate limiting particiona por IP).</summary>
     public HttpClient Cliente(string? ip = null)
     {
-        var client = CreateClient(new WebApplicationFactoryClientOptions { HandleCookies = true });
+        // https: la cookie del refresh token es Secure, el CookieContainer solo la reenvia por https.
+        var client = CreateClient(new WebApplicationFactoryClientOptions
+        {
+            HandleCookies = true,
+            BaseAddress = new Uri("https://localhost")
+        });
         client.DefaultRequestHeaders.Add(TestClientIpStartupFilter.Header, ip ?? NuevaIp());
         return client;
     }

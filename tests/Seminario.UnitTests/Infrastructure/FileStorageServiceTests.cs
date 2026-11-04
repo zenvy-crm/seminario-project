@@ -33,7 +33,7 @@ public sealed class FileStorageServiceTests : IDisposable
         }
     }
 
-    private static IFormFile Archivo(byte[] contenido, string nombre, string contentType)
+    private static FormFile Archivo(byte[] contenido, string nombre, string contentType)
     {
         var stream = new MemoryStream(contenido);
         return new FormFile(stream, 0, contenido.Length, "file", nombre)
