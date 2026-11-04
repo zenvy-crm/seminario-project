@@ -59,12 +59,21 @@ export interface PaginatedResponse<T> {
 // Modulo de Operaciones: ordenes de compra sobre tabla particionada
 // ---------------------------------------------------------------------------
 
-export type OrdenEstado = "CREADA" | "EMITIDA" | "RECIBIDA" | "PAGADA" | "ANULADA";
+export type OrdenEstado =
+  "CREADA" | "EMITIDA" | "RECIBIDA" | "PAGADA" | "ANULADA";
 export type Moneda = "GTQ" | "USD";
 
 /** Nivel del RBAC de la Fase 2: USER = Estandar, INTERMEDIO = Intermedio, ADMIN = Administrador. */
-export const NIVEL_ROL: Record<Role, 1 | 2 | 3> = { USER: 1, INTERMEDIO: 2, ADMIN: 3 };
-export const NOMBRE_ROL: Record<Role, string> = { USER: "Estándar", INTERMEDIO: "Intermedio", ADMIN: "Administrador" };
+export const NIVEL_ROL: Record<Role, 1 | 2 | 3> = {
+  USER: 1,
+  INTERMEDIO: 2,
+  ADMIN: 3,
+};
+export const NOMBRE_ROL: Record<Role, string> = {
+  USER: "Estándar",
+  INTERMEDIO: "Intermedio",
+  ADMIN: "Administrador",
+};
 
 export interface CreateLineaOrden {
   descripcion: string;

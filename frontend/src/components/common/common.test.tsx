@@ -67,7 +67,9 @@ describe("componentes comunes", () => {
   it("FE-UI-05 ToastProvider muestra el mensaje y se puede cerrar", async () => {
     function Disparador() {
       const { showToast } = useToast();
-      return <button onClick={() => showToast("Guardado", "info")}>lanzar</button>;
+      return (
+        <button onClick={() => showToast("Guardado", "info")}>lanzar</button>
+      );
     }
     render(
       <ToastProvider>

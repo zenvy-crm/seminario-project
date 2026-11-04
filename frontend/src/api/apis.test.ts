@@ -9,8 +9,8 @@ import { mensajeError, operacionesApi } from "./operacionesApi";
 import type { OrdenCompra } from "../types";
 
 const PDF = new Uint8Array([
-  0x25, 0x50, 0x44, 0x46, 0x2d, 0x31, 0x2e, 0x37, 0x0a, 0x25, 0xe2, 0xe3,
-  0xcf, 0xd3, 0x0a,
+  0x25, 0x50, 0x44, 0x46, 0x2d, 0x31, 0x2e, 0x37, 0x0a, 0x25, 0xe2, 0xe3, 0xcf,
+  0xd3, 0x0a,
 ]);
 
 const crearEspias = () => ({
@@ -77,7 +77,10 @@ describe("capa de acceso a la API", () => {
     await usersApi.getUser(4);
     expect(get).toHaveBeenCalledWith("/users/4");
     await usersApi.createUser({ username: "x", password: "p" });
-    expect(post).toHaveBeenCalledWith("/users", { username: "x", password: "p" });
+    expect(post).toHaveBeenCalledWith("/users", {
+      username: "x",
+      password: "p",
+    });
     await usersApi.changeStatus(4, "INACTIVE");
     expect(put).toHaveBeenCalledWith("/users/4", { status: "INACTIVE" });
     await usersApi.changeRole(4, "INTERMEDIO");

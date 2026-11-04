@@ -1,7 +1,6 @@
 import { api } from "./axios";
 import { User, PaginatedResponse, Role, UserStatus } from "../types";
 
-
 export interface UsersQuery {
   search?: string;
   role?: Role | "ALL";
@@ -18,7 +17,8 @@ export const usersApi = {
       params: {
         ...query,
         role: query.role && query.role !== "ALL" ? query.role : undefined,
-        status: query.status && query.status !== "ALL" ? query.status : undefined,
+        status:
+          query.status && query.status !== "ALL" ? query.status : undefined,
       },
     });
     return data;
@@ -29,7 +29,9 @@ export const usersApi = {
     return data;
   },
 
-  async createUser(payload: Partial<User> & { password: string }): Promise<User> {
+  async createUser(
+    payload: Partial<User> & { password: string }
+  ): Promise<User> {
     const { data } = await api.post<User>("/users", payload);
     return data;
   },

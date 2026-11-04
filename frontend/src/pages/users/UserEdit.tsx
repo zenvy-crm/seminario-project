@@ -17,7 +17,10 @@ export default function UserEdit() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    usersApi.getUser(Number(id)).then(setUser).catch(() => setLoadError("No fue posible cargar la información."));
+    usersApi
+      .getUser(Number(id))
+      .then(setUser)
+      .catch(() => setLoadError("No fue posible cargar la información."));
   }, [id]);
 
   const handleSubmit = async (values: UserFormValues) => {
@@ -39,8 +42,16 @@ export default function UserEdit() {
 
   return (
     <Box maxWidth={720}>
-      <Typography variant="h4" mb={3}>Editar usuario</Typography>
-      <UserForm mode="edit" defaultValues={user} onSubmit={handleSubmit} submitError={submitError} submitting={submitting} />
+      <Typography variant="h4" mb={3}>
+        Editar usuario
+      </Typography>
+      <UserForm
+        mode="edit"
+        defaultValues={user}
+        onSubmit={handleSubmit}
+        submitError={submitError}
+        submitting={submitting}
+      />
     </Box>
   );
 }
