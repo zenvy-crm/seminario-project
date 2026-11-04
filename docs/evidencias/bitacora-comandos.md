@@ -402,3 +402,178 @@ time: 1.209s
 💖 Support jscpd project → https://opencollective.com/jscpd
 ```
 
+### #22 — Fase 1 · Frontend — ignorar archivos locales del IDE y de build
+- Fecha/hora: 2026-11-03 22:42:53 (America/Guatemala)
+- Codigo de salida: 0
+```bash
+$ printf '.claude/\n.idea/\n*.tsbuildinfo\ncoverage/\n' >> .gitignore && cat .gitignore
+```
+```text
+node_modules
+dist
+.env
+.env.local
+*.log
+.claude/
+.idea/
+*.tsbuildinfo
+coverage/
+```
+
+### #23 — Fase 1 · Frontend
+- Fecha/hora: 2026-11-03 22:42:55 (America/Guatemala)
+- Codigo de salida: 0
+```bash
+$ git add -A && git status --short
+```
+```text
+warning: unable to unlink '.git/objects/8f/tmp_obj_wjkVnO': Operation not permitted
+warning: unable to unlink '.git/objects/54/tmp_obj_Sy476V': Operation not permitted
+warning: unable to unlink '.git/objects/72/tmp_obj_MBhTs2': Operation not permitted
+warning: unable to unlink '.git/objects/b5/tmp_obj_GcihC8': Operation not permitted
+warning: unable to unlink '.git/objects/4d/tmp_obj_2hNIV9': Operation not permitted
+warning: unable to unlink '.git/objects/2c/tmp_obj_IR4fwb': Operation not permitted
+warning: unable to unlink '.git/objects/cb/tmp_obj_gHwv7h': Operation not permitted
+warning: unable to unlink '.git/objects/d7/tmp_obj_kPj5Lj': Operation not permitted
+warning: unable to unlink '.git/objects/bf/tmp_obj_haPOFe': Operation not permitted
+warning: unable to unlink '.git/objects/e5/tmp_obj_TpZcrg': Operation not permitted
+warning: unable to unlink '.git/objects/e6/tmp_obj_9Bvgnh': Operation not permitted
+warning: unable to unlink '.git/objects/93/tmp_obj_fDW8Xj': Operation not permitted
+warning: unable to unlink '.git/objects/da/tmp_obj_dUVVto': Operation not permitted
+warning: unable to unlink '.git/objects/f0/tmp_obj_fFDEJt': Operation not permitted
+warning: unable to unlink '.git/objects/d1/tmp_obj_z1nhLB': Operation not permitted
+warning: unable to unlink '.git/objects/95/tmp_obj_RCGzJG': Operation not permitted
+warning: unable to unlink '.git/objects/a8/tmp_obj_taAS0K': Operation not permitted
+warning: unable to unlink '.git/objects/14/tmp_obj_RC2u9P': Operation not permitted
+warning: unable to unlink '.git/objects/34/tmp_obj_3WNTHQ': Operation not permitted
+warning: unable to unlink '.git/objects/96/tmp_obj_f1IVTV': Operation not permitted
+D  .env.example
+M  .gitignore
+D  API_CONTRACT.md
+D  README.md
+M  package.json
+M  pnpm-lock.yaml
+M  src/App.tsx
+M  src/api/authApi.ts
+M  src/api/documentsApi.ts
+A  src/api/fileValidator.ts
+D  src/api/mock/db.ts
+D  src/api/mock/mockAuth.ts
+D  src/api/mock/mockUsers.ts
+A  src/api/operacionesApi.ts
+M  src/api/profileApi.ts
+A  src/api/reportesApi.ts
+M  src/api/usersApi.ts
+M  src/components/common/Badges.tsx
+M  src/components/layout/Sidebar.tsx
+M  src/components/users/UserForm.tsx
+M  src/pages/auth/Login.tsx
+M  src/pages/auth/Mfa.tsx
+A  src/pages/operaciones/Operaciones.tsx
+A  src/pages/ordenes/OrdenCompraPage.tsx
+A  src/pages/reportes/AuditoriaAnulacionesPage.tsx
+A  src/pages/reportes/RankingProveedoresPage.tsx
+A  src/pages/reportes/ReporteOrdenesPage.tsx
+A  src/pages/reportes/comunes.tsx
+M  src/pages/users/UsersList.tsx
+M  src/types/index.ts
+A  vite.config.d.ts
+A  vite.config.js
+```
+
+### #24 — Fase 1 · Frontend — no versionar archivos generados por tsc -b (vite.config.js / .d.ts)
+- Fecha/hora: 2026-11-03 22:43:19 (America/Guatemala)
+- Codigo de salida: 0
+```bash
+$ printf 'vite.config.js\nvite.config.d.ts\n' >> .gitignore && git rm -q --cached vite.config.js vite.config.d.ts && git add .gitignore && git status --short | grep -E 'vite|gitignore'
+```
+```text
+M  .gitignore
+```
+
+### #25 — Fase 1 · Frontend — commit del estado base
+- Fecha/hora: 2026-11-03 22:43:28 (America/Guatemala)
+- Codigo de salida: 0
+```bash
+$ git -c user.name='Alder Solis' -c user.email='alder.solis@bowpi.com' commit -q -m 'chore: estado base del frontend (Fases 2 y 3) antes de la intervencion SQA' && git log --oneline -1
+```
+```text
+0e97f0a chore: estado base del frontend (Fases 2 y 3) antes de la intervencion SQA
+```
+
+### #26 — Fase 1 · Frontend — empaquetar historial para integrarlo al monorepo
+- Fecha/hora: 2026-11-03 22:43:31 (America/Guatemala)
+- Codigo de salida: 0
+```bash
+$ git bundle create /tmp/frontend.bundle HEAD && mkdir -p '/sessions/rcw-01q7qtmzfqcoseboj79cxhcn/mnt/seminario-backend-service/docs/evidencias' && cp /tmp/frontend.bundle '/sessions/rcw-01q7qtmzfqcoseboj79cxhcn/mnt/seminario-backend-service/docs/evidencias/.tmp-frontend.bundle' && git bundle verify /tmp/frontend.bundle
+```
+```text
+/tmp/frontend.bundle is okay
+The bundle contains this ref:
+0e97f0a9a711fcd478f6182e556cf1d12fe3df68 HEAD
+The bundle records a complete history.
+```
+
+### #27 — Fase 1 · Línea base frontend — tamaño (cloc)
+- Fecha/hora: 2026-11-03 22:44:06 (America/Guatemala)
+- Codigo de salida: 0
+```bash
+$ npx --yes cloc@2.0.0 src --include-lang=TypeScript,JavaScript
+```
+```text
+      43 text files.
+classified 43 files      43 unique files.                              
+      32 files ignored.
+
+https://github.com/AlDanial/cloc v 1.66  T=1.44 s (7.6 files/s, 418.2 lines/s)
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+TypeScript                      11             72             28            503
+-------------------------------------------------------------------------------
+SUM:                            11             72             28            503
+-------------------------------------------------------------------------------
+```
+
+### #28 — Fase 1 · Línea base frontend — duplicación (jscpd)
+- Fecha/hora: 2026-11-03 22:44:10 (America/Guatemala)
+- Codigo de salida: 0
+```bash
+$ npx --yes jscpd@4 src --min-tokens 50 --reporters console,json --output /tmp/jscpd-front 2>&1 | tail -12 && cp /tmp/jscpd-front/jscpd-report.json '/sessions/rcw-01q7qtmzfqcoseboj79cxhcn/mnt/seminario-backend-service/docs/evidencias/jscpd-frontend.json'
+```
+```text
+├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
+│ typescript │ 10             │ 602         │ 5925         │ 0            │ 0 (0%)           │ 0 (0%)            │
+├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
+│ Total:     │ 73             │ 5645        │ 80661        │ 7            │ 76 (1.35%)       │ 1587 (1.97%)      │
+└────────────┴────────────────┴─────────────┴──────────────┴──────────────┴──────────────────┴───────────────────┘
+Found 7 clones.
+JSON report saved to /tmp/jscpd-front/jscpd-report.json
+time: 1.170s
+
+💡 Auto-refactor with AI: npx skills add kucherenko/jscpd
+🎩 New: Gangsta Agents — discipline your AI coding → gangsta.page
+💖 Support jscpd project → https://opencollective.com/jscpd
+```
+
+### #29 — Fase 1 · Línea base frontend — tamaño incluyendo .tsx (cloc no reconoce tsx por defecto)
+- Fecha/hora: 2026-11-03 22:44:20 (America/Guatemala)
+- Codigo de salida: 0
+```bash
+$ npx --yes cloc@2.0.0 src --force-lang=TypeScript,tsx --include-lang=TypeScript
+```
+```text
+      43 text files.
+classified 43 files      43 unique files.                              
+       0 files ignored.
+
+https://github.com/AlDanial/cloc v 1.66  T=1.86 s (23.1 files/s, 2133.8 lines/s)
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+TypeScript                      43            353             68           3556
+-------------------------------------------------------------------------------
+SUM:                            43            353             68           3556
+-------------------------------------------------------------------------------
+```
+
