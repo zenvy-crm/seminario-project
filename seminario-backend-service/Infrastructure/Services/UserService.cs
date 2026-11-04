@@ -61,7 +61,7 @@ public class UserService : IUserService
 
         var roleName = string.IsNullOrWhiteSpace(dto.Role) ? RoleName.User : dto.Role.ToUpperInvariant();
         var role = await _userRepository.GetRoleByNameAsync(roleName)
-            ?? throw new ValidationApiException("El rol especificado no es valido", new List<string> { "role" });
+            ?? throw new ValidationApiException("El rol especificado no es valido", ["role"]);
 
         var user = new User
         {
@@ -166,7 +166,7 @@ public class UserService : IUserService
         if (!string.IsNullOrWhiteSpace(dto.Role) && !string.Equals(dto.Role, user.Role.Name, StringComparison.OrdinalIgnoreCase))
         {
             var newRole = await _userRepository.GetRoleByNameAsync(dto.Role.ToUpperInvariant())
-                ?? throw new ValidationApiException("El rol especificado no es valido", new List<string> { "role" });
+                ?? throw new ValidationApiException("El rol especificado no es valido", ["role"]);
 
             _auditLogger.Enqueue(new AuditEvent
             {

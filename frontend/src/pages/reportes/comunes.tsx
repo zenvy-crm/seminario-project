@@ -58,7 +58,7 @@ export function formatoFecha(iso: string | undefined | null) {
 /** Fechas de baja: el backend las guarda en UTC (SYSUTCDATETIME) y las envia sin zona. */
 export function formatoFechaHora(iso: string | undefined | null) {
   if (!iso) return "-";
-  const f = new Date(/[zZ]|[+-]\d{2}:\d{2}$/.test(iso) ? iso : `${iso}Z`);
+  const f = new Date(/(?:[zZ]|[+-]\d{2}:\d{2})$/.test(iso) ? iso : `${iso}Z`);
   return Number.isNaN(f.getTime())
     ? iso
     : f.toLocaleString("es-GT", { dateStyle: "short", timeStyle: "short" });

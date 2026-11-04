@@ -265,12 +265,8 @@ public class AuthService : IAuthService
         }
 
         var hash = _tokenService.HashToken(refreshToken);
-        var existing = await _refreshTokenStore.GetActiveByHashAsync(hash);
-
-        if (existing is null)
-        {
-            throw new UnauthorizedApiException("La sesion expiro, inicie sesion nuevamente");
-        }
+        var existing = await _refreshTokenStore.GetActiveByHashAsync(hash)
+            ?? throw new UnauthorizedApiException("La sesion expiro, inicie sesion nuevamente");
 
         await _refreshTokenStore.RevokeAsync(existing);
 

@@ -31,7 +31,7 @@ public class OrdenesCompraTests
         lineas
     };
 
-    private async Task<OrdenCompraDto> CrearOrdenAsync(HttpClient client, string nit)
+    private static async Task<OrdenCompraDto> CrearOrdenAsync(HttpClient client, string nit)
     {
         var response = await client.PostAsJsonAsync("/api/operaciones/ordenes", Orden(nit,
             new { descripcion = "Tarimas de madera", cantidad = 10, precioUnitario = 125.50m },

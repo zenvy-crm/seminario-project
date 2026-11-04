@@ -14,7 +14,10 @@ if (!Blob.prototype.arrayBuffer) {
     return new Promise<ArrayBuffer>((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => resolve(reader.result as ArrayBuffer);
-      reader.onerror = () => reject(reader.error);
+      reader.onerror = () =>
+        reject(
+          new Error(reader.error?.message ?? "No se pudo leer el archivo")
+        );
       reader.readAsArrayBuffer(this);
     });
   };

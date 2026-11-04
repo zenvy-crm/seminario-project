@@ -59,7 +59,7 @@ public class OrdenCompraService : IOrdenCompraService
         if (fecha > hoy.AddDays(1))
         {
             throw new ValidationApiException("Datos invalidos",
-                new List<string> { "La fecha de emision no puede ser futura" });
+                ["La fecha de emision no puede ser futura"]);
         }
 
         // Compatibilidad con el formulario actual (solo Monto): se convierte en UNA linea.
@@ -69,14 +69,14 @@ public class OrdenCompraService : IOrdenCompraService
         if (lineas.Any(l => l is null))
         {
             throw new ValidationApiException("Datos invalidos",
-                new List<string> { "Cada elemento de 'lineas' debe ser un objeto con descripcion, cantidad y precioUnitario" });
+                ["Cada elemento de 'lineas' debe ser un objeto con descripcion, cantidad y precioUnitario"]);
         }
         if (lineas.Count == 0)
         {
             if (dto.Monto is not > 0)
             {
                 throw new ValidationApiException("Datos invalidos",
-                    new List<string> { "La orden debe traer al menos una linea en 'lineas' o un Monto mayor a cero" });
+                    ["La orden debe traer al menos una linea en 'lineas' o un Monto mayor a cero"]);
             }
 
             lineas = new List<CreateLineaOrdenDto>
@@ -188,12 +188,12 @@ public class OrdenCompraService : IOrdenCompraService
             q = q.Where(o => o.ProveedorNit == nit);
         }
 
-        if (query.SoloMias)
+        if (query.SoloMias == true)
         {
             q = q.Where(o => o.UserId == sesion.UserId);
         }
 
-        if (query.ConDetalle)
+        if (query.ConDetalle == true)
         {
             q = q.Where(o => o.Lineas.Any());
         }
@@ -258,7 +258,7 @@ public class OrdenCompraService : IOrdenCompraService
         if (dto.EstadoLinea is { } estadoLinea && estadoLinea != 0)
         {
             throw new ValidationApiException("Datos invalidos",
-                new List<string> { "Solo se admite estadoLinea = 0 (anular la linea); una linea anulada no se reactiva" });
+                ["Solo se admite estadoLinea = 0 (anular la linea); una linea anulada no se reactiva"]);
         }
 
         var motivo = ValidarMotivo(dto.Motivo, "El motivo de la baja");
@@ -511,7 +511,7 @@ ORDER BY p.partition_number;";
         }
         catch (FormatException)
         {
-            throw new ValidationApiException("Datos invalidos", new List<string> { "rowVer no es un valor base64 valido" });
+            throw new ValidationApiException("Datos invalidos", ["rowVer no es un valor base64 valido"]);
         }
 
         var entry = _db.Entry(entidad).Property(propiedad);
@@ -552,20 +552,20 @@ ORDER BY p.partition_number;";
             {
                 case OrdenCompraSqlObjects.ErrorSinPresupuesto:
                     return new ValidationApiException("No existe presupuesto de compras para la bodega y el anio indicados",
-                        new List<string> { error.Message });
+                        [error.Message]);
                 case OrdenCompraSqlObjects.ErrorLineaInvalida:
                     return new ValidationApiException("Datos de la orden invalidos. No se guardo la orden ni ninguna linea.",
-                        new List<string> { error.Message });
+                        [error.Message]);
                 case 547 when error.Message.Contains(OrdenCompraSqlObjects.CheckComprometido, StringComparison.OrdinalIgnoreCase):
                     return new ConflictException("El presupuesto comprometido de la bodega quedaria negativo; la operacion se revirtio", ex);
                 case 547:
                     return new ValidationApiException("Datos de la orden invalidos. No se guardo la orden ni ninguna linea.",
-                        new List<string> { "Una linea viola una restriccion de la base de datos (cantidad > 0, precio >= 0)" });
+                        ["Una linea viola una restriccion de la base de datos (cantidad > 0, precio >= 0)"]);
                 case 8115:
                     // Arithmetic overflow: un importe o total no cabe en decimal(18,2). El SP ya lo
                     // rechaza con 50011; esto cubre cualquier otro camino.
                     return new ValidationApiException("Datos de la orden invalidos. No se guardo la orden ni ninguna linea.",
-                        new List<string> { "Un importe o total excede el maximo permitido (9,999,999,999,999,999.99)" });
+                        ["Un importe o total excede el maximo permitido (9,999,999,999,999,999.99)"]);
                 case 1205:
                     // Deadlock: SQL Server eligio esta transaccion como victima y la revirtio completa.
                     return new ConflictException("La orden estaba siendo modificada por otra operacion al mismo tiempo. Intente de nuevo.", ex);

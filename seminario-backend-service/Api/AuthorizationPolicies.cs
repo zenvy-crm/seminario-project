@@ -20,17 +20,13 @@ public static class AuthorizationPolicies
 
     public static IServiceCollection AddRbacPolicies(this IServiceCollection services)
     {
-        services.AddAuthorization(options =>
-        {
-            options.AddPolicy(NivelEstandar, policy =>
-                policy.RequireAuthenticatedUser().RequireRole(RoleName.User, RoleName.Intermedio, RoleName.Admin));
-
-            options.AddPolicy(NivelIntermedio, policy =>
-                policy.RequireAuthenticatedUser().RequireRole(RoleName.Intermedio, RoleName.Admin));
-
-            options.AddPolicy(NivelAdministrador, policy =>
+        services.AddAuthorizationBuilder()
+            .AddPolicy(NivelEstandar, policy =>
+                policy.RequireAuthenticatedUser().RequireRole(RoleName.User, RoleName.Intermedio, RoleName.Admin))
+            .AddPolicy(NivelIntermedio, policy =>
+                policy.RequireAuthenticatedUser().RequireRole(RoleName.Intermedio, RoleName.Admin))
+            .AddPolicy(NivelAdministrador, policy =>
                 policy.RequireAuthenticatedUser().RequireRole(RoleName.Admin));
-        });
 
         return services;
     }

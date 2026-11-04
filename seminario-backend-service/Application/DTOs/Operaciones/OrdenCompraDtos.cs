@@ -165,10 +165,10 @@ public class OrdenCompraQueryDto
     public DateTime? Hasta { get; set; }
     public string? Estado { get; set; }
     public string? ProveedorNit { get; set; }
-    public bool SoloMias { get; set; }
+    public bool? SoloMias { get; set; }
 
     /// <summary>Solo ordenes maestro-detalle (creadas por el SP). Excluye las filas del stress test, que no tienen lineas.</summary>
-    public bool ConDetalle { get; set; }
+    public bool? ConDetalle { get; set; }
 
     /// <summary>Busqueda exacta por numero de orden (ej. OC-2026-000001).</summary>
     [StringLength(30)]

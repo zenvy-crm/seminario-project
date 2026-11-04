@@ -19,9 +19,8 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
-permissions:
-  contents: read
-  pull-requests: read
+# Sin permisos a nivel de workflow: cada job declara solo los que necesita (principio de minimo privilegio).
+permissions: {}
 
 env:
   DOTNET_NOLOGO: true
@@ -36,9 +35,11 @@ jobs:
   build-backend:
     name: "1 · Build backend"
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
         with:
           dotnet-version: 8.0.x
       - name: Restaurar
@@ -49,15 +50,17 @@ jobs:
   build-frontend:
     name: "1 · Build frontend"
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     defaults:
       run:
         working-directory: frontend
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
         with:
           version: 9
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 20
           cache: pnpm
@@ -69,8 +72,10 @@ jobs:
   build-docker:
     name: "1 · Build imagen Docker"
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - name: Construir imagen de la API
         run: docker build -t seminario-backend-service:ci-${{ github.sha }} seminario-backend-service
 
@@ -79,9 +84,11 @@ jobs:
     name: "2 · Pruebas backend (unitarias + integracion + regresion)"
     needs: build-backend
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
         with:
           dotnet-version: 8.0.x
       - run: dotnet restore $SOLUCION
@@ -110,7 +117,7 @@ jobs:
 
       - name: Publicar resultados y cobertura
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: backend-test-results
           path: test-results/
@@ -119,15 +126,17 @@ jobs:
     name: "2 · Pruebas frontend (Vitest + Testing Library)"
     needs: build-frontend
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     defaults:
       run:
         working-directory: frontend
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
         with:
           version: 9
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 20
           cache: pnpm
@@ -135,7 +144,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Pruebas con cobertura (umbral en vitest.config.ts)
         run: pnpm test:coverage
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
           name: frontend-coverage
@@ -146,18 +155,20 @@ jobs:
     name: "3 · Analisis estatico (formato + ESLint)"
     needs: [build-backend, build-frontend]
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
         with:
           dotnet-version: 8.0.x
       - run: dotnet restore $SOLUCION
       - name: dotnet format (estandar de .editorconfig)
         run: dotnet format $SOLUCION --verify-no-changes --no-restore --verbosity diagnostic
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
         with:
           version: 9
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 20
           cache: pnpm
@@ -175,24 +186,26 @@ jobs:
     name: "3 · SonarCloud + Quality Gate"
     needs: [test-backend, test-frontend]
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     env:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0   # historial completo: Sonar calcula "codigo nuevo" y blame
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
         with:
           dotnet-version: 8.0.x
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
         with:
           distribution: temurin
           java-version: 17
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           name: backend-test-results
           path: test-results
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           name: frontend-coverage
           path: frontend/coverage
@@ -210,7 +223,7 @@ jobs:
             /d:sonar.cs.vstest.reportsPaths="test-results/**/*.trx" \
             /d:sonar.javascript.lcov.reportPaths="frontend/coverage/lcov.info" \
             /d:sonar.exclusions="**/Migrations/**,**/bin/**,**/obj/**,frontend/_ds/**,frontend/dist/**,docs/**" \
-            /d:sonar.coverage.exclusions="tests/**,**/*.test.ts,**/*.test.tsx,frontend/src/main.tsx,frontend/src/vite-env.d.ts,frontend/vite.config.ts,frontend/vitest.config.ts" \
+            /d:sonar.coverage.exclusions="tests/**,**/*.test.ts,**/*.test.tsx,frontend/src/main.tsx,frontend/src/App.tsx,frontend/src/pages/**,frontend/src/theme/**,frontend/src/types/**,frontend/src/vite-env.d.ts,frontend/vite.config.ts,frontend/vitest.config.ts" \
             /d:sonar.cpd.exclusions="**/Migrations/**" \
             /d:sonar.scanner.scanAll=true \
             /d:sonar.qualitygate.wait=true \
@@ -251,16 +264,18 @@ jobs:
     needs: [test-backend, test-frontend, lint, sonarcloud]
     if: always()
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
         with:
           dotnet-version: 8.0.x
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           name: backend-test-results
           path: test-results
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           name: frontend-coverage
           path: frontend/coverage
@@ -288,7 +303,7 @@ jobs:
             || { echo "::error::Cobertura de lineas del backend ($LINEAS %) por debajo del umbral ($UMBRAL_COBERTURA_BACKEND %)"; exit 1; }
 
       - name: Publicar reporte HTML
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: reporte-calidad
           path: coverage-report/

@@ -203,7 +203,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();
 
 // Expone la clase Program generada por los top-level statements para WebApplicationFactory (pruebas de integracion).
 public partial class Program { }
