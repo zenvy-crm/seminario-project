@@ -29,6 +29,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\seminario-backend-service\seminario-backend-service.csproj" />
   </ItemGroup>
 
