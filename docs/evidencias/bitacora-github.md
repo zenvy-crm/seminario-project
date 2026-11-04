@@ -1053,3 +1053,33 @@ $ git -c user.name='Alder Solis' -c user.email='alder.solis@bowpi.com' commit -q
 5a60764 docs: SQA Plan, matriz de pruebas, linea base, reporte de mejora, manual tecnico, README con badges
 ```
 
+### G65 — Fase 4 · Commit — reporte de mejora con el análisis final de SonarCloud (0 code smells)
+- Fecha/hora: 2026-11-03 23:39:32 (America/Guatemala)
+- Codigo de salida: 0
+```bash
+$ git add docs && git -c user.name='Alder Solis' -c user.email='alder.solis@bowpi.com' commit -q -m 'docs: reporte de mejora con el analisis final de SonarCloud' -m 'Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>' && git push -q 2>&1 | grep -v 'acknowledgments\|negotiation'; git log --oneline -1
+```
+```text
+546c94d docs: reporte de mejora con el analisis final de SonarCloud
+```
+
+### G66 — Fase 3 · Protección de la rama main (PR obligatorio + 8 checks requeridos)
+- Fecha/hora: 2026-11-03 23:39:44 (America/Guatemala)
+- Codigo de salida: 1
+```bash
+$ gh api -X PUT repos/zenvy-crm/seminario-project/branches/main/protection --input /tmp/proteccion.json --jq '{checks: .required_status_checks.contexts, strict: .required_status_checks.strict, pr_obligatorio: (.required_pull_request_reviews != null), admins: .enforce_admins.enabled, force_push: .allow_force_pushes.enabled}'
+```
+```text
+open /tmp/proteccion.json: no such file or directory
+```
+
+### G67 — Fase 3 · Protección de la rama main (PR obligatorio + 8 checks requeridos)
+- Fecha/hora: 2026-11-03 23:39:55 (America/Guatemala)
+- Codigo de salida: 1
+```bash
+$ gh api -X PUT repos/zenvy-crm/seminario-project/branches/main/protection --input /tmp/proteccion.json --jq '{checks: .required_status_checks.contexts, strict: .required_status_checks.strict, pr_obligatorio: (.required_pull_request_reviews != null), admins: .enforce_admins.enabled, force_push: .allow_force_pushes.enabled}'
+```
+```text
+{"message":"Write access to this GitHub API path is not permitted through this proxy.","documentation_url":"https://docs.anthropic.com/en/docs/claude-code/github-actions"}gh: Write access to this GitHub API path is not permitted through this proxy. (HTTP 403)
+```
+

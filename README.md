@@ -105,6 +105,7 @@ cd frontend && pnpm lint --max-warnings 0 && pnpm format:check && pnpm test:cove
 | [docs/Linea-Base-Calidad.md](docs/Linea-Base-Calidad.md) | Métricas del código antes de la intervención |
 | [docs/Reporte-Mejora.md](docs/Reporte-Mejora.md) | Comparativa antes/después, issues corregidos y deuda técnica pendiente |
 | [docs/Manual-Tecnico.md](docs/Manual-Tecnico.md) | Arquitectura del pipeline, decisiones técnicas, mantenimiento y solución de problemas |
+| [docs/Guion-Video.md](docs/Guion-Video.md) | Guion del video explicativo (4–5 min) |
 | [docs/README-backend.md](docs/README-backend.md) | Documentación funcional del backend (endpoints, SP, triggers, despliegue) |
 | [docs/evidencias/](docs/evidencias/) | Bitácora de cada comando ejecutado durante el proyecto |
 
