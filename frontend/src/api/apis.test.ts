@@ -13,19 +13,23 @@ const PDF = new Uint8Array([
   0xcf, 0xd3, 0x0a,
 ]);
 
+const crearEspias = () => ({
+  get: vi.spyOn(api, "get").mockResolvedValue({ data: "GET" }),
+  post: vi.spyOn(api, "post").mockResolvedValue({ data: "POST" }),
+  put: vi.spyOn(api, "put").mockResolvedValue({ data: "PUT" }),
+  patch: vi.spyOn(api, "patch").mockResolvedValue({ data: "PATCH" }),
+  del: vi.spyOn(api, "delete").mockResolvedValue({ data: "DELETE" }),
+});
+
 describe("capa de acceso a la API", () => {
-  let get: ReturnType<typeof vi.spyOn>;
-  let post: ReturnType<typeof vi.spyOn>;
-  let put: ReturnType<typeof vi.spyOn>;
-  let patch: ReturnType<typeof vi.spyOn>;
-  let del: ReturnType<typeof vi.spyOn>;
+  let get: ReturnType<typeof crearEspias>["get"];
+  let post: ReturnType<typeof crearEspias>["post"];
+  let put: ReturnType<typeof crearEspias>["put"];
+  let patch: ReturnType<typeof crearEspias>["patch"];
+  let del: ReturnType<typeof crearEspias>["del"];
 
   beforeEach(() => {
-    get = vi.spyOn(api, "get").mockResolvedValue({ data: "GET" });
-    post = vi.spyOn(api, "post").mockResolvedValue({ data: "POST" });
-    put = vi.spyOn(api, "put").mockResolvedValue({ data: "PUT" });
-    patch = vi.spyOn(api, "patch").mockResolvedValue({ data: "PATCH" });
-    del = vi.spyOn(api, "delete").mockResolvedValue({ data: "DELETE" });
+    ({ get, post, put, patch, del } = crearEspias());
   });
 
   it("FE-API-05 authApi llama a los endpoints de autenticacion", async () => {
