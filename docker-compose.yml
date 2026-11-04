@@ -1,0 +1,41 @@
+name: seminario-api
+services:
+  api:
+    # deploy.ps1 construye esta imagen en la maquina de desarrollo y la carga en la VM con
+    # "docker load": la VM solo ejecuta, no necesita internet ni el codigo fuente.
+    image: seminario-backend-service:latest
+    container_name: seminario-api
+    hostname: seminario-api
+    restart: unless-stopped
+    # Secretos y configuracion (connection strings, JWT, CORS). Ver api.env.example.
+    env_file:
+      - api.env
+    environment:
+      # Fijo aqui para que un ASPNETCORE_URLS heredado del .env local no rompa el puerto publicado.
+      ASPNETCORE_URLS: http://+:8080
+    ports:
+      - "0.0.0.0:${API_PORT:-5000}:8080"
+    volumes:
+      # Documentos subidos por los usuarios: sobreviven a recrear el contenedor.
+      - api_uploads:/app/uploads
+    # El healthcheck (GET /api/health) viene definido en el HEALTHCHECK de la imagen.
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512m
+        reservations:
+          memory: 256m
+    networks:
+      - db-infra-net
+
+networks:
+  # Red del stack db-infra (mssql-relational y mongo-nosql): el API se une a ella como
+  # un contenedor mas y resuelve las bases de datos por nombre, sin salir al host.
+  db-infra-net:
+    external: true
+    name: db-infra_db-infra-net
+
+volumes:
+  api_uploads:
+    name: seminario-api_uploads

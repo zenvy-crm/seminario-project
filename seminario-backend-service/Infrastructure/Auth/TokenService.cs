@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Seminario.Application.Interfaces;
 using Seminario.Domain.Entities;
+using Seminario.Domain.Enums;
 
 namespace Seminario.Infrastructure.Auth;
 
@@ -29,6 +30,8 @@ public class TokenService : ITokenService
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new Claim("username", user.Username),
             new Claim(ClaimTypes.Role, user.Role.Name),
+            // Nivel RBAC de la Fase 2 (1 Estandar, 2 Intermedio, 3 Administrador), derivado del rol.
+            new Claim("nivel", RoleName.NivelDe(user.Role.Name).ToString(), ClaimValueTypes.Integer32),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 

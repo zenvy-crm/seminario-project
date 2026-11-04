@@ -10,6 +10,13 @@ public class ApiException : Exception
         StatusCode = statusCode;
         Errors = errors ?? new List<string>();
     }
+
+    public ApiException(int statusCode, string message, Exception innerException, List<string>? errors = null)
+        : base(message, innerException)
+    {
+        StatusCode = statusCode;
+        Errors = errors ?? new List<string>();
+    }
 }
 
 public class NotFoundException : ApiException
@@ -20,6 +27,9 @@ public class NotFoundException : ApiException
 public class ConflictException : ApiException
 {
     public ConflictException(string message) : base(409, message) { }
+
+    /// <summary>Conserva la excepcion original (ej. DbUpdateConcurrencyException) para el log.</summary>
+    public ConflictException(string message, Exception innerException) : base(409, message, innerException) { }
 }
 
 public class ForbiddenException : ApiException

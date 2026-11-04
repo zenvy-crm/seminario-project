@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
+using Seminario.Api;
 using Seminario.Application.DTOs.Auth;
 using Seminario.Application.Interfaces;
 
@@ -46,6 +48,7 @@ public class AuthController : ControllerBase
 
     [AllowAnonymous]
     [HttpPost("login")]
+    [EnableRateLimiting(RateLimitPolicies.Auth)]
     public async Task<ActionResult<AuthResponseDto>> Login([FromBody] LoginRequestDto dto)
     {
         var result = await _authService.LoginAsync(dto);
@@ -55,6 +58,7 @@ public class AuthController : ControllerBase
 
     [AllowAnonymous]
     [HttpPost("mfa/verify")]
+    [EnableRateLimiting(RateLimitPolicies.Auth)]
     public async Task<ActionResult<AuthResponseDto>> VerifyMfa([FromBody] MfaVerifyRequestDto dto)
     {
         var result = await _authService.VerifyMfaAsync(dto);

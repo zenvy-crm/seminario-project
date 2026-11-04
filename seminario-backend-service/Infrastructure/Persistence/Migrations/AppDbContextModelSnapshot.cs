@@ -17,7 +17,7 @@ namespace seminario_backend_service.Infrastructure.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.29")
+                .HasAnnotation("ProductVersion", "8.0.30")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -63,6 +63,187 @@ namespace seminario_backend_service.Infrastructure.Persistence.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("MfaCodes", (string)null);
+                });
+
+            modelBuilder.Entity("Seminario.Domain.Entities.OrdenCompra", b =>
+                {
+                    b.Property<DateTime>("FechaEmision")
+                        .HasColumnType("datetime2(0)");
+
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BodegaDestino")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2(0)");
+
+                    b.Property<string>("Detalle")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<DateTime?>("FechaAnulacion")
+                        .HasColumnType("datetime2(0)");
+
+                    b.Property<string>("Moneda")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
+
+                    b.Property<decimal>("Monto")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("MotivoAnulacion")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("NumeroOrden")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("ProveedorNit")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("ProveedorNombre")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<byte[]>("RowVer")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UsuarioAnulaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("FechaEmision", "Id");
+
+                    b.HasIndex("Id")
+                        .HasDatabaseName("IX_Ordenes_Id");
+
+                    b.HasIndex("FechaEmision", "ProveedorNit")
+                        .HasDatabaseName("IX_Ordenes_Fecha_Proveedor");
+
+                    b.HasIndex("FechaEmision", "UserId")
+                        .HasDatabaseName("IX_Ordenes_Fecha_Usuario");
+
+                    b.ToTable("TB_Ordenes_Compra", null, t =>
+                        {
+                            t.HasTrigger("TR_OC_Encabezado_Anulacion");
+
+                            t.HasTrigger("TR_OC_Encabezado_NoDelete");
+                        });
+
+                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
+                });
+
+            modelBuilder.Entity("Seminario.Domain.Entities.OrdenCompraDetalle", b =>
+                {
+                    b.Property<DateTime>("FechaEmision")
+                        .HasColumnType("datetime2(0)");
+
+                    b.Property<Guid>("OrdenId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Linea")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Cantidad")
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<bool>("EstadoLinea")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("FechaBaja")
+                        .HasColumnType("datetime2(0)");
+
+                    b.Property<decimal>("Importe")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("decimal(18,2)")
+                        .HasComputedColumnSql("CAST(ROUND([Cantidad] * [PrecioUnitario], 2) AS decimal(18,2))", true);
+
+                    b.Property<string>("MotivoBaja")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<decimal>("PrecioUnitario")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<byte[]>("RowVer")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int?>("UsuarioBajaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("FechaEmision", "OrdenId", "Linea");
+
+                    b.ToTable("TB_Ordenes_Compra_Detalle", null, t =>
+                        {
+                            t.HasTrigger("TR_OC_Detalle_NoDelete");
+
+                            t.HasTrigger("TR_OC_Detalle_Presupuesto");
+
+                            t.HasCheckConstraint("CK_OC_Detalle_Cantidad", "[Cantidad] > 0");
+
+                            t.HasCheckConstraint("CK_OC_Detalle_Precio", "[PrecioUnitario] >= 0");
+                        });
+
+                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
+                });
+
+            modelBuilder.Entity("Seminario.Domain.Entities.PresupuestoBodega", b =>
+                {
+                    b.Property<short>("Anio")
+                        .HasColumnType("smallint");
+
+                    b.Property<string>("Bodega")
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<decimal>("MontoAsignado")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("MontoComprometido")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("MontoDisponible")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("decimal(18,2)")
+                        .HasComputedColumnSql("CAST([MontoAsignado] - [MontoComprometido] AS decimal(18,2))", true);
+
+                    b.Property<byte[]>("RowVer")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Anio", "Bodega");
+
+                    b.ToTable("TB_Presupuesto_Bodega", (string)null);
                 });
 
             modelBuilder.Entity("Seminario.Domain.Entities.RefreshToken", b =>
@@ -222,6 +403,12 @@ namespace seminario_backend_service.Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2(0)");
+
+                    b.Property<int?>("DeletedByUserId")
+                        .HasColumnType("int");
+
                     b.Property<string>("FileName")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -229,6 +416,16 @@ namespace seminario_backend_service.Infrastructure.Persistence.Migrations
 
                     b.Property<long>("FileSize")
                         .HasColumnType("bigint");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<string>("StoragePath")
                         .IsRequired()
@@ -247,7 +444,12 @@ namespace seminario_backend_service.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserDocuments", (string)null);
+                    b.ToTable("UserDocuments", null, t =>
+                        {
+                            t.HasTrigger("TR_UserDocuments_NoDelete");
+                        });
+
+                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
             modelBuilder.Entity("Seminario.Domain.Entities.MfaCode", b =>
@@ -259,6 +461,18 @@ namespace seminario_backend_service.Infrastructure.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Seminario.Domain.Entities.OrdenCompraDetalle", b =>
+                {
+                    b.HasOne("Seminario.Domain.Entities.OrdenCompra", "Orden")
+                        .WithMany("Lineas")
+                        .HasForeignKey("FechaEmision", "OrdenId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_OC_Detalle_Encabezado");
+
+                    b.Navigation("Orden");
                 });
 
             modelBuilder.Entity("Seminario.Domain.Entities.RefreshToken", b =>
@@ -288,10 +502,15 @@ namespace seminario_backend_service.Infrastructure.Persistence.Migrations
                     b.HasOne("Seminario.Domain.Entities.User", "User")
                         .WithMany("Documents")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Seminario.Domain.Entities.OrdenCompra", b =>
+                {
+                    b.Navigation("Lineas");
                 });
 
             modelBuilder.Entity("Seminario.Domain.Entities.Role", b =>

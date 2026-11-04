@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Identity;
 using Seminario.Application.Audit;
 using Seminario.Application.Common;
 using Seminario.Application.DTOs;
@@ -14,12 +13,13 @@ public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
     private readonly IAuditLogger _auditLogger;
-    private readonly PasswordHasher<User> _passwordHasher = new();
+    private readonly IPasswordHasher _passwordHasher;
 
-    public UserService(IUserRepository userRepository, IAuditLogger auditLogger)
+    public UserService(IUserRepository userRepository, IAuditLogger auditLogger, IPasswordHasher passwordHasher)
     {
         _userRepository = userRepository;
         _auditLogger = auditLogger;
+        _passwordHasher = passwordHasher;
     }
 
     public async Task<PagedResult<UserDto>> GetPagedAsync(UserQueryDto query)
@@ -76,7 +76,7 @@ public class UserService : IUserService
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
-        user.PasswordHash = _passwordHasher.HashPassword(user, dto.Password);
+        user.PasswordHash = _passwordHasher.Hash(dto.Password);
 
         await _userRepository.AddAsync(user);
         user.Role = role;

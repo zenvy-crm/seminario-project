@@ -106,6 +106,42 @@ public class FileStorageService : IFileStorageService
         return await File.ReadAllBytesAsync(fullPath);
     }
 
+    /// <summary>
+    /// Compensacion de una transaccion fallida: elimina el archivo que ya se habia
+    /// escrito en disco. No lanza si el archivo no existe ni si la ruta es invalida,
+    /// porque se invoca desde bloques catch donde ya hay una excepcion en curso.
+    /// </summary>
+    public void Delete(string storagePath)
+    {
+        if (string.IsNullOrWhiteSpace(storagePath))
+        {
+            return;
+        }
+
+        var fullPath = Path.GetFullPath(Path.Combine(_uploadsRoot, storagePath));
+
+        // Misma barrera contra path traversal que en ReadAsync.
+        if (!fullPath.StartsWith(Path.GetFullPath(_uploadsRoot), StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+
+        try
+        {
+            File.Delete(fullPath);
+        }
+        catch (IOException)
+        {
+            // El archivo quedaria huerfano, pero no se puede escalar el fallo:
+            // se perderia la excepcion original de la transaccion.
+        }
+        catch (UnauthorizedAccessException)
+        {
+        }
+    }
+
+
+
     private static bool MatchesFileSignature(byte[] content, string extension)
     {
         if (extension.Equals(".pdf", StringComparison.OrdinalIgnoreCase))
@@ -117,3 +153,5 @@ public class FileStorageService : IFileStorageService
         return content.Length >= 3 && content[0] == 0xFF && content[1] == 0xD8 && content[2] == 0xFF;
     }
 }
+
+

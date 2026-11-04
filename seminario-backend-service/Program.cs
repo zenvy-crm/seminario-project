@@ -1,8 +1,13 @@
 using System.Text;
+using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Seminario.Infrastructure.Health;
 using Microsoft.IdentityModel.Tokens;
+using Seminario.Api;
 using Seminario.Api.Middleware;
 using Seminario.Application.Common;
 using Seminario.Application.Interfaces;
@@ -77,9 +82,18 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.Configure<MongoSettings>(builder.Configuration.GetSection("MongoDB"));
+builder.Services.AddSingleton<IAuditStore, MongoAuditStore>();
 builder.Services.AddSingleton<AuditChannel>();
 builder.Services.AddSingleton<IAuditLogger>(sp => sp.GetRequiredService<AuditChannel>());
 builder.Services.AddHostedService<AuditBackgroundService>();
+
+// Patron Health Check: sondas reales a las dependencias, expuestas en GET /api/health.
+// SQL Server caido => Unhealthy (503); MongoDB caido => Degraded (la bitacora es asincrona).
+// MongoHealthCheck es singleton para reutilizar su cliente entre ejecuciones.
+builder.Services.AddSingleton<MongoHealthCheck>();
+builder.Services.AddHealthChecks()
+    .AddCheck<SqlServerHealthCheck>("sqlserver", failureStatus: HealthStatus.Unhealthy)
+    .AddCheck<MongoHealthCheck>("mongodb", failureStatus: HealthStatus.Degraded);
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
 var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>() ?? new JwtSettings();
@@ -126,7 +140,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             }
         };
     });
-builder.Services.AddAuthorization();
+// RBAC de la Fase 2: politicas NivelEstandar / NivelIntermedio / NivelAdministrador.
+builder.Services.AddRbacPolicies();
+
+builder.Services.AddAuthRateLimiting();
 
 var allowedOrigin = builder.Configuration["Cors:AllowedOrigin"] ?? "http://localhost:5173";
 builder.Services.AddCors(options =>
@@ -140,6 +157,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRefreshTokenStore, RefreshTokenStore>();
+builder.Services.AddSingleton<IPasswordHasher, BcryptPasswordHasher>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IMfaService, MfaService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -147,13 +165,19 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<IFileStorageService, FileStorageService>();
 builder.Services.AddScoped<IDocumentService, DocumentService>();
+builder.Services.AddScoped<IOrdenCompraService, OrdenCompraService>();
+builder.Services.AddScoped<IReporteService, ReporteService>();
+builder.Services.AddScoped<ISeedDataService, SeedDataService>();
 
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    await DbSeeder.SeedAsync(db);
+    var passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher>();
+    // Usuarios de demo (estandar / intermedio) solo en Development o con Seed:DemoUsers=true.
+    var sembrarUsuariosDemo = app.Environment.IsDevelopment() || app.Configuration.GetValue<bool>("Seed:DemoUsers");
+    await DbSeeder.SeedAsync(db, passwordHasher, sembrarUsuariosDemo);
 }
 
 // Configure the HTTP request pipeline.
@@ -171,6 +195,8 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseCors(CorsPolicyName);
+
+app.UseRateLimiter();
 
 app.UseAuthentication();
 app.UseAuthorization();

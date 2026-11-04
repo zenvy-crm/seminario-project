@@ -8,10 +8,11 @@ obj/
 .vs/
 
 ## Claude / editor local settings
-.claude/settings.local.json
+.claude/
 
 ## Entorno y secretos
 .env
+api.env
 appsettings.Development.local.json
 
 ## Archivos subidos por usuarios (documentos)

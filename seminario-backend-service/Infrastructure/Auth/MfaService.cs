@@ -10,10 +10,6 @@ using System.Security.Cryptography;
 
 namespace Seminario.Infrastructure.Auth;
 
-/// <summary>
-/// MFA simplificado: codigo temporal (OTP) de 6 digitos, sin dependencia de apps externas de TOTP.
-/// En este entorno de desarrollo el codigo se escribe al log en vez de enviarse por SMS/email.
-/// </summary>
 public class MfaService : IMfaService
 {
     private const int CodeExpirationMinutes = 5;

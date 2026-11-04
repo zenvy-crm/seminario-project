@@ -1,0 +1,22 @@
+# Artefactos de build locales
+bin/
+obj/
+
+# Secretos: la configuracion entra al contenedor por variables de entorno (api.env)
+.env
+.env.*
+appsettings.Development.local.json
+
+# Documentos subidos en local: en el contenedor viven en un volumen
+uploads/
+
+# Herramientas / editor
+.vs/
+.claude/
+graphify-out/
+*.user
+*.http
+*.slnx
+
+Dockerfile
+.dockerignore

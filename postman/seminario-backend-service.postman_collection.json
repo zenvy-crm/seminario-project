@@ -1,19 +1,75 @@
 {
   "info": {
     "name": "seminario-backend-service",
-    "description": "API REST del backend (auth JWT + MFA, usuarios, perfil, documentos, auditoria). Importar junto con el environment 'seminario-backend-service.postman_environment.json'.",
+    "description": "API REST del backend (auth JWT + MFA, usuarios, perfil, documentos, auditoria, Fase 2 - Orden de Compra, Fase 3 - Reportes). Importar junto con el environment 'seminario-backend-service.postman_environment.json'.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
     "type": "bearer",
-    "bearer": [{ "key": "token", "value": "{{accessToken}}", "type": "string" }]
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{accessToken}}",
+        "type": "string"
+      }
+    ]
   },
   "variable": [
-    { "key": "baseUrl", "value": "http://localhost:5000", "type": "string" },
-    { "key": "accessToken", "value": "", "type": "string" },
-    { "key": "mfaToken", "value": "", "type": "string" },
-    { "key": "userId", "value": "", "type": "string" },
-    { "key": "documentId", "value": "", "type": "string" }
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "mfaToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "documentId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "ordenId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "ordenFechaEmision",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "ordenRowVer",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "token_estandar",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "token_intermedio",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "token_admin",
+      "value": "",
+      "type": "string"
+    }
   ],
   "item": [
     {
@@ -22,25 +78,78 @@
         {
           "name": "Registro",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "POST",
             "header": [],
             "body": {
               "mode": "formdata",
               "formdata": [
-                { "key": "firstName", "value": "Juan", "type": "text" },
-                { "key": "lastName", "value": "Perez", "type": "text" },
-                { "key": "username", "value": "jperez", "type": "text" },
-                { "key": "email", "value": "jperez@example.com", "type": "text" },
-                { "key": "phone", "value": "88887777", "type": "text" },
-                { "key": "birthDate", "value": "1995-05-20", "type": "text" },
-                { "key": "identification", "value": "1234567890", "type": "text" },
-                { "key": "password", "value": "Password#123", "type": "text" },
-                { "key": "confirmPassword", "value": "Password#123", "type": "text" },
-                { "key": "document", "type": "file", "src": [], "disabled": true }
+                {
+                  "key": "firstName",
+                  "value": "Juan",
+                  "type": "text"
+                },
+                {
+                  "key": "lastName",
+                  "value": "Perez",
+                  "type": "text"
+                },
+                {
+                  "key": "username",
+                  "value": "jperez",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "jperez@example.com",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "88887777",
+                  "type": "text"
+                },
+                {
+                  "key": "birthDate",
+                  "value": "1995-05-20",
+                  "type": "text"
+                },
+                {
+                  "key": "identification",
+                  "value": "1234567890",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "Password#123",
+                  "type": "text"
+                },
+                {
+                  "key": "confirmPassword",
+                  "value": "Password#123",
+                  "type": "text"
+                },
+                {
+                  "key": "document",
+                  "type": "file",
+                  "src": [],
+                  "disabled": true
+                }
               ]
             },
-            "url": { "raw": "{{baseUrl}}/api/auth/register", "host": ["{{baseUrl}}"], "path": ["api", "auth", "register"] }
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
           }
         },
         {
@@ -61,14 +170,31 @@
             }
           ],
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"Admin#2026!\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] }
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
           }
         },
         {
@@ -83,6 +209,7 @@
                   "if (res.data && res.data.accessToken) {",
                   "    pm.collectionVariables.set('accessToken', res.data.accessToken);",
                   "    if (res.data.user && res.data.user.id) { pm.collectionVariables.set('userId', res.data.user.id); }",
+                  "    if (res.data.user && res.data.user.username) { pm.collectionVariables.set('token_' + String(res.data.user.username).toLowerCase(), res.data.accessToken); }",
                   "    console.log('accessToken guardado en la coleccion.');",
                   "}"
                 ]
@@ -90,35 +217,83 @@
             }
           ],
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"mfaToken\": \"{{mfaToken}}\",\n  \"code\": \"REEMPLAZAR_CON_EL_CODIGO_DE_LA_CONSOLA\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/api/auth/mfa/verify", "host": ["{{baseUrl}}"], "path": ["api", "auth", "mfa", "verify"] }
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/mfa/verify",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "mfa",
+                "verify"
+              ]
+            }
           }
         },
         {
           "name": "Refresh",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "POST",
             "header": [],
-            "body": { "mode": "raw", "raw": "" },
-            "url": { "raw": "{{baseUrl}}/api/auth/refresh", "host": ["{{baseUrl}}"], "path": ["api", "auth", "refresh"] },
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/refresh",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "refresh"
+              ]
+            },
             "description": "Usa la cookie httpOnly 'refreshToken' que Postman guarda automaticamente tras login/mfa/verify (cookie jar habilitado)."
           }
         },
         {
           "name": "Logout",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "POST",
             "header": [],
-            "body": { "mode": "raw", "raw": "" },
-            "url": { "raw": "{{baseUrl}}/api/auth/logout", "host": ["{{baseUrl}}"], "path": ["api", "auth", "logout"] }
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/logout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "logout"
+              ]
+            }
           }
         }
       ]
@@ -132,16 +307,42 @@
             "method": "GET",
             "url": {
               "raw": "{{baseUrl}}/api/users?search=&role=&status=&page=1&pageSize=20&sortBy=&sortDir=",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "users"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users"
+              ],
               "query": [
-                { "key": "search", "value": "" },
-                { "key": "role", "value": "" },
-                { "key": "status", "value": "" },
-                { "key": "page", "value": "1" },
-                { "key": "pageSize", "value": "20" },
-                { "key": "sortBy", "value": "" },
-                { "key": "sortDir", "value": "" }
+                {
+                  "key": "search",
+                  "value": ""
+                },
+                {
+                  "key": "role",
+                  "value": ""
+                },
+                {
+                  "key": "status",
+                  "value": ""
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "20"
+                },
+                {
+                  "key": "sortBy",
+                  "value": ""
+                },
+                {
+                  "key": "sortDir",
+                  "value": ""
+                }
               ]
             }
           }
@@ -150,49 +351,126 @@
           "name": "Obtener usuario por id",
           "request": {
             "method": "GET",
-            "url": { "raw": "{{baseUrl}}/api/users/{{userId}}", "host": ["{{baseUrl}}"], "path": ["api", "users", "{{userId}}"] }
+            "url": {
+              "raw": "{{baseUrl}}/api/users/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "{{userId}}"
+              ]
+            }
           }
         },
         {
           "name": "Crear usuario",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"firstName\": \"Maria\",\n  \"lastName\": \"Lopez\",\n  \"username\": \"mlopez\",\n  \"email\": \"mlopez@example.com\",\n  \"phone\": \"88886666\",\n  \"birthDate\": \"1990-01-15\",\n  \"identification\": \"0987654321\",\n  \"password\": \"Password#123\",\n  \"role\": \"USER\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/api/users", "host": ["{{baseUrl}}"], "path": ["api", "users"] }
+            "url": {
+              "raw": "{{baseUrl}}/api/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users"
+              ]
+            }
           }
         },
         {
           "name": "Actualizar usuario",
           "request": {
             "method": "PUT",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"phone\": \"88889999\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/api/users/{{userId}}", "host": ["{{baseUrl}}"], "path": ["api", "users", "{{userId}}"] }
+            "url": {
+              "raw": "{{baseUrl}}/api/users/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "{{userId}}"
+              ]
+            }
           }
         },
         {
           "name": "Cambiar estado",
           "request": {
             "method": "PATCH",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "body": { "mode": "raw", "raw": "{\n  \"status\": \"INACTIVE\"\n}" },
-            "url": { "raw": "{{baseUrl}}/api/users/{{userId}}/status", "host": ["{{baseUrl}}"], "path": ["api", "users", "{{userId}}", "status"] }
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"INACTIVE\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/{{userId}}/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "{{userId}}",
+                "status"
+              ]
+            }
           }
         },
         {
           "name": "Cambiar rol",
           "request": {
             "method": "PATCH",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "body": { "mode": "raw", "raw": "{\n  \"role\": \"ADMIN\"\n}" },
-            "url": { "raw": "{{baseUrl}}/api/users/{{userId}}/role", "host": ["{{baseUrl}}"], "path": ["api", "users", "{{userId}}", "role"] }
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"ADMIN\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/{{userId}}/role",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "{{userId}}",
+                "role"
+              ]
+            }
           }
         }
       ]
@@ -204,7 +482,18 @@
           "name": "Listar documentos de un usuario",
           "request": {
             "method": "GET",
-            "url": { "raw": "{{baseUrl}}/api/users/{{userId}}/documents", "host": ["{{baseUrl}}"], "path": ["api", "users", "{{userId}}", "documents"] }
+            "url": {
+              "raw": "{{baseUrl}}/api/users/{{userId}}/documents",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "{{userId}}",
+                "documents"
+              ]
+            }
           }
         },
         {
@@ -225,9 +514,26 @@
             "method": "POST",
             "body": {
               "mode": "formdata",
-              "formdata": [{ "key": "file", "type": "file", "src": [] }]
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                }
+              ]
             },
-            "url": { "raw": "{{baseUrl}}/api/users/{{userId}}/documents", "host": ["{{baseUrl}}"], "path": ["api", "users", "{{userId}}", "documents"] }
+            "url": {
+              "raw": "{{baseUrl}}/api/users/{{userId}}/documents",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "{{userId}}",
+                "documents"
+              ]
+            }
           }
         },
         {
@@ -236,9 +542,18 @@
             "method": "DELETE",
             "url": {
               "raw": "{{baseUrl}}/api/users/{{userId}}/documents/{{documentId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "users", "{{userId}}", "documents", "{{documentId}}"]
-            }
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "{{userId}}",
+                "documents",
+                "{{documentId}}"
+              ]
+            },
+            "description": "Soft Delete: marca el documento como eliminado (IsDeleted = 1, DeletedAt, DeletedByUserId del JWT). Responde 204; despues el documento ya no aparece en el listado y su descarga responde 404. La fila y el archivo se conservan como evidencia y se audita DOCUMENT_DELETED en MongoDB."
           }
         }
       ]
@@ -250,31 +565,920 @@
           "name": "Obtener mi perfil",
           "request": {
             "method": "GET",
-            "url": { "raw": "{{baseUrl}}/api/profile", "host": ["{{baseUrl}}"], "path": ["api", "profile"] }
+            "url": {
+              "raw": "{{baseUrl}}/api/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "profile"
+              ]
+            }
           }
         },
         {
           "name": "Actualizar mi perfil",
           "request": {
             "method": "PUT",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"phone\": \"88881111\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/api/profile", "host": ["{{baseUrl}}"], "path": ["api", "profile"] }
+            "url": {
+              "raw": "{{baseUrl}}/api/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "profile"
+              ]
+            }
           }
         },
         {
           "name": "Cambiar contrasena",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"currentPassword\": \"Admin#2026!\",\n  \"newPassword\": \"NuevaPassword#123\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/api/profile/change-password", "host": ["{{baseUrl}}"], "path": ["api", "profile", "change-password"] }
+            "url": {
+              "raw": "{{baseUrl}}/api/profile/change-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "profile",
+                "change-password"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Fase 2 - Orden de Compra",
+      "description": "SP transaccional, triggers de presupuesto, RBAC (USER = Estandar, INTERMEDIO = Intermedio, ADMIN = Administrador) y Soft Delete. Orden sugerido: login (Auth > Login o los de esta carpeta) + Auth > Verificar MFA, luego las peticiones en el orden en que aparecen. Ver la seccion Fase 2 del README.",
+      "item": [
+        {
+          "name": "Login estandar (USER)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.requiresMfa && res.data && res.data.mfaToken) {",
+                  "    pm.collectionVariables.set('mfaToken', res.data.mfaToken);",
+                  "    console.log('mfaToken guardado. Revisa la consola del backend para el codigo OTP y ejecuta Auth > Verificar MFA.');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"estandar\",\n  \"password\": \"Estandar#2026!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Rol Estandar (nivel 1). Despues ejecutar Auth > Verificar MFA con el OTP de la consola del backend. El login esta limitado a 5 peticiones por minuto por IP."
+          }
+        },
+        {
+          "name": "Login intermedio (INTERMEDIO)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.requiresMfa && res.data && res.data.mfaToken) {",
+                  "    pm.collectionVariables.set('mfaToken', res.data.mfaToken);",
+                  "    console.log('mfaToken guardado. Revisa la consola del backend para el codigo OTP y ejecuta Auth > Verificar MFA.');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"intermedio\",\n  \"password\": \"Intermedio#2026!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Rol Intermedio (nivel 2). Despues ejecutar Auth > Verificar MFA."
+          }
+        },
+        {
+          "name": "Listar presupuestos (capacidad)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/operaciones/presupuestos?anio=2026",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "operaciones",
+                "presupuestos"
+              ],
+              "query": [
+                {
+                  "key": "anio",
+                  "value": "2026"
+                }
+              ]
+            },
+            "description": "NivelEstandar. Asignado, comprometido y disponible por bodega y anio (TB_Presupuesto_Bodega)."
+          }
+        },
+        {
+          "name": "Crear orden con lineas (SP)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201 || pm.response.code === 200) {",
+                  "    const o = pm.response.json();",
+                  "    pm.collectionVariables.set('ordenId', o.id);",
+                  "    pm.collectionVariables.set('ordenFechaEmision', String(o.fechaEmision).slice(0, 10));",
+                  "    pm.collectionVariables.set('ordenRowVer', o.rowVer);",
+                  "    console.log('Orden ' + o.numeroOrden + ' guardada en ordenId (estado ' + o.estado + ', monto ' + o.monto + ').');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"proveedorNit\": \"77370471-1\",\n  \"proveedorNombre\": \"Ferreteria El Constructor S.A.\",\n  \"moneda\": \"GTQ\",\n  \"bodegaDestino\": \"GT-CENTRO\",\n  \"detalle\": \"Pedido de obra gris\",\n  \"lineas\": [\n    {\n      \"descripcion\": \"Cemento gris 42.5 kg\",\n      \"cantidad\": 120,\n      \"precioUnitario\": 86.5\n    },\n    {\n      \"descripcion\": \"Varilla corrugada 3/8\",\n      \"cantidad\": 250,\n      \"precioUnitario\": 41.25\n    },\n    {\n      \"descripcion\": \"Alambre de amarre (rollo)\",\n      \"cantidad\": 15,\n      \"precioUnitario\": 310.0\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/operaciones/ordenes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "operaciones",
+                "ordenes"
+              ]
+            },
+            "description": "NivelEstandar. Llama a dbo.SP_OrdenCompra_Crear: la orden nace CREADA y el monto lo calcula el trigger (suma de las lineas). fechaEmision es opcional (hoy UTC si no viene). Guarda ordenId, ordenFechaEmision y ordenRowVer en la coleccion."
+          }
+        },
+        {
+          "name": "Crear orden - rollback absoluto (linea invalida)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"proveedorNit\": \"78370471-2\",\n  \"proveedorNombre\": \"Distribuidora Rollback S.A.\",\n  \"moneda\": \"GTQ\",\n  \"bodegaDestino\": \"GT-CENTRO\",\n  \"lineas\": [\n    {\n      \"descripcion\": \"Linea valida 1\",\n      \"cantidad\": 10,\n      \"precioUnitario\": 25\n    },\n    {\n      \"descripcion\": \"Linea valida 2\",\n      \"cantidad\": 5,\n      \"precioUnitario\": 100\n    },\n    {\n      \"descripcion\": \"Linea invalida\",\n      \"cantidad\": 0,\n      \"precioUnitario\": 50\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/operaciones/ordenes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "operaciones",
+                "ordenes"
+              ]
+            },
+            "description": "Esperado: 422 (THROW 50011 'Linea 3 invalida'). El SP hace ROLLBACK: no queda encabezado ni lineas y el comprometido del presupuesto no cambia (verificar con Listar ordenes ?proveedorNit=78370471-2)."
+          }
+        },
+        {
+          "name": "Crear orden solo con monto (compatibilidad frontend)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"proveedorNit\": \"4589621-7\",\n  \"proveedorNombre\": \"Suministros del Norte S.A.\",\n  \"moneda\": \"GTQ\",\n  \"bodegaDestino\": \"GT-NORTE\",\n  \"monto\": 1250.0,\n  \"detalle\": \"Orden sin lineas: se crea una linea 'Monto global'\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/operaciones/ordenes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "operaciones",
+                "ordenes"
+              ]
+            },
+            "description": "Sin lineas y con monto > 0 el backend crea UNA linea 'Monto global' (cantidad 1, precio = monto). Si se envia 'estado' se ignora: siempre nace CREADA."
+          }
+        },
+        {
+          "name": "Listar ordenes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/operaciones/ordenes?page=1&pageSize=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "operaciones",
+                "ordenes"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "20"
+                },
+                {
+                  "key": "desde",
+                  "value": "2026-01-01",
+                  "disabled": true
+                },
+                {
+                  "key": "hasta",
+                  "value": "2026-12-31",
+                  "disabled": true
+                },
+                {
+                  "key": "estado",
+                  "value": "ANULADA",
+                  "disabled": true
+                },
+                {
+                  "key": "proveedorNit",
+                  "value": "77370471-1",
+                  "disabled": true
+                },
+                {
+                  "key": "soloMias",
+                  "value": "true",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "NivelEstandar. El rol USER nunca ve ordenes ANULADA (aunque pida estado=ANULADA); INTERMEDIO y ADMIN ven todo."
+          }
+        },
+        {
+          "name": "Obtener orden por id (con lineas)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/operaciones/ordenes/{{ordenId}}?fechaEmision={{ordenFechaEmision}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "operaciones",
+                "ordenes",
+                "{{ordenId}}"
+              ],
+              "query": [
+                {
+                  "key": "fechaEmision",
+                  "value": "{{ordenFechaEmision}}",
+                  "description": "Opcional: habilita la eliminacion de particiones"
+                }
+              ]
+            },
+            "description": "NivelEstandar. Encabezado + todas las lineas (las anuladas con estadoLinea=false) + presupuesto. Para el rol USER una orden ANULADA responde 404."
+          }
+        },
+        {
+          "name": "Anular linea (INTERMEDIO)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201 || pm.response.code === 200) {",
+                  "    const o = pm.response.json();",
+                  "    pm.collectionVariables.set('ordenId', o.id);",
+                  "    pm.collectionVariables.set('ordenFechaEmision', String(o.fechaEmision).slice(0, 10));",
+                  "    pm.collectionVariables.set('ordenRowVer', o.rowVer);",
+                  "    console.log('Orden ' + o.numeroOrden + ' guardada en ordenId (estado ' + o.estado + ', monto ' + o.monto + ').');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"motivo\": \"Proveedor sin existencia de cemento\",\n  \"estadoLinea\": 0\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/operaciones/ordenes/{{ordenId}}/lineas/1?fechaEmision={{ordenFechaEmision}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "operaciones",
+                "ordenes",
+                "{{ordenId}}",
+                "lineas",
+                "1"
+              ],
+              "query": [
+                {
+                  "key": "fechaEmision",
+                  "value": "{{ordenFechaEmision}}",
+                  "description": "Opcional: habilita la eliminacion de particiones"
+                }
+              ]
+            },
+            "description": "NivelIntermedio (INTERMEDIO o ADMIN; USER recibe 403). Soft delete de la linea: EstadoLinea = 0, UsuarioBajaId, FechaBaja, MotivoBaja. El trigger TR_OC_Detalle_Presupuesto recalcula el monto y devuelve la capacidad al presupuesto. Opcional: \"rowVer\" (base64 de la LINEA) para bloqueo optimista. Repetirlo responde 409. Actualiza ordenRowVer."
+          }
+        },
+        {
+          "name": "Anular orden - Soft Delete (ADMIN)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"motivo\": \"El proveedor no puede surtir\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/operaciones/ordenes/{{ordenId}}?fechaEmision={{ordenFechaEmision}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "operaciones",
+                "ordenes",
+                "{{ordenId}}"
+              ],
+              "query": [
+                {
+                  "key": "fechaEmision",
+                  "value": "{{ordenFechaEmision}}",
+                  "description": "Opcional: habilita la eliminacion de particiones"
+                }
+              ]
+            },
+            "description": "NivelAdministrador (USER e INTERMEDIO reciben 403). No borra: Estado = ANULADA + UsuarioAnulaId, FechaAnulacion, MotivoAnulacion. El trigger libera el presupuesto y un Task.Run guarda el documento ANULACION_MASTER en MongoDB sin hacer esperar la respuesta. Opcional: \"rowVer\": \"{{ordenRowVer}}\" (base64 de la ORDEN). Repetirlo responde 409."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Fase 3 - Reportes y Big Data",
+      "description": "Reportes calculados por SQL Server (RANK, SUM, COUNT) sobre las tablas particionadas cargadas con sql/04_fase3_big_data.sql. Orden sugerido: hacer login como cada rol (Fase 2 > Login estandar / Login intermedio, o Auth > Login como admin) y Auth > Verificar MFA: el script de Verificar MFA guarda accessToken y tambien token_<usuario> (token_estandar, token_intermedio, token_admin). Las peticiones de auditoria usan el token del rol indicado en su nombre. Ver la seccion Fase 3 del README.",
+      "item": [
+        {
+          "name": "Ranking de proveedores (RANK en SQL Server)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "const filas = pm.response.json();",
+                  "pm.test('posicionRanking empieza en 1 y no baja', () => {",
+                  "    pm.expect(filas.length).to.be.above(0);",
+                  "    pm.expect(filas[0].posicionRanking).to.eql(1);",
+                  "    for (let i = 1; i < filas.length; i++) { pm.expect(filas[i].posicionRanking).to.be.at.least(filas[i - 1].posicionRanking); }",
+                  "});",
+                  "pm.test('totalComprometido descendente', () => {",
+                  "    for (let i = 1; i < filas.length; i++) { pm.expect(filas[i].totalComprometido).to.be.at.most(filas[i - 1].totalComprometido); }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/reportes/ranking-proveedores?anio=2026&top=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reportes",
+                "ranking-proveedores"
+              ],
+              "query": [
+                {
+                  "key": "anio",
+                  "value": "2026",
+                  "description": "2024..2027 (default: anio actual)"
+                },
+                {
+                  "key": "top",
+                  "value": "20",
+                  "description": "1..100 (default 20)"
+                }
+              ]
+            },
+            "description": "NivelEstandar (cualquier rol autenticado). El RANK() OVER (ORDER BY SUM(Importe) DESC) lo calcula SQL Server (dbo.FN_Ranking_Proveedores); el backend no ordena en memoria. Suma solo lineas vigentes de ordenes no anuladas. anio fuera de 2024..2027 o top fuera de 1..100 responde 422."
+          }
+        },
+        {
+          "name": "Reporte de ordenes con rango de fechas",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "const r = pm.response.json();",
+                  "pm.test('items, total y montoTotal', () => {",
+                  "    pm.expect(r.items.length).to.be.above(0);",
+                  "    pm.expect(r.total).to.be.at.least(r.items.length);",
+                  "    pm.expect(r.montoTotal).to.be.a('number');",
+                  "});",
+                  "pm.test('orden FechaEmision descendente', () => {",
+                  "    for (let i = 1; i < r.items.length; i++) { pm.expect(r.items[i].fechaEmision <= r.items[i - 1].fechaEmision).to.be.true; }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/reportes/ordenes?fechaDesde=2026-01-01&fechaHasta=2026-03-31&proveedorNit=&estado=&bodega=&page=1&pageSize=50",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reportes",
+                "ordenes"
+              ],
+              "query": [
+                {
+                  "key": "fechaDesde",
+                  "value": "2026-01-01",
+                  "description": "Obligatoria (columna de particion)"
+                },
+                {
+                  "key": "fechaHasta",
+                  "value": "2026-03-31",
+                  "description": "Obligatoria (rango maximo 366 dias)"
+                },
+                {
+                  "key": "proveedorNit",
+                  "value": "",
+                  "description": "Opcional, exacto"
+                },
+                {
+                  "key": "estado",
+                  "value": "",
+                  "description": "Opcional: CREADA, EMITIDA, RECIBIDA, PAGADA, ANULADA"
+                },
+                {
+                  "key": "bodega",
+                  "value": "",
+                  "description": "Opcional, exacto"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "50",
+                  "description": "Maximo 200 (default 50)"
+                }
+              ]
+            },
+            "description": "NivelEstandar. Reporte transaccional: filtros, paginacion, SUM y COUNT los resuelve SQL Server. fechaDesde y fechaHasta son obligatorias porque son la clave de particion: con ellas SQL Server descarta las particiones fuera del rango. montoTotal es la suma de TODAS las filas que cumplen los filtros, no solo de la pagina. El rol Estandar nunca ve ordenes ANULADA."
+          }
+        },
+        {
+          "name": "Reporte de ordenes SIN fechas (espera 400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('400 Bad Request', () => pm.response.to.have.status(400));",
+                  "const r = pm.response.json();",
+                  "pm.test('mensaje del rango de fechas obligatorio', () => {",
+                  "    pm.expect(r.success).to.eql(false);",
+                  "    pm.expect(r.statusCode).to.eql(400);",
+                  "    pm.expect(r.message).to.eql('Debe indicar el rango de fechas (desde y hasta) para ejecutar el reporte.');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/reportes/ordenes?page=1&pageSize=50",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reportes",
+                "ordenes"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "50"
+                }
+              ]
+            },
+            "description": "Sin fechaDesde y fechaHasta el reporte se rechaza con 400: sin la clave de particion SQL Server recorreria toda la tabla. Tambien responde 400 si fechaDesde > fechaHasta o el rango excede 366 dias."
+          }
+        },
+        {
+          "name": "Auditoria soft delete - ordenes (ADMIN, espera 200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK (ADMIN)', () => pm.response.to.have.status(200));",
+                  "const r = pm.response.json();",
+                  "pm.test('resumen y filas con traza de auditoria', () => {",
+                  "    pm.expect(r.resumen.ordenes).to.be.a('number');",
+                  "    pm.expect(r.resumen.lineas).to.be.a('number');",
+                  "    pm.expect(r.resumen.documentos).to.be.a('number');",
+                  "    r.items.forEach(i => { pm.expect(i.fechaBaja).to.be.a('string'); pm.expect(i.usuarioBajaId).to.not.be.null; });",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/reportes/auditoria/soft-delete?tipo=ordenes&fechaDesde=&fechaHasta=&page=1&pageSize=50",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reportes",
+                "auditoria",
+                "soft-delete"
+              ],
+              "query": [
+                {
+                  "key": "tipo",
+                  "value": "ordenes",
+                  "description": "ordenes (default), lineas o documentos"
+                },
+                {
+                  "key": "fechaDesde",
+                  "value": "",
+                  "description": "Opcional, sobre la fecha de la baja"
+                },
+                {
+                  "key": "fechaHasta",
+                  "value": ""
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "50",
+                  "description": "Maximo 200"
+                }
+              ]
+            },
+            "description": "NivelAdministrador. Solo ordenes con Estado = ANULADA que tengan traza (FechaAnulacion). Incluye el username de quien anulo. Usa token_admin (Auth > Login como admin + Verificar MFA). resumen trae los conteos de ordenes, lineas y documentos sin importar el tipo pedido.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_admin}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Auditoria soft delete - lineas (ADMIN, espera 200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK (ADMIN)', () => pm.response.to.have.status(200));",
+                  "const r = pm.response.json();",
+                  "pm.test('resumen y filas con traza de auditoria', () => {",
+                  "    pm.expect(r.resumen.ordenes).to.be.a('number');",
+                  "    pm.expect(r.resumen.lineas).to.be.a('number');",
+                  "    pm.expect(r.resumen.documentos).to.be.a('number');",
+                  "    r.items.forEach(i => { pm.expect(i.fechaBaja).to.be.a('string'); pm.expect(i.usuarioBajaId).to.not.be.null; });",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/reportes/auditoria/soft-delete?tipo=lineas&page=1&pageSize=50",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reportes",
+                "auditoria",
+                "soft-delete"
+              ],
+              "query": [
+                {
+                  "key": "tipo",
+                  "value": "lineas"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "50"
+                }
+              ]
+            },
+            "description": "NivelAdministrador. Lineas con EstadoLinea = 0 y FechaBaja. detalle = 'Linea N: descripcion'.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_admin}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Auditoria soft delete con token ESTANDAR (espera 403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('403 Forbidden (solo Administrador)', () => pm.response.to.have.status(403));",
+                  "const r = pm.response.json();",
+                  "pm.test('cuerpo de error estandar', () => {",
+                  "    pm.expect(r.success).to.eql(false);",
+                  "    pm.expect(r.statusCode).to.eql(403);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/reportes/auditoria/soft-delete?tipo=ordenes&fechaDesde=&fechaHasta=&page=1&pageSize=50",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reportes",
+                "auditoria",
+                "soft-delete"
+              ],
+              "query": [
+                {
+                  "key": "tipo",
+                  "value": "ordenes",
+                  "description": "ordenes (default), lineas o documentos"
+                },
+                {
+                  "key": "fechaDesde",
+                  "value": "",
+                  "description": "Opcional, sobre la fecha de la baja"
+                },
+                {
+                  "key": "fechaHasta",
+                  "value": ""
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "50",
+                  "description": "Maximo 200"
+                }
+              ]
+            },
+            "description": "El rol Estandar no puede ver la auditoria: la politica NivelAdministrador responde 403 con el JSON estandar. Usa token_estandar (Fase 2 > Login estandar + Verificar MFA).",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_estandar}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Auditoria soft delete con token INTERMEDIO (espera 403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('403 Forbidden (solo Administrador)', () => pm.response.to.have.status(403));",
+                  "const r = pm.response.json();",
+                  "pm.test('cuerpo de error estandar', () => {",
+                  "    pm.expect(r.success).to.eql(false);",
+                  "    pm.expect(r.statusCode).to.eql(403);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/reportes/auditoria/soft-delete?tipo=ordenes&fechaDesde=&fechaHasta=&page=1&pageSize=50",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reportes",
+                "auditoria",
+                "soft-delete"
+              ],
+              "query": [
+                {
+                  "key": "tipo",
+                  "value": "ordenes",
+                  "description": "ordenes (default), lineas o documentos"
+                },
+                {
+                  "key": "fechaDesde",
+                  "value": "",
+                  "description": "Opcional, sobre la fecha de la baja"
+                },
+                {
+                  "key": "fechaHasta",
+                  "value": ""
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "50",
+                  "description": "Maximo 200"
+                }
+              ]
+            },
+            "description": "El rol Intermedio tampoco: solo el Administrador. Usa token_intermedio (Fase 2 > Login intermedio + Verificar MFA).",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_intermedio}}",
+                  "type": "string"
+                }
+              ]
+            }
           }
         }
       ]

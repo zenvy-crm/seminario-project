@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Identity;
 using Seminario.Application.Audit;
 using Seminario.Application.Common;
 using Seminario.Application.DTOs;
@@ -13,12 +12,13 @@ public class ProfileService : IProfileService
 {
     private readonly IUserRepository _userRepository;
     private readonly IAuditLogger _auditLogger;
-    private readonly PasswordHasher<User> _passwordHasher = new();
+    private readonly IPasswordHasher _passwordHasher;
 
-    public ProfileService(IUserRepository userRepository, IAuditLogger auditLogger)
+    public ProfileService(IUserRepository userRepository, IAuditLogger auditLogger, IPasswordHasher passwordHasher)
     {
         _userRepository = userRepository;
         _auditLogger = auditLogger;
+        _passwordHasher = passwordHasher;
     }
 
     public async Task<UserDto> GetAsync(int userId)
@@ -100,13 +100,13 @@ public class ProfileService : IProfileService
         var user = await _userRepository.GetByIdAsync(userId)
             ?? throw new NotFoundException("El usuario no existe");
 
-        var verification = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, dto.CurrentPassword);
-        if (verification == PasswordVerificationResult.Failed)
+        var verification = _passwordHasher.Verify(dto.CurrentPassword, user.PasswordHash);
+        if (verification == PasswordCheck.Failed)
         {
             throw new UnauthorizedApiException("La contrasena actual es incorrecta");
         }
 
-        user.PasswordHash = _passwordHasher.HashPassword(user, dto.NewPassword);
+        user.PasswordHash = _passwordHasher.Hash(dto.NewPassword);
         user.UpdatedAt = DateTime.UtcNow;
         await _userRepository.SaveChangesAsync();
 

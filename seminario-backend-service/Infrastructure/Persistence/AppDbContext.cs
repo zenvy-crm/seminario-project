@@ -12,6 +12,9 @@ public class AppDbContext : DbContext
     public DbSet<UserDocument> UserDocuments => Set<UserDocument>();
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
     public DbSet<MfaCode> MfaCodes => Set<MfaCode>();
+    public DbSet<OrdenCompra> OrdenesCompra => Set<OrdenCompra>();
+    public DbSet<OrdenCompraDetalle> OrdenesCompraDetalle => Set<OrdenCompraDetalle>();
+    public DbSet<PresupuestoBodega> PresupuestosBodega => Set<PresupuestoBodega>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

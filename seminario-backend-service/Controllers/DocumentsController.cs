@@ -42,11 +42,14 @@ public class DocumentsController : ControllerBase
         return File(file.Content, file.ContentType);
     }
 
+    /// <summary>
+    /// Soft Delete: marca el documento como eliminado; la fila y el archivo se conservan.
+    /// </summary>
     [HttpDelete("{documentId:int}")]
     public async Task<IActionResult> Delete(int userId, int documentId)
     {
         EnsureSelfOrAdmin(userId);
-        await _documentService.DeleteAsync(userId, documentId);
+        await _documentService.DeleteAsync(userId, documentId, User.GetUserId());
         return NoContent();
     }
 

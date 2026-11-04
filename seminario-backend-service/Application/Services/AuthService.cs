@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Identity;
 using Seminario.Application.Audit;
 using Seminario.Application.Common;
 using Seminario.Application.DTOs.Auth;
@@ -18,20 +17,22 @@ public class AuthService : IAuthService
     private readonly ITokenService _tokenService;
     private readonly IMfaService _mfaService;
     private readonly IAuditLogger _auditLogger;
-    private readonly PasswordHasher<User> _passwordHasher = new();
+    private readonly IPasswordHasher _passwordHasher;
 
     public AuthService(
         IUserRepository userRepository,
         IRefreshTokenStore refreshTokenStore,
         ITokenService tokenService,
         IMfaService mfaService,
-        IAuditLogger auditLogger)
+        IAuditLogger auditLogger,
+        IPasswordHasher passwordHasher)
     {
         _userRepository = userRepository;
         _refreshTokenStore = refreshTokenStore;
         _tokenService = tokenService;
         _mfaService = mfaService;
         _auditLogger = auditLogger;
+        _passwordHasher = passwordHasher;
     }
 
     public async Task<(AuthResponseDto Response, int UserId)> RegisterAsync(RegisterRequestDto dto)
@@ -63,7 +64,7 @@ public class AuthService : IAuthService
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
-        user.PasswordHash = _passwordHasher.HashPassword(user, dto.Password);
+        user.PasswordHash = _passwordHasher.Hash(dto.Password);
 
         await _userRepository.AddAsync(user);
 
@@ -146,8 +147,8 @@ public class AuthService : IAuthService
             });
         }
 
-        var verification = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, dto.Password);
-        if (verification == PasswordVerificationResult.Failed)
+        var verification = _passwordHasher.Verify(dto.Password, user.PasswordHash);
+        if (verification == PasswordCheck.Failed)
         {
             user.FailedLoginAttempts++;
 
@@ -182,9 +183,35 @@ public class AuthService : IAuthService
             throw new UnauthorizedApiException("Usuario o contrasena invalidos");
         }
 
+        var needsSave = false;
+
         if (user.FailedLoginAttempts > 0)
         {
             user.FailedLoginAttempts = 0;
+            needsSave = true;
+        }
+
+        // Migracion transparente: el hash heredado (PBKDF2) se regenera con BCrypt
+        // usando la contrasena que el usuario acaba de escribir correctamente.
+        if (verification == PasswordCheck.NeedsRehash)
+        {
+            user.PasswordHash = _passwordHasher.Hash(dto.Password);
+            user.UpdatedAt = DateTime.UtcNow;
+            needsSave = true;
+
+            _auditLogger.Enqueue(new AuditEvent
+            {
+                EventType = AuditEventTypes.PasswordRehashed,
+                Entity = "User",
+                EntityId = user.Id.ToString(),
+                UserId = user.Id,
+                Username = user.Username,
+                After = new { algorithm = "bcrypt" }
+            });
+        }
+
+        if (needsSave)
+        {
             await _userRepository.SaveChangesAsync();
         }
 

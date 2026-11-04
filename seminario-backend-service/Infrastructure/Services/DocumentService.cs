@@ -1,3 +1,4 @@
+using System.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Seminario.Application.Audit;
@@ -22,6 +23,14 @@ public class DocumentService : IDocumentService
         _auditLogger = auditLogger;
     }
 
+    /// <summary>
+    /// Sube un documento dentro de una transaccion explicita.
+    ///
+    /// La operacion mezcla una escritura en disco con una escritura en la base, asi que
+    /// SaveChangesAsync por si solo no alcanza: si la fila falla, el archivo quedaria
+    /// huerfano. El catch compensa borrandolo; el finally encola la auditoria, que al
+    /// ser una escritura en memoria no puede tumbar la transaccion.
+    /// </summary>
     public async Task<DocumentDto> UploadAsync(int userId, IFormFile file)
     {
         var userExists = await _db.Users.AnyAsync(u => u.Id == userId);
@@ -30,47 +39,106 @@ public class DocumentService : IDocumentService
             throw new NotFoundException("El usuario no existe");
         }
 
-        StoredFile stored;
-        try
+        // Cuando se usa transaccion explicita, EF exige que el bloque completo viva dentro
+        // de ExecuteAsync para que un reintento rehaga la transaccion entera.
+        // Hoy Program.cs registra UseSqlServer sin EnableRetryOnFailure, asi que esta es la
+        // estrategia no reintentante y el bloque se ejecuta una sola vez. El envoltorio queda
+        // para poder activar los reintentos sin reescribir el metodo.
+        var strategy = _db.Database.CreateExecutionStrategy();
+
+        return await strategy.ExecuteAsync(async () =>
         {
-            stored = await _fileStorage.ValidateAndStoreAsync(file, userId);
-        }
-        catch (ApiException)
-        {
-            _auditLogger.Enqueue(new AuditEvent
+            await using var tx = await _db.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted);
+
+            StoredFile? stored = null;
+            UserDocument? document = null;
+            AuditEvent? auditEvent = null;
+
+            try
             {
-                EventType = AuditEventTypes.DocumentRejected,
-                Entity = "UserDocument",
-                UserId = userId,
-                After = new { file.FileName, file.ContentType, file.Length }
-            });
-            throw;
+                try
+                {
+                    stored = await _fileStorage.ValidateAndStoreAsync(file, userId);
+                }
+                catch (ApiException)
+                {
+                    // Archivo rechazado por las validaciones: se audita el intento y se
+                    // propaga. No hay nada que compensar porque no se escribio nada.
+                    auditEvent = new AuditEvent
+                    {
+                        EventType = AuditEventTypes.DocumentRejected,
+                        Entity = "UserDocument",
+                        UserId = userId,
+                        After = new { file.FileName, file.ContentType, file.Length }
+                    };
+                    throw;
+                }
+
+                document = new UserDocument
+                {
+                    UserId = userId,
+                    FileName = stored.OriginalFileName,
+                    StoredFileName = stored.StoredFileName,
+                    ContentType = stored.ContentType,
+                    FileSize = stored.Size,
+                    StoragePath = stored.StoragePath,
+                    CreatedAt = DateTime.UtcNow
+                };
+
+                _db.UserDocuments.Add(document);
+                await _db.SaveChangesAsync();
+
+                await tx.CommitAsync();   // punto de durabilidad: a partir de aqui la fila es ACID
+
+                auditEvent = new AuditEvent
+                {
+                    EventType = AuditEventTypes.DocumentUploaded,
+                    Entity = "UserDocument",
+                    EntityId = document.Id.ToString(),
+                    UserId = userId,
+                    After = new { document.FileName, document.ContentType, document.FileSize }
+                };
+
+                return ToDto(document);
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                // Otro proceso modifico o elimino la fila primero (rowversion no coincide).
+                await RollbackYCompensarAsync(tx, stored);
+                throw new ConflictException("El documento fue modificado por otro usuario. Vuelva a intentarlo.", ex);
+            }
+            catch (Exception)
+            {
+                await RollbackYCompensarAsync(tx, stored);
+                throw;   // el middleware global lo traduce a la respuesta HTTP
+            }
+            finally
+            {
+                // Encolar SIEMPRE: es una escritura en memoria, sin E/S, de modo que ni
+                // retrasa la respuesta ni puede provocar el fallo de la transaccion.
+                if (auditEvent is not null)
+                {
+                    _auditLogger.Enqueue(auditEvent);
+                }
+            }
+        });
+    }
+
+    /// <summary>Deshace la transaccion y borra el archivo ya escrito en disco.</summary>
+    private async Task RollbackYCompensarAsync(
+        Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction tx,
+        StoredFile? stored)
+    {
+        await tx.RollbackAsync();
+
+        if (stored is not null)
+        {
+            _fileStorage.Delete(stored.StoragePath);
         }
 
-        var document = new UserDocument
-        {
-            UserId = userId,
-            FileName = stored.OriginalFileName,
-            StoredFileName = stored.StoredFileName,
-            ContentType = stored.ContentType,
-            FileSize = stored.Size,
-            StoragePath = stored.StoragePath,
-            CreatedAt = DateTime.UtcNow
-        };
-
-        _db.UserDocuments.Add(document);
-        await _db.SaveChangesAsync();
-
-        _auditLogger.Enqueue(new AuditEvent
-        {
-            EventType = AuditEventTypes.DocumentUploaded,
-            Entity = "UserDocument",
-            EntityId = document.Id.ToString(),
-            UserId = userId,
-            After = new { document.FileName, document.ContentType, document.FileSize }
-        });
-
-        return ToDto(document);
+        // El DbContext queda con la entidad en estado Added tras el rollback: hay que
+        // limpiarlo para que un reintento de la estrategia no la reenvie duplicada.
+        _db.ChangeTracker.Clear();
     }
 
     public async Task<List<DocumentDto>> GetByUserIdAsync(int userId)
@@ -92,21 +160,63 @@ public class DocumentService : IDocumentService
         return new DownloadedFile(content, document.ContentType, document.FileName);
     }
 
-    public async Task DeleteAsync(int userId, int documentId)
+    /// <summary>
+    /// Soft Delete: marca la fila como eliminada (UPDATE, nunca DELETE). El filtro global de EF
+    /// la oculta del listado, de la descarga y del perfil del usuario. El archivo en disco se
+    /// conserva: es la evidencia de lo que el proveedor entrego.
+    /// </summary>
+    public async Task DeleteAsync(int userId, int documentId, int actorUserId)
     {
         var document = await _db.UserDocuments.FirstOrDefaultAsync(d => d.Id == documentId && d.UserId == userId)
             ?? throw new NotFoundException("El documento no existe");
 
-        _db.UserDocuments.Remove(document);
-        await _db.SaveChangesAsync();
+        var strategy = _db.Database.CreateExecutionStrategy();
 
-        _auditLogger.Enqueue(new AuditEvent
+        await strategy.ExecuteAsync(async () =>
         {
-            EventType = AuditEventTypes.DocumentDeleted,
-            Entity = "UserDocument",
-            EntityId = documentId.ToString(),
-            UserId = userId,
-            Before = new { document.FileName, document.ContentType }
+            await using var tx = await _db.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted);
+            AuditEvent? auditEvent = null;
+
+            try
+            {
+                document.IsDeleted = true;
+                document.DeletedAt = DateTime.UtcNow;
+                document.DeletedByUserId = actorUserId;
+
+                // RowVersion va en el WHERE del UPDATE: si otra peticion ya lo elimino, salta la
+                // DbUpdateConcurrencyException de abajo en lugar de pisar el cambio.
+                await _db.SaveChangesAsync();
+                await tx.CommitAsync();
+
+                auditEvent = new AuditEvent
+                {
+                    EventType = AuditEventTypes.DocumentDeleted,
+                    Entity = "UserDocument",
+                    EntityId = documentId.ToString(),
+                    UserId = userId,
+                    Before = new { document.FileName, document.ContentType, IsDeleted = false },
+                    After = new { IsDeleted = true, document.DeletedAt, document.DeletedByUserId }
+                };
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                await tx.RollbackAsync();
+                _db.ChangeTracker.Clear();
+                throw new ConflictException("El documento ya fue eliminado o modificado por otro usuario.", ex);
+            }
+            catch (Exception)
+            {
+                await tx.RollbackAsync();
+                _db.ChangeTracker.Clear();
+                throw;
+            }
+            finally
+            {
+                if (auditEvent is not null)
+                {
+                    _auditLogger.Enqueue(auditEvent);
+                }
+            }
         });
     }
 

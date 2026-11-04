@@ -1,23 +1,19 @@
-using Microsoft.Extensions.Options;
-using MongoDB.Driver;
+using Seminario.Application.Interfaces;
 
 namespace Seminario.Infrastructure.MongoDB;
 
+/// <summary>Drena el canal en memoria de auditoria y escribe cada evento en MongoDB.</summary>
 public class AuditBackgroundService : BackgroundService
 {
     private readonly AuditChannel _channel;
-    private readonly IMongoCollection<AuditLogDocument> _collection;
+    private readonly IAuditStore _store;
     private readonly ILogger<AuditBackgroundService> _logger;
 
-    public AuditBackgroundService(AuditChannel channel, IOptions<MongoSettings> mongoOptions, ILogger<AuditBackgroundService> logger)
+    public AuditBackgroundService(AuditChannel channel, IAuditStore store, ILogger<AuditBackgroundService> logger)
     {
         _channel = channel;
+        _store = store;
         _logger = logger;
-
-        var settings = mongoOptions.Value;
-        var client = new MongoClient(settings.ConnectionString);
-        var database = client.GetDatabase(settings.DatabaseName);
-        _collection = database.GetCollection<AuditLogDocument>(settings.AuditCollection);
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -26,27 +22,10 @@ public class AuditBackgroundService : BackgroundService
         {
             try
             {
-                var document = new AuditLogDocument
-                {
-                    EventType = evt.EventType,
-                    Entity = evt.Entity,
-                    EntityId = evt.EntityId,
-                    UserId = evt.UserId,
-                    Username = evt.Username,
-                    IpAddress = evt.IpAddress,
-                    ActorUserId = evt.ActorUserId,
-                    ActorUsername = evt.ActorUsername,
-                    Timestamp = evt.Timestamp,
-                    Changes = (evt.Before is null && evt.After is null)
-                        ? null
-                        : new AuditChanges { Before = evt.Before, After = evt.After }
-                };
-
-                await _collection.InsertOneAsync(document, cancellationToken: stoppingToken);
+                await _store.InsertAsync(evt, stoppingToken);
             }
             catch (Exception ex) when (ex is not OperationCanceledException)
             {
-                // Una falla temporal de MongoDB no debe afectar la operacion principal ya finalizada.
                 _logger.LogError(ex, "No se pudo escribir el evento de auditoria {EventType} en MongoDB", evt.EventType);
             }
         }
