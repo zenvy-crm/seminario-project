@@ -76,7 +76,7 @@ public class TokenServiceTests
         Assert.Contains("seminario-tests-clients", jwt.Audiences);
         Assert.Equal("15", jwt.Subject);
         Assert.Equal("inter", jwt.Claims.First(c => c.Type == "username").Value);
-        Assert.Equal(RoleName.Intermedio, jwt.Claims.First(c => c.Type == "role").Value);
+        Assert.Equal(RoleName.Intermedio, jwt.Claims.First(c => c.Type is "role" or System.Security.Claims.ClaimTypes.Role).Value);
         Assert.Equal("2", jwt.Claims.First(c => c.Type == "nivel").Value);
         Assert.InRange(expira, DateTime.UtcNow.AddMinutes(14), DateTime.UtcNow.AddMinutes(16));
         Assert.Equal(3, _sut.RefreshTokenExpirationDays);

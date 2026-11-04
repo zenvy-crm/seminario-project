@@ -127,7 +127,10 @@ public class OrdenesCompraTests
 
         var sinLineas = await estandar.PostAsJsonAsync("/api/operaciones/ordenes", new
         {
-            proveedorNit = NitUnico(), proveedorNombre = "Proveedor", moneda = "GTQ", bodegaDestino = Bodega
+            proveedorNit = NitUnico(),
+            proveedorNombre = "Proveedor",
+            moneda = "GTQ",
+            bodegaDestino = Bodega
         });
         Assert.Equal(HttpStatusCode.UnprocessableEntity, sinLineas.StatusCode);
 

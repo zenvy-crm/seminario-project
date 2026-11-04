@@ -188,7 +188,11 @@ public class UserMappingsTests
         var user = TestData.Usuario(id: 4);
         user.Documents.Add(new Seminario.Domain.Entities.UserDocument
         {
-            Id = 9, UserId = 4, FileName = "dpi.pdf", ContentType = "application/pdf", FileSize = 10
+            Id = 9,
+            UserId = 4,
+            FileName = "dpi.pdf",
+            ContentType = "application/pdf",
+            FileSize = 10
         });
 
         var dto = user.ToDto();
