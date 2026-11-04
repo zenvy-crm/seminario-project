@@ -7,6 +7,17 @@
     <RootNamespace>seminario_backend_service</RootNamespace>
   </PropertyGroup>
 
+  <!-- Analisis estatico (SQA Plan, seccion 4): analizadores de calidad de .NET + estilo de .editorconfig. -->
+  <PropertyGroup>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+  </PropertyGroup>
+
+  <!-- Quality gate de compilacion: en el pipeline cualquier advertencia rompe el build. -->
+  <PropertyGroup Condition="'$(ContinuousIntegrationBuild)' == 'true'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.2.0" />
     <PackageReference Include="DotNetEnv" Version="3.2.0" />

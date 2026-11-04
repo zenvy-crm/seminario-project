@@ -1,0 +1,99 @@
+# =============================================================================
+# Estandar de codigo del proyecto (SQA Plan, seccion 4 "Estandares").
+# Lo aplican el IDE, el compilador (EnforceCodeStyleInBuild) y el pipeline (dotnet format).
+# =============================================================================
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{json,yml,yaml,ts,tsx,js,css,html}]
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.{csproj,props,targets,runsettings,xml}]
+indent_size = 2
+
+# ----------------------------------------------------------------------------- C#
+[*.cs]
+indent_size = 4
+max_line_length = 160
+
+# Organizacion de usings
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = false
+csharp_using_directive_placement = outside_namespace:warning
+
+# Namespaces con alcance de archivo (estilo ya usado en todo el proyecto)
+csharp_style_namespace_declarations = file_scoped:warning
+
+# Llaves y saltos de linea (Allman)
+csharp_new_line_before_open_brace = all
+csharp_new_line_before_else = true
+csharp_new_line_before_catch = true
+csharp_new_line_before_finally = true
+csharp_prefer_braces = true:warning
+
+# var y tipos
+csharp_style_var_for_built_in_types = true:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
+csharp_style_var_elsewhere = true:suggestion
+dotnet_style_predefined_type_for_locals_parameters_members = true:warning
+
+# Modificadores y campos
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:warning
+dotnet_style_readonly_field = true:warning
+
+# Expresiones
+dotnet_style_coalesce_expression = true:suggestion
+dotnet_style_null_propagation = true:suggestion
+csharp_style_pattern_matching_over_is_with_cast_check = true:suggestion
+
+# Convenciones de nombres: campos privados _camelCase, constantes PascalCase
+dotnet_naming_rule.campos_privados.symbols = campos_privados
+dotnet_naming_rule.campos_privados.style = guion_bajo_camel
+dotnet_naming_rule.campos_privados.severity = warning
+dotnet_naming_symbols.campos_privados.applicable_kinds = field
+dotnet_naming_symbols.campos_privados.applicable_accessibilities = private
+dotnet_naming_symbols.campos_privados.required_modifiers =
+dotnet_naming_style.guion_bajo_camel.capitalization = camel_case
+dotnet_naming_style.guion_bajo_camel.required_prefix = _
+
+dotnet_naming_rule.constantes.symbols = constantes
+dotnet_naming_rule.constantes.style = pascal
+dotnet_naming_rule.constantes.severity = warning
+dotnet_naming_symbols.constantes.applicable_kinds = field
+dotnet_naming_symbols.constantes.required_modifiers = const
+dotnet_naming_style.pascal.capitalization = pascal_case
+
+# Campos static readonly privados tambien en PascalCase (LegacyHasher, SpJsonOptions...)
+dotnet_naming_rule.static_readonly.symbols = static_readonly
+dotnet_naming_rule.static_readonly.style = pascal
+dotnet_naming_rule.static_readonly.severity = warning
+dotnet_naming_symbols.static_readonly.applicable_kinds = field
+dotnet_naming_symbols.static_readonly.required_modifiers = static, readonly
+
+# Analizadores de calidad (AnalysisLevel = latest-recommended en el .csproj de la API)
+# Cultura: toda conversion a texto debe declarar la cultura (CA1305/CA1304/CA1311).
+dotnet_diagnostic.CA1305.severity = warning
+dotnet_diagnostic.CA1304.severity = warning
+dotnet_diagnostic.CA1311.severity = warning
+
+# ----------------------------------------------------------------------------- Codigo generado
+# Migraciones de EF Core: las genera la herramienta, no se editan a mano.
+[**/Migrations/*.cs]
+generated_code = true
+dotnet_analyzer_diagnostic.severity = none
+
+# ----------------------------------------------------------------------------- Pruebas
+[tests/**.cs]
+# Los nombres de las pruebas usan guion bajo (Metodo_Escenario_Resultado).
+dotnet_diagnostic.CA1707.severity = none
+# Las pruebas no necesitan ConfigureAwait ni cultura invariante.
+dotnet_diagnostic.CA2007.severity = none
+dotnet_diagnostic.CA1305.severity = none
