@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Configuracion de cobertura (coverlet) compartida por las pruebas unitarias y de integracion. -->
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="XPlat code coverage">
+        <Configuration>
+          <!-- cobertura: ReportGenerator y quality gate; opencover: SonarCloud -->
+          <Format>cobertura,opencover</Format>
+          <Include>[seminario-backend-service]*</Include>
+          <!-- Codigo generado por EF Core (migraciones y snapshot): no es logica de negocio escrita a mano. -->
+          <ExcludeByFile>**/Infrastructure/Persistence/Migrations/*.cs</ExcludeByFile>
+          <ExcludeByAttribute>GeneratedCodeAttribute,CompilerGeneratedAttribute,ExcludeFromCodeCoverageAttribute</ExcludeByAttribute>
+          <SkipAutoProps>true</SkipAutoProps>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>
