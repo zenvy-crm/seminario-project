@@ -217,6 +217,28 @@ jobs:
             /d:sonar.qualitygate.timeout=300
           dotnet build $SOLUCION -c Release -p:ContinuousIntegrationBuild=true
           dotnet sonarscanner end /d:sonar.token="$SONAR_TOKEN"
+      - name: Issues y metricas reportadas por SonarCloud (evidencia en el log)
+        if: always() && env.SONAR_TOKEN != ''
+        run: |
+          FILTRO="branch=main"
+          if [ -n "${{ github.event.pull_request.number }}" ]; then FILTRO="pullRequest=${{ github.event.pull_request.number }}"; fi
+          API="https://sonarcloud.io/api"
+          echo "== Quality Gate ($FILTRO)"
+          curl -s -u "$SONAR_TOKEN:" "$API/qualitygates/project_status?projectKey=zenvy-crm_seminario-project&$FILTRO" \
+            | jq -r '.projectStatus.status, (.projectStatus.conditions[] | "  \(.metricKey): \(.actualValue) (\(.comparator) \(.errorThreshold)) -> \(.status)")'
+          echo "== Metricas"
+          curl -s -u "$SONAR_TOKEN:" "$API/measures/component?component=zenvy-crm_seminario-project&$FILTRO&metricKeys=ncloc,bugs,vulnerabilities,code_smells,security_hotspots,coverage,duplicated_lines_density,sqale_index,reliability_rating,security_rating,sqale_rating,new_coverage,new_duplicated_lines_density" \
+            | jq -r '.component.measures[] | "  SONAR \(.metric)=\(.value // .period.value)"'
+          echo "== Issues abiertos"
+          curl -s -u "$SONAR_TOKEN:" "$API/issues/search?componentKeys=zenvy-crm_seminario-project&$FILTRO&resolved=false&ps=100" \
+            | jq -r '"  total=\(.total)", (.issues[] | "  ISSUE \(.type) \(.severity) \(.rule) \(.component | sub("zenvy-crm_seminario-project:";"")):\(.line // 0) — \(.message)")'
+          echo "== Issues abiertos en main (referencia: linea base)"
+          curl -s -u "$SONAR_TOKEN:" "$API/issues/search?componentKeys=zenvy-crm_seminario-project&branch=main&resolved=false&ps=100" \
+            | jq -r '"  total=\(.total)", (.issues[] | "  BASE \(.type) \(.severity) \(.rule) \(.component | sub("zenvy-crm_seminario-project:";"")):\(.line // 0) — \(.message)")'
+          echo "== Security hotspots"
+          curl -s -u "$SONAR_TOKEN:" "$API/hotspots/search?projectKey=zenvy-crm_seminario-project&$FILTRO&ps=100" \
+            | jq -r '"  total=\(.paging.total)", (.hotspots[] | "  HOTSPOT \(.status) \(.securityCategory) \(.component | sub("zenvy-crm_seminario-project:";"")):\(.line // 0) — \(.message)")'
+
       - name: Aviso si falta el token
         if: env.SONAR_TOKEN == ''
         run: |
