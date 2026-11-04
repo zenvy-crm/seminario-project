@@ -229,3 +229,176 @@ $ sed -i 's#^\.claude/settings\.local\.json$#.claude/#' .gitignore && grep -n cl
 11:.claude/
 ```
 
+### #12 — Fase 1 · Repositorio
+- Fecha/hora: 2026-11-03 22:34:22 (America/Guatemala)
+- Codigo de salida: 0
+```bash
+$ git add -A
+```
+```text
+
+```
+
+### #13 — Fase 1 · Repositorio — verificar que no se suben secretos
+- Fecha/hora: 2026-11-03 22:34:33 (America/Guatemala)
+- Codigo de salida: 0
+```bash
+$ git diff --cached --name-only | grep -Ei '(^|/)(\.env|api\.env)$|uploads/' || echo 'OK: ningun .env, api.env ni uploads/ en el staging'
+```
+```text
+OK: ningun .env, api.env ni uploads/ en el staging
+```
+
+### #14 — Fase 1 · Repositorio — commit del estado base (antes de la intervencion SQA)
+- Fecha/hora: 2026-11-03 22:34:39 (America/Guatemala)
+- Codigo de salida: 0
+```bash
+$ git -c user.name='Alder Solis' -c user.email='alder.solis@bowpi.com' commit -q -m 'chore: estado base del backend (Fases 2 y 3 del seminario) antes de la intervencion SQA' && git log --oneline -1
+```
+```text
+0c8d137 chore: estado base del backend (Fases 2 y 3 del seminario) antes de la intervencion SQA
+```
+
+### #15 — Fase 1 · Repositorio — conectar remoto
+- Fecha/hora: 2026-11-03 22:34:50 (America/Guatemala)
+- Codigo de salida: 0
+```bash
+$ git remote add origin https://github.com/zenvy-crm/seminario-project.git
+```
+```text
+
+```
+
+### #16 — Fase 1 · Repositorio
+- Fecha/hora: 2026-11-03 22:34:53 (America/Guatemala)
+- Codigo de salida: 0
+```bash
+$ git branch -M main
+```
+```text
+
+```
+
+### #17 — Fase 1 · Repositorio — push inicial
+- Fecha/hora: 2026-11-03 22:35:04 (America/Guatemala)
+- Codigo de salida: 128
+```bash
+$ GIT_TERMINAL_PROMPT=0 git push -u origin main
+```
+```text
+fatal: could not read Username for 'https://github.com': terminal prompts disabled
+```
+
+### #18 — Fase 1 · Repositorio — empaquetar historial para publicarlo (la VM no tiene credenciales de GitHub)
+- Fecha/hora: 2026-11-03 22:35:21 (America/Guatemala)
+- Codigo de salida: 0
+```bash
+$ git bundle create docs/evidencias/.tmp-repo.bundle main && git bundle verify docs/evidencias/.tmp-repo.bundle
+```
+```text
+docs/evidencias/.tmp-repo.bundle is okay
+The bundle contains this ref:
+0c8d13704a0de754e7ef9de7e7dc72d2bdf3c825 refs/heads/main
+The bundle records a complete history.
+```
+
+### #19 — Fase 1 · Línea base — tamaño del código (cloc)
+- Fecha/hora: 2026-11-03 22:36:49 (America/Guatemala)
+- Codigo de salida: 0
+```bash
+$ npx --yes cloc@2.0.0 seminario-backend-service --exclude-dir=bin,obj,.vs,uploads,.claude,Migrations --include-lang=C#
+```
+```text
+     100 files     107 text files.
+classified 107 filesDuplicate file check 107 files (106 known unique)Unique:      100 files                                               107 unique files.                              
+Counting:  100      13 files ignored.
+
+https://github.com/AlDanial/cloc v 1.66  T=5.05 s (19.0 files/s, 1136.3 lines/s)
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+C#                              96            875            479           4379
+-------------------------------------------------------------------------------
+SUM:                            96            875            479           4379
+-------------------------------------------------------------------------------
+npm notice
+npm notice New major version of npm available! 10.9.9 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
+```
+
+### #20 — Fase 1 · Línea base — duplicación de código (jscpd)
+- Fecha/hora: 2026-11-03 22:37:10 (America/Guatemala)
+- Codigo de salida: 0
+```bash
+$ npx --yes jscpd@4 seminario-backend-service --format csharp --ignore '**/Migrations/**,**/bin/**,**/obj/**,**/.vs/**' --min-tokens 50 --reporters consoleFull,json --output docs/evidencias/linea-base/jscpd --silent false 2>&1 | tail -40
+```
+```text
+Error: ENOENT: no such file or directory, lstat '/sessions/rcw-01q7qtmzfqcoseboj79cxhcn/mnt/seminario-backend-service/false'
+    at realpathSync (node:fs:2801:29)
+    at /sessions/rcw-01q7qtmzfqcoseboj79cxhcn/.npm/_npx/107ce3791633fe64/node_modules/@jscpd/finder/dist/index.js:364:47
+    at Array.map (<anonymous>)
+    at getFilesToDetect (/sessions/rcw-01q7qtmzfqcoseboj79cxhcn/.npm/_npx/107ce3791633fe64/node_modules/@jscpd/finder/dist/index.js:363:45)
+    at detectClones (/sessions/rcw-01q7qtmzfqcoseboj79cxhcn/.npm/_npx/107ce3791633fe64/node_modules/jscpd/dist/chunk-RJJ75QFW.js:371:42)
+    at jscpd (/sessions/rcw-01q7qtmzfqcoseboj79cxhcn/.npm/_npx/107ce3791633fe64/node_modules/jscpd/dist/chunk-RJJ75QFW.js:439:12)
+    at /sessions/rcw-01q7qtmzfqcoseboj79cxhcn/.npm/_npx/107ce3791633fe64/node_modules/jscpd/dist/bin/jscpd.js:10:34
+    at Object.<anonymous> (/sessions/rcw-01q7qtmzfqcoseboj79cxhcn/.npm/_npx/107ce3791633fe64/node_modules/jscpd/dist/bin/jscpd.js:15:3)
+    at Module._compile (node:internal/modules/cjs/loader:1781:14)
+    at Object..js (node:internal/modules/cjs/loader:1913:10) {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'lstat',
+  path: '/sessions/rcw-01q7qtmzfqcoseboj79cxhcn/mnt/seminario-backend-service/false'
+}
+```
+
+### #21 — Fase 1 · Línea base — duplicación de código (jscpd)
+- Fecha/hora: 2026-11-03 22:37:44 (America/Guatemala)
+- Codigo de salida: 0
+```bash
+$ npx --yes jscpd@4 seminario-backend-service --format csharp --ignore '**/Migrations/**,**/bin/**,**/obj/**,**/.vs/**' --min-tokens 50 --reporters console,json --output docs/evidencias/linea-base/jscpd 2>&1 | tail -40
+```
+```text
+   seminario-backend-service/Application/DTOs/Reportes/ReporteDtos.cs [73:28 - 80:102]
+
+Clone found (csharp):
+ - seminario-backend-service/Infrastructure/Services/ProfileService.cs [33:61 - 41:73] (8 lines, 105 tokens)
+   seminario-backend-service/Infrastructure/Services/UserService.cs [99:57 - 107:69]
+
+Clone found (csharp):
+ - seminario-backend-service/Infrastructure/Services/ProfileService.cs [41:73 - 78:19] (37 lines, 354 tokens)
+   seminario-backend-service/Infrastructure/Services/UserService.cs [107:69 - 144:16]
+
+Clone found (csharp):
+ - seminario-backend-service/Infrastructure/Services/ProfileService.cs [83:13 - 95:15] (12 lines, 88 tokens)
+   seminario-backend-service/Infrastructure/Services/UserService.cs [153:13 - 165:11]
+
+Clone found (csharp):
+ - seminario-backend-service/Application/Services/AuthService.cs [69:45 - 78:69] (9 lines, 90 tokens)
+   seminario-backend-service/Infrastructure/Services/UserService.cs [82:25 - 91:65]
+
+Clone found (csharp):
+ - seminario-backend-service/Application/Services/AuthService.cs [136:36 - 146:46] (10 lines, 90 tokens)
+   seminario-backend-service/Infrastructure/Services/UserService.cs [219:41 - 229:44]
+
+Clone found (csharp):
+ - seminario-backend-service/Application/DTOs/UserDto.cs [4:1 - 11:18] (7 lines, 136 tokens)
+   seminario-backend-service/Domain/Entities/User.cs [6:1 - 13:20]
+
+┌────────┬────────────────┬─────────────┬──────────────┬──────────────┬──────────────────┬───────────────────┐
+│ Format │ Files analyzed │ Total lines │ Total tokens │ Clones found │ Duplicated lines │ Duplicated tokens │
+├────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
+│ csharp │ 95             │ 5728        │ 51520        │ 10           │ 134 (2.34%)      │ 1410 (2.74%)      │
+├────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
+│ Total: │ 95             │ 5728        │ 51520        │ 10           │ 134 (2.34%)      │ 1410 (2.74%)      │
+└────────┴────────────────┴─────────────┴──────────────┴──────────────┴──────────────────┴───────────────────┘
+Found 10 clones.
+JSON report saved to docs/evidencias/linea-base/jscpd/jscpd-report.json
+time: 1.209s
+
+💡 Auto-refactor with AI: npx skills add kucherenko/jscpd
+🎩 New: Gangsta Agents — discipline your AI coding → gangsta.page
+💖 Support jscpd project → https://opencollective.com/jscpd
+```
+

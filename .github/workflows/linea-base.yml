@@ -1,0 +1,84 @@
+# Medicion de la LINEA BASE de calidad (antes de la intervencion SQA).
+# Se ejecuta a mano (workflow_dispatch) sobre el commit "estado base" y deja los reportes como artefactos.
+# No modifica el codigo: los analizadores se activan solo por linea de comandos.
+name: Linea base de calidad
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Commit a medir (por defecto, el estado base antes de la intervencion)"
+        required: false
+        default: "0c8d13704a0de754e7ef9de7e7dc72d2bdf3c825"
+
+jobs:
+  linea-base:
+    runs-on: ubuntu-latest
+    env:
+      PROYECTO: seminario-backend-service/seminario-backend-service.csproj
+    steps:
+      - name: Checkout del commit base
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+          fetch-depth: 0
+
+      - name: Instalar .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restaurar dependencias
+        run: dotnet restore "$PROYECTO"
+
+      - name: Build con analizadores (latest-recommended + estilo)
+        run: |
+          set +e
+          dotnet build "$PROYECTO" -c Release --no-restore \
+            -p:AnalysisLevel=latest-recommended \
+            -p:EnforceCodeStyleInBuild=true \
+            -p:GenerateDocumentationFile=false \
+            -clp:NoSummary -flp:"logfile=build-linea-base.log;verbosity=normal"
+          echo "BUILD_RC=$?" >> "$GITHUB_ENV"
+
+      - name: Contar advertencias unicas
+        run: |
+          grep -oE '[^ ]+\.cs\([0-9]+,[0-9]+\): warning [A-Z]+[0-9]+' build-linea-base.log \
+            | sed 's#.*/seminario-backend-service/##' | sort -u > advertencias-unicas.txt || true
+          TOTAL=$(wc -l < advertencias-unicas.txt)
+          echo "## Linea base — advertencias del compilador/analizadores" >> "$GITHUB_STEP_SUMMARY"
+          echo "Total de advertencias unicas: **$TOTAL** (build rc=$BUILD_RC)" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Regla | Cantidad |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---|---|" >> "$GITHUB_STEP_SUMMARY"
+          grep -oE 'warning [A-Z]+[0-9]+' advertencias-unicas.txt | awk '{print $2}' | sort | uniq -c | sort -rn \
+            | awk '{printf "| %s | %s |\n", $2, $1}' | tee advertencias-por-regla.md >> "$GITHUB_STEP_SUMMARY"
+          echo "TOTAL_ADVERTENCIAS=$TOTAL"
+
+      - name: Verificar formato (dotnet format)
+        run: |
+          set +e
+          dotnet format "$PROYECTO" --verify-no-changes --no-restore --report format-report.json
+          echo "FORMAT_RC=$?" >> "$GITHUB_ENV"
+          ARCHIVOS=$(jq '[.[].FilePath] | unique | length' format-report.json)
+          CAMBIOS=$(jq '[.[].FileChanges[]] | length' format-report.json)
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "## Linea base — formato" >> "$GITHUB_STEP_SUMMARY"
+          echo "Archivos con problemas de formato/estilo: **$ARCHIVOS** · cambios requeridos: **$CAMBIOS**" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Pruebas automatizadas existentes
+        run: |
+          N=$(find . -name '*.csproj' | xargs grep -l -E 'xunit|nunit|mstest' | wc -l)
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "## Linea base — pruebas" >> "$GITHUB_STEP_SUMMARY"
+          echo "Proyectos de prueba: **$N** · cobertura: **0 %** (no hay pruebas que ejecutar)" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Publicar reportes de la linea base
+        uses: actions/upload-artifact@v4
+        with:
+          name: linea-base
+          path: |
+            build-linea-base.log
+            advertencias-unicas.txt
+            advertencias-por-regla.md
+            format-report.json
