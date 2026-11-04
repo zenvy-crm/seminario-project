@@ -10,6 +10,10 @@ on:
         description: "Commit a medir (por defecto, el estado base antes de la intervencion)"
         required: false
         default: "0c8d13704a0de754e7ef9de7e7dc72d2bdf3c825"
+      ref_frontend:
+        description: "Commit del monorepo con el frontend sin intervenir"
+        required: false
+        default: "826501b"
 
 jobs:
   linea-base:
@@ -82,3 +86,49 @@ jobs:
             advertencias-unicas.txt
             advertencias-por-regla.md
             format-report.json
+
+  linea-base-frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Checkout del commit base del frontend
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref_frontend }}
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalar dependencias
+        run: pnpm install --frozen-lockfile
+
+      - name: ESLint (reglas del proyecto)
+        run: |
+          set +e
+          pnpm exec eslint src --ext .ts,.tsx -f json -o eslint-linea-base.json
+          echo "ESLINT_RC=$?"
+          node -e "const r=require('./eslint-linea-base.json');let e=0,w=0;const reg={};for(const f of r){e+=f.errorCount;w+=f.warningCount;for(const m of f.messages){reg[m.ruleId]=(reg[m.ruleId]||0)+1}};console.log('ESLINT_ERRORES='+e+' ESLINT_ADVERTENCIAS='+w);console.log(JSON.stringify(reg,null,1))"
+
+      - name: Prettier (formato)
+        run: |
+          set +e
+          pnpm exec prettier --check "src/**/*.{ts,tsx,json,css}" > prettier.txt 2>&1
+          echo "PRETTIER_ARCHIVOS_SIN_FORMATO=$(grep -c '\[warn\] src/' prettier.txt)"
+
+      - name: TypeScript (tsc --noEmit)
+        run: |
+          set +e
+          pnpm exec tsc --noEmit -p tsconfig.json > tsc.txt 2>&1
+          echo "TSC_ERRORES=$(grep -c 'error TS' tsc.txt)"
+          head -40 tsc.txt
+
+      - name: Pruebas existentes
+        run: |
+          echo "PRUEBAS_FRONTEND=$(find src -name '*.test.ts*' -o -name '*.spec.ts*' | wc -l)"
