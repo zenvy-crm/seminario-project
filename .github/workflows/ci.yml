@@ -1,0 +1,318 @@
+# =============================================================================
+# Pipeline CI/CD con aseguramiento de calidad integrado
+#   Etapa 1 BUILD    -> backend (.NET 8, analizadores como errores), frontend (tsc + vite), imagen Docker
+#   Etapa 2 TEST     -> unitarias + integracion (SQL Server/MongoDB en contenedores) + frontend (Vitest)
+#   Etapa 3 ANALYZE  -> formato/lint + SonarCloud con Quality Gate
+#   Etapa 4 REPORT   -> reporte de cobertura combinado, resumen del run y quality gate de cobertura
+# Cualquier umbral incumplido hace fallar el pipeline y bloquea el merge a main (rama protegida).
+# =============================================================================
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# Sin permisos a nivel de workflow: cada job declara solo los que necesita (principio de minimo privilegio).
+permissions: {}
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  SOLUCION: seminario.sln
+  # Umbrales del SQA Plan (docs/SQA-Plan.md, seccion 7)
+  UMBRAL_COBERTURA_BACKEND: 60
+  UMBRAL_COBERTURA_FRONTEND: 60
+
+jobs:
+  # ---------------------------------------------------------------- 1. BUILD
+  build-backend:
+    name: "1 · Build backend"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Restaurar
+        run: dotnet restore $SOLUCION
+      - name: Compilar (advertencias de analizadores = error)
+        run: dotnet build $SOLUCION -c Release --no-restore -p:ContinuousIntegrationBuild=true
+
+  build-frontend:
+    name: "1 · Build frontend"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+        with:
+          version: 9
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - name: Compilar (tsc -b + vite build)
+        run: pnpm build
+
+  build-docker:
+    name: "1 · Build imagen Docker"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Construir imagen de la API
+        run: docker build -t seminario-backend-service:ci-${{ github.sha }} seminario-backend-service
+
+  # ---------------------------------------------------------------- 2. TEST
+  test-backend:
+    name: "2 · Pruebas backend (unitarias + integracion + regresion)"
+    needs: build-backend
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: 8.0.x
+      - run: dotnet restore $SOLUCION
+      - run: dotnet build $SOLUCION -c Release --no-restore -p:ContinuousIntegrationBuild=true
+
+      - name: Pruebas unitarias
+        run: >
+          dotnet test tests/Seminario.UnitTests -c Release --no-build
+          --settings coverlet.runsettings --collect:"XPlat Code Coverage"
+          --results-directory test-results/unit
+          --logger "trx;LogFileName=unit.trx" --logger "console;verbosity=normal"
+
+      - name: Pruebas de integracion (Testcontainers SQL Server 2022 + MongoDB 7)
+        if: success() || failure()   # se ejecutan aunque fallen las unitarias, para tener el panorama completo
+        run: >
+          dotnet test tests/Seminario.IntegrationTests -c Release --no-build
+          --settings coverlet.runsettings --collect:"XPlat Code Coverage"
+          --results-directory test-results/integration
+          --logger "trx;LogFileName=integration.trx" --logger "console;verbosity=normal"
+
+      - name: Resumen de casos de regresion
+        if: always()
+        run: |
+          N=$(grep -ho 'Category.*Regression' -r tests --include=*.cs | wc -l)
+          echo "Casos marcados como regresion en el codigo de pruebas: $N"
+
+      - name: Publicar resultados y cobertura
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: backend-test-results
+          path: test-results/
+
+  test-frontend:
+    name: "2 · Pruebas frontend (Vitest + Testing Library)"
+    needs: build-frontend
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+        with:
+          version: 9
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - name: Pruebas con cobertura (umbral en vitest.config.ts)
+        run: pnpm test:coverage
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: frontend-coverage
+          path: frontend/coverage/
+
+  # ---------------------------------------------------------------- 3. ANALYZE
+  lint:
+    name: "3 · Analisis estatico (formato + ESLint)"
+    needs: [build-backend, build-frontend]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: 8.0.x
+      - run: dotnet restore $SOLUCION
+      - name: dotnet format (estandar de .editorconfig)
+        run: dotnet format $SOLUCION --verify-no-changes --no-restore --verbosity diagnostic
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+        with:
+          version: 9
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+        working-directory: frontend
+      - name: ESLint (0 errores y 0 advertencias)
+        run: pnpm lint --max-warnings 0
+        working-directory: frontend
+      - name: Prettier
+        run: pnpm format:check
+        working-directory: frontend
+
+  sonarcloud:
+    name: "3 · SonarCloud + Quality Gate"
+    needs: [test-backend, test-frontend]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0   # historial completo: Sonar calcula "codigo nuevo" y blame
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: 8.0.x
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: backend-test-results
+          path: test-results
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: frontend-coverage
+          path: frontend/coverage
+      - name: Instalar SonarScanner for .NET
+        run: dotnet tool install --global dotnet-sonarscanner
+      - name: Analizar (backend + frontend) y esperar el Quality Gate
+        if: env.SONAR_TOKEN != ''
+        run: |
+          dotnet sonarscanner begin \
+            /k:"zenvy-crm_seminario-project" \
+            /o:"zenvy-crm" \
+            /d:sonar.host.url="https://sonarcloud.io" \
+            /d:sonar.token="$SONAR_TOKEN" \
+            /d:sonar.cs.opencover.reportsPaths="test-results/**/coverage.opencover.xml" \
+            /d:sonar.cs.vstest.reportsPaths="test-results/**/*.trx" \
+            /d:sonar.javascript.lcov.reportPaths="frontend/coverage/lcov.info" \
+            /d:sonar.exclusions="**/Migrations/**,**/bin/**,**/obj/**,frontend/_ds/**,frontend/dist/**,docs/**" \
+            /d:sonar.coverage.exclusions="tests/**,**/*.test.ts,**/*.test.tsx,frontend/src/main.tsx,frontend/src/App.tsx,frontend/src/pages/**,frontend/src/theme/**,frontend/src/types/**,frontend/src/vite-env.d.ts,frontend/vite.config.ts,frontend/vitest.config.ts" \
+            /d:sonar.cpd.exclusions="**/Migrations/**" \
+            /d:sonar.scanner.scanAll=true \
+            /d:sonar.qualitygate.wait=true \
+            /d:sonar.qualitygate.timeout=300
+          dotnet build $SOLUCION -c Release -p:ContinuousIntegrationBuild=true
+          dotnet sonarscanner end /d:sonar.token="$SONAR_TOKEN"
+      - name: Issues y metricas reportadas por SonarCloud (evidencia en el log)
+        if: always() && env.SONAR_TOKEN != ''
+        run: |
+          FILTRO="branch=main"
+          if [ -n "${{ github.event.pull_request.number }}" ]; then FILTRO="pullRequest=${{ github.event.pull_request.number }}"; fi
+          API="https://sonarcloud.io/api"
+          echo "== Quality Gate ($FILTRO)"
+          curl -s -u "$SONAR_TOKEN:" "$API/qualitygates/project_status?projectKey=zenvy-crm_seminario-project&$FILTRO" \
+            | jq -r '.projectStatus.status, (.projectStatus.conditions[] | "  \(.metricKey): \(.actualValue) (\(.comparator) \(.errorThreshold)) -> \(.status)")'
+          echo "== Metricas"
+          curl -s -u "$SONAR_TOKEN:" "$API/measures/component?component=zenvy-crm_seminario-project&$FILTRO&metricKeys=ncloc,bugs,vulnerabilities,code_smells,security_hotspots,coverage,duplicated_lines_density,sqale_index,reliability_rating,security_rating,sqale_rating,new_coverage,new_duplicated_lines_density" \
+            | jq -r '.component.measures[] | "  SONAR \(.metric)=\(.value // .period.value)"'
+          echo "== Issues abiertos"
+          curl -s -u "$SONAR_TOKEN:" "$API/issues/search?componentKeys=zenvy-crm_seminario-project&$FILTRO&resolved=false&ps=100" \
+            | jq -r '"  total=\(.total)", (.issues[] | "  ISSUE \(.type) \(.severity) \(.rule) \(.component | sub("zenvy-crm_seminario-project:";"")):\(.line // 0) — \(.message)")'
+          echo "== Issues abiertos en main (referencia: linea base)"
+          curl -s -u "$SONAR_TOKEN:" "$API/issues/search?componentKeys=zenvy-crm_seminario-project&branch=main&resolved=false&ps=100" \
+            | jq -r '"  total=\(.total)", (.issues[] | "  BASE \(.type) \(.severity) \(.rule) \(.component | sub("zenvy-crm_seminario-project:";"")):\(.line // 0) — \(.message)")'
+          echo "== Security hotspots"
+          curl -s -u "$SONAR_TOKEN:" "$API/hotspots/search?projectKey=zenvy-crm_seminario-project&$FILTRO&ps=100" \
+            | jq -r '"  total=\(.paging.total)", (.hotspots[] | "  HOTSPOT \(.status) \(.securityCategory) \(.component | sub("zenvy-crm_seminario-project:";"")):\(.line // 0) — \(.message)")'
+
+      - name: Aviso si falta el token
+        if: env.SONAR_TOKEN == ''
+        run: |
+          echo "::error::Falta el secreto SONAR_TOKEN: el Quality Gate de SonarCloud no puede evaluarse."
+          exit 1
+
+  # ---------------------------------------------------------------- 4. REPORT
+  report:
+    name: "4 · Reporte de calidad + gate de cobertura"
+    needs: [test-backend, test-frontend, lint, sonarcloud]
+    if: always()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: 8.0.x
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: backend-test-results
+          path: test-results
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: frontend-coverage
+          path: frontend/coverage
+      - name: Combinar cobertura (ReportGenerator)
+        run: |
+          dotnet tool install --global dotnet-reportgenerator-globaltool
+          reportgenerator \
+            -reports:"test-results/**/coverage.cobertura.xml;frontend/coverage/cobertura-coverage.xml" \
+            -targetdir:coverage-report \
+            -reporttypes:"Html;MarkdownSummaryGithub;JsonSummary;TextSummary;Badges" \
+            -title:"Seminario - cobertura combinada"
+          cat coverage-report/Summary.txt
+
+      - name: Resumen en el run
+        run: cat coverage-report/SummaryGithub.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Quality gate de cobertura (backend >= 60 %)
+        run: |
+          reportgenerator -reports:"test-results/**/coverage.cobertura.xml" -targetdir:cov-backend -reporttypes:JsonSummary > /dev/null
+          LINEAS=$(jq '.summary.linecoverage' cov-backend/Summary.json)
+          RAMAS=$(jq '.summary.branchcoverage' cov-backend/Summary.json)
+          echo "Cobertura backend: lineas $LINEAS % | ramas $RAMAS % (umbral $UMBRAL_COBERTURA_BACKEND %)"
+          echo "### Gate de cobertura backend: lineas **$LINEAS %**, ramas **$RAMAS %** (umbral $UMBRAL_COBERTURA_BACKEND %)" >> "$GITHUB_STEP_SUMMARY"
+          awk -v c="$LINEAS" -v u="$UMBRAL_COBERTURA_BACKEND" 'BEGIN { exit (c+0 >= u+0) ? 0 : 1 }' \
+            || { echo "::error::Cobertura de lineas del backend ($LINEAS %) por debajo del umbral ($UMBRAL_COBERTURA_BACKEND %)"; exit 1; }
+
+      - name: Publicar reporte HTML
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: reporte-calidad
+          path: coverage-report/
+
+      - name: Estado final del pipeline
+        run: |
+          echo "test-backend=${{ needs.test-backend.result }} test-frontend=${{ needs.test-frontend.result }} lint=${{ needs.lint.result }} sonarcloud=${{ needs.sonarcloud.result }}"
+          if [ "${{ needs.test-backend.result }}" != "success" ] || [ "${{ needs.test-frontend.result }}" != "success" ] \
+             || [ "${{ needs.lint.result }}" != "success" ] || [ "${{ needs.sonarcloud.result }}" != "success" ]; then
+            echo "::error::Al menos una etapa obligatoria fallo: el cambio no puede integrarse a main."
+            exit 1
+          fi

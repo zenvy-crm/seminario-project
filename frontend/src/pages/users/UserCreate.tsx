@@ -15,7 +15,9 @@ export default function UserCreate() {
     setError(null);
     setSubmitting(true);
     try {
-      await usersApi.createUser(values as any);
+      await usersApi.createUser(
+        values as unknown as Parameters<typeof usersApi.createUser>[0]
+      );
       showToast("Usuario creado correctamente.");
       navigate("/users");
     } catch {
@@ -27,8 +29,15 @@ export default function UserCreate() {
 
   return (
     <Box maxWidth={720}>
-      <Typography variant="h4" mb={3}>Crear usuario</Typography>
-      <UserForm mode="create" onSubmit={handleSubmit} submitError={error} submitting={submitting} />
+      <Typography variant="h4" mb={3}>
+        Crear usuario
+      </Typography>
+      <UserForm
+        mode="create"
+        onSubmit={handleSubmit}
+        submitError={error}
+        submitting={submitting}
+      />
     </Box>
   );
 }

@@ -45,12 +45,16 @@ public class UserRepository : IUserRepository
 
         if (!string.IsNullOrWhiteSpace(search))
         {
-            var term = search.Trim().ToLower();
+            // La intercalacion de SQL Server (SQL_Latin1_General_CP1_CI_AS) ya compara sin distinguir
+            // mayusculas: ToLower() en las columnas impedia usar indices y dependia de la cultura (CA1304/CA1862).
+            var term = search.Trim();
+#pragma warning disable CA1862 // EF Core traduce Contains a LIKE; la sobrecarga con StringComparison no es traducible a SQL.
             query = query.Where(u =>
-                u.Username.ToLower().Contains(term) ||
-                u.Email.ToLower().Contains(term) ||
-                u.FirstName.ToLower().Contains(term) ||
-                u.LastName.ToLower().Contains(term));
+                u.Username.Contains(term) ||
+                u.Email.Contains(term) ||
+                u.FirstName.Contains(term) ||
+                u.LastName.Contains(term));
+#pragma warning restore CA1862
         }
 
         if (!string.IsNullOrWhiteSpace(role))
@@ -66,7 +70,7 @@ public class UserRepository : IUserRepository
         var total = await query.CountAsync();
 
         var descending = string.Equals(sortDir, "desc", StringComparison.OrdinalIgnoreCase);
-        query = sortBy?.ToLower() switch
+        query = sortBy?.ToLowerInvariant() switch
         {
             "username" => descending ? query.OrderByDescending(u => u.Username) : query.OrderBy(u => u.Username),
             "email" => descending ? query.OrderByDescending(u => u.Email) : query.OrderBy(u => u.Email),

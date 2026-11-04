@@ -20,7 +20,12 @@ export const theme = createTheme({
   palette: {
     mode: "light",
     background: { default: industryColors.bg, paper: industryColors.surface },
-    primary: { main: industryColors.accent, light: industryColors.accent300, dark: industryColors.accent700, contrastText: "#ffffff" },
+    primary: {
+      main: industryColors.accent,
+      light: industryColors.accent300,
+      dark: industryColors.accent700,
+      contrastText: "#ffffff",
+    },
     error: { main: industryColors.danger },
     success: { main: industryColors.success },
     text: { primary: industryColors.text, secondary: industryColors.textMuted },
@@ -32,26 +37,60 @@ export const theme = createTheme({
     h2: { fontFamily: '"Barlow Condensed", sans-serif', fontWeight: 600 },
     h3: { fontFamily: '"Barlow Condensed", sans-serif', fontWeight: 600 },
     h4: { fontFamily: '"Barlow Condensed", sans-serif', fontWeight: 600 },
-    h5: { fontFamily: '"Barlow Condensed", sans-serif', fontWeight: 600, letterSpacing: 0.2 },
-    h6: { fontFamily: '"Barlow Condensed", sans-serif', fontWeight: 600, letterSpacing: 0.2 },
-    button: { fontFamily: '"Barlow Condensed", sans-serif', fontWeight: 600, letterSpacing: 0.5, textTransform: "uppercase" },
+    h5: {
+      fontFamily: '"Barlow Condensed", sans-serif',
+      fontWeight: 600,
+      letterSpacing: 0.2,
+    },
+    h6: {
+      fontFamily: '"Barlow Condensed", sans-serif',
+      fontWeight: 600,
+      letterSpacing: 0.2,
+    },
+    button: {
+      fontFamily: '"Barlow Condensed", sans-serif',
+      fontWeight: 600,
+      letterSpacing: 0.5,
+      textTransform: "uppercase",
+    },
   },
   shape: { borderRadius: 0 },
   components: {
     MuiButton: {
       styleOverrides: {
         root: { borderRadius: 0, boxShadow: "none" },
-        containedPrimary: { boxShadow: "none", "&:hover": { backgroundColor: industryColors.accent700, boxShadow: "none" } },
+        containedPrimary: {
+          boxShadow: "none",
+          "&:hover": {
+            backgroundColor: industryColors.accent700,
+            boxShadow: "none",
+          },
+        },
         outlined: { borderColor: industryColors.border },
       },
     },
-    MuiPaper: { styleOverrides: { root: { borderRadius: 0, backgroundImage: "none" } } },
-    MuiCard: { styleOverrides: { root: { borderRadius: 0, border: `1px solid ${industryColors.border}` } } },
+    MuiPaper: {
+      styleOverrides: { root: { borderRadius: 0, backgroundImage: "none" } },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: { borderRadius: 0, border: `1px solid ${industryColors.border}` },
+      },
+    },
     MuiTextField: { defaultProps: { size: "small" } },
     MuiOutlinedInput: { styleOverrides: { root: { borderRadius: 0 } } },
     MuiChip: { styleOverrides: { root: { borderRadius: 0 } } },
-    MuiTableCell: { styleOverrides: { root: { borderColor: industryColors.border } } },
-    MuiDialog: { styleOverrides: { paper: { borderRadius: 0, border: `1px solid ${industryColors.border}` } } },
+    MuiTableCell: {
+      styleOverrides: { root: { borderColor: industryColors.border } },
+    },
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          borderRadius: 0,
+          border: `1px solid ${industryColors.border}`,
+        },
+      },
+    },
     MuiDrawer: { styleOverrides: { paper: { borderRadius: 0 } } },
     MuiAlert: { styleOverrides: { root: { borderRadius: 0 } } },
   },

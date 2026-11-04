@@ -6,7 +6,11 @@ import { usersApi } from "../../api/usersApi";
 import { documentsApi } from "../../api/documentsApi";
 import { AppDocument, User } from "../../types";
 import { RoleBadge, StatusBadge } from "../../components/common/Badges";
-import { LoadingState, ErrorState, EmptyState } from "../../components/common/StateViews";
+import {
+  LoadingState,
+  ErrorState,
+  EmptyState,
+} from "../../components/common/StateViews";
 import { useToast } from "../../components/common/ToastProvider";
 import Blueprint from "../../theme/Blueprint";
 import { industryColors } from "../../theme/industryTheme";
@@ -23,7 +27,10 @@ export default function UserDetail() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    usersApi.getUser(Number(id)).then(setUser).catch(() => setError("No fue posible cargar la información."));
+    usersApi
+      .getUser(Number(id))
+      .then(setUser)
+      .catch(() => setError("No fue posible cargar la información."));
   }, [id]);
 
   const openBlob = async (doc: AppDocument, forceDownload: boolean) => {
@@ -53,37 +60,114 @@ export default function UserDetail() {
 
   return (
     <Box maxWidth={720}>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={3}
+      >
         <Typography variant="h4">Detalle de usuario</Typography>
-        <Button variant="outlined" onClick={() => navigate(`/users/${id}/edit`)}>Editar</Button>
+        <Button
+          variant="outlined"
+          onClick={() => navigate(`/users/${id}/edit`)}
+        >
+          Editar
+        </Button>
       </Box>
 
       <Blueprint sx={{ p: 3, mb: 3, bgcolor: "background.paper" }}>
         <Grid container spacing={2}>
-          <Grid item xs={6}><Typography variant="caption" color="text.secondary">Nombre</Typography><Typography>{user.firstName} {user.lastName}</Typography></Grid>
-          <Grid item xs={6}><Typography variant="caption" color="text.secondary">Username</Typography><Typography>{user.username}</Typography></Grid>
-          <Grid item xs={6}><Typography variant="caption" color="text.secondary">Email</Typography><Typography>{user.email}</Typography></Grid>
-          <Grid item xs={6}><Typography variant="caption" color="text.secondary">Teléfono</Typography><Typography>{user.phone ?? "—"}</Typography></Grid>
-          <Grid item xs={6}><Typography variant="caption" color="text.secondary">Rol</Typography><Box mt={0.5}><RoleBadge role={user.role} /></Box></Grid>
-          <Grid item xs={6}><Typography variant="caption" color="text.secondary">Estado</Typography><Box mt={0.5}><StatusBadge status={user.status} /></Box></Grid>
-          <Grid item xs={6}><Typography variant="caption" color="text.secondary">Fecha de creación</Typography><Typography>{new Date(user.createdAt).toLocaleDateString("es-ES")}</Typography></Grid>
+          <Grid item xs={6}>
+            <Typography variant="caption" color="text.secondary">
+              Nombre
+            </Typography>
+            <Typography>
+              {user.firstName} {user.lastName}
+            </Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="caption" color="text.secondary">
+              Username
+            </Typography>
+            <Typography>{user.username}</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="caption" color="text.secondary">
+              Email
+            </Typography>
+            <Typography>{user.email}</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="caption" color="text.secondary">
+              Teléfono
+            </Typography>
+            <Typography>{user.phone ?? "—"}</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="caption" color="text.secondary">
+              Rol
+            </Typography>
+            <Box mt={0.5}>
+              <RoleBadge role={user.role} />
+            </Box>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="caption" color="text.secondary">
+              Estado
+            </Typography>
+            <Box mt={0.5}>
+              <StatusBadge status={user.status} />
+            </Box>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="caption" color="text.secondary">
+              Fecha de creación
+            </Typography>
+            <Typography>
+              {new Date(user.createdAt).toLocaleDateString("es-ES")}
+            </Typography>
+          </Grid>
         </Grid>
       </Blueprint>
 
-      <Typography variant="h6" mb={1.5}>Documentos</Typography>
+      <Typography variant="h6" mb={1.5}>
+        Documentos
+      </Typography>
       <Blueprint sx={{ p: 3, bgcolor: "background.paper" }}>
-        {(user.documents ?? []).length === 0 && <EmptyState message="Este usuario no tiene documentos cargados." />}
+        {(user.documents ?? []).length === 0 && (
+          <EmptyState message="Este usuario no tiene documentos cargados." />
+        )}
         {(user.documents ?? []).map((doc, i) => (
           <Box key={doc.id}>
             {i > 0 && <Divider sx={{ my: 2 }} />}
             <Box display="flex" alignItems="center" gap={2} flexWrap="wrap">
-              <FileText size={20} strokeWidth={1.5} color={industryColors.accent700} />
+              <FileText
+                size={20}
+                strokeWidth={1.5}
+                color={industryColors.accent700}
+              />
               <Box flexGrow={1}>
-                <Typography variant="body2" fontWeight={600}>{doc.fileName}</Typography>
-                <Typography variant="caption" color="text.secondary">{formatBytes(doc.sizeBytes)}</Typography>
+                <Typography variant="body2" fontWeight={600}>
+                  {doc.fileName}
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  {formatBytes(doc.sizeBytes)}
+                </Typography>
               </Box>
-              <Button size="small" variant="outlined" onClick={() => openBlob(doc, false)}>Ver</Button>
-              <Button size="small" variant="outlined" onClick={() => openBlob(doc, true)}>Descargar</Button>
+              <Button
+                size="small"
+                variant="outlined"
+                onClick={() => openBlob(doc, false)}
+              >
+                Ver
+              </Button>
+              <Button
+                size="small"
+                variant="outlined"
+                onClick={() => openBlob(doc, true)}
+              >
+                Descargar
+              </Button>
             </Box>
           </Box>
         ))}

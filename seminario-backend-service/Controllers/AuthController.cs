@@ -16,14 +16,12 @@ public class AuthController : ControllerBase
     private readonly IAuthService _authService;
     private readonly IDocumentService _documentService;
     private readonly IFileStorageService _fileStorageService;
-    private readonly IWebHostEnvironment _env;
 
-    public AuthController(IAuthService authService, IDocumentService documentService, IFileStorageService fileStorageService, IWebHostEnvironment env)
+    public AuthController(IAuthService authService, IDocumentService documentService, IFileStorageService fileStorageService)
     {
         _authService = authService;
         _documentService = documentService;
         _fileStorageService = fileStorageService;
-        _env = env;
     }
 
     [AllowAnonymous]
@@ -82,7 +80,7 @@ public class AuthController : ControllerBase
     {
         var refreshToken = Request.Cookies[RefreshCookieName];
         await _authService.LogoutAsync(refreshToken);
-        Response.Cookies.Delete(RefreshCookieName, new CookieOptions { Path = "/api/auth" });
+        Response.Cookies.Delete(RefreshCookieName, OpcionesCookie(DateTimeOffset.UnixEpoch));
         return Ok(new { success = true });
     }
 
@@ -93,13 +91,19 @@ public class AuthController : ControllerBase
             return;
         }
 
-        Response.Cookies.Append(RefreshCookieName, refreshToken, new CookieOptions
-        {
-            HttpOnly = true,
-            Secure = !_env.IsDevelopment(),
-            SameSite = SameSiteMode.Lax,
-            Path = "/api/auth",
-            Expires = DateTimeOffset.UtcNow.AddDays(7)
-        });
+        Response.Cookies.Append(RefreshCookieName, refreshToken, OpcionesCookie(DateTimeOffset.UtcNow.AddDays(7)));
     }
+
+    /// <summary>
+    /// Opciones unicas de la cookie del refresh token: HttpOnly (no la lee JavaScript) y Secure siempre.
+    /// Los navegadores aceptan cookies Secure en http://localhost, asi que desarrollo sigue funcionando.
+    /// </summary>
+    private static CookieOptions OpcionesCookie(DateTimeOffset expira) => new()
+    {
+        HttpOnly = true,
+        Secure = true,
+        SameSite = SameSiteMode.Lax,
+        Path = "/api/auth",
+        Expires = expira
+    };
 }

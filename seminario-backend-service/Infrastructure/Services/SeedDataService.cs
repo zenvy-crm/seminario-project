@@ -7,6 +7,7 @@ using Seminario.Application.Audit;
 using Seminario.Application.DTOs.Operaciones;
 using Seminario.Application.Interfaces;
 using Seminario.Domain.Enums;
+using Seminario.Infrastructure.Logging;
 using Seminario.Infrastructure.Persistence;
 
 namespace Seminario.Infrastructure.Services;
@@ -61,11 +62,12 @@ public class SeedDataService : ISeedDataService
         if (request.AnioFinal < request.AnioInicial)
         {
             throw new Application.Common.ValidationApiException("Datos invalidos",
-                new List<string> { "El año final no puede ser menor al anio inicial" });
+                ["El año final no puede ser menor al anio inicial"]);
         }
 
         var cronometro = Stopwatch.StartNew();
-        var random = new Random();
+        // Random.Shared: datos sinteticos del stress test, sin uso criptografico.
+        var random = Random.Shared;
         var inicio = new DateTime(request.AnioInicial, 1, 1);
         var diasRango = (new DateTime(request.AnioFinal, 12, 31) - inicio).Days + 1;
 
@@ -121,8 +123,7 @@ public class SeedDataService : ISeedDataService
             insertados += enEsteLote;
             lotes++;
 
-            _logger.LogInformation("Stress test: {Insertados}/{Total} ordenes insertadas ({Lotes} lotes)",
-                insertados, request.Cantidad, lotes);
+            _logger.StressTestAvance(insertados, request.Cantidad, lotes);
         }
 
         cronometro.Stop();

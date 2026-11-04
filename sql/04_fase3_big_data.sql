@@ -149,19 +149,22 @@ ORDER BY o.BodegaDestino;
 BEGIN TRY
     BEGIN TRAN;
 
-    WITH Anular AS
-    (
-        SELECT TOP (10) o.*
-        FROM dbo.TB_Ordenes_Compra o
-        WHERE o.FechaEmision >= '2026-01-01' AND o.FechaEmision < '2027-01-01'
-          AND o.NumeroOrden LIKE @Prefijo + N'%'
-        ORDER BY o.NumeroOrden
-    )
-    UPDATE Anular
-    SET Estado = N'ANULADA',
-        UsuarioAnulaId = 1,
-        FechaAnulacion = SYSUTCDATETIME(),
-        MotivoAnulacion = CONCAT(N'Anulacion de prueba Fase 3 (lote ', @Lote, N')');
+    -- WHERE explicito sobre la tabla (antes: UPDATE sobre una CTE con TOP, que los analizadores
+    -- leen como UPDATE sin WHERE). Mismo resultado: las 10 primeras ordenes del lote en 2026.
+    UPDATE o
+    SET o.Estado = N'ANULADA',
+        o.UsuarioAnulaId = 1,
+        o.FechaAnulacion = SYSUTCDATETIME(),
+        o.MotivoAnulacion = CONCAT(N'Anulacion de prueba Fase 3 (lote ', @Lote, N')')
+    FROM dbo.TB_Ordenes_Compra o
+    JOIN (
+        SELECT TOP (10) x.FechaEmision, x.Id
+        FROM dbo.TB_Ordenes_Compra x
+        WHERE x.FechaEmision >= '2026-01-01' AND x.FechaEmision < '2027-01-01'
+          AND x.NumeroOrden LIKE @Prefijo + N'%'
+        ORDER BY x.NumeroOrden
+    ) sel ON sel.FechaEmision = o.FechaEmision AND sel.Id = o.Id
+    WHERE o.FechaEmision >= '2026-01-01' AND o.FechaEmision < '2027-01-01';
 
     DECLARE @Anuladas int = @@ROWCOUNT;
 

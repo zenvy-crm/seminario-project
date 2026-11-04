@@ -1,3 +1,4 @@
+using System.Globalization;
 using Seminario.Application.Audit;
 using Seminario.Application.Common;
 using Seminario.Application.DTOs;
@@ -60,7 +61,7 @@ public class UserService : IUserService
 
         var roleName = string.IsNullOrWhiteSpace(dto.Role) ? RoleName.User : dto.Role.ToUpperInvariant();
         var role = await _userRepository.GetRoleByNameAsync(roleName)
-            ?? throw new ValidationApiException("El rol especificado no es valido", new List<string> { "role" });
+            ?? throw new ValidationApiException("El rol especificado no es valido", ["role"]);
 
         var user = new User
         {
@@ -85,7 +86,7 @@ public class UserService : IUserService
         {
             EventType = AuditEventTypes.UserCreated,
             Entity = "User",
-            EntityId = user.Id.ToString(),
+            EntityId = user.Id.ToString(CultureInfo.InvariantCulture),
             UserId = user.Id,
             Username = user.Username,
             After = new { user.Username, user.Email, Role = role.Name }
@@ -143,7 +144,7 @@ public class UserService : IUserService
 
         if (dto.BirthDate is not null && DateOnly.TryParse(dto.BirthDate, out var parsedBirth) && parsedBirth != user.BirthDate)
         {
-            before["birthDate"] = user.BirthDate?.ToString("yyyy-MM-dd");
+            before["birthDate"] = user.BirthDate?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
             after["birthDate"] = dto.BirthDate;
             user.BirthDate = parsedBirth;
         }
@@ -154,7 +155,7 @@ public class UserService : IUserService
             {
                 EventType = AuditEventTypes.UserUpdated,
                 Entity = "User",
-                EntityId = user.Id.ToString(),
+                EntityId = user.Id.ToString(CultureInfo.InvariantCulture),
                 UserId = user.Id,
                 Username = user.Username,
                 Before = before,
@@ -162,16 +163,16 @@ public class UserService : IUserService
             });
         }
 
-        if (!string.IsNullOrWhiteSpace(dto.Role) && dto.Role.ToUpperInvariant() != user.Role.Name)
+        if (!string.IsNullOrWhiteSpace(dto.Role) && !string.Equals(dto.Role, user.Role.Name, StringComparison.OrdinalIgnoreCase))
         {
             var newRole = await _userRepository.GetRoleByNameAsync(dto.Role.ToUpperInvariant())
-                ?? throw new ValidationApiException("El rol especificado no es valido", new List<string> { "role" });
+                ?? throw new ValidationApiException("El rol especificado no es valido", ["role"]);
 
             _auditLogger.Enqueue(new AuditEvent
             {
                 EventType = AuditEventTypes.UserRoleChanged,
                 Entity = "User",
-                EntityId = user.Id.ToString(),
+                EntityId = user.Id.ToString(CultureInfo.InvariantCulture),
                 UserId = user.Id,
                 Username = user.Username,
                 Before = new { role = user.Role.Name },
@@ -188,7 +189,7 @@ public class UserService : IUserService
             {
                 EventType = AuditEventTypes.UserStatusChanged,
                 Entity = "User",
-                EntityId = user.Id.ToString(),
+                EntityId = user.Id.ToString(CultureInfo.InvariantCulture),
                 UserId = user.Id,
                 Username = user.Username,
                 Before = new { status = user.Status.ToString() },
@@ -223,7 +224,7 @@ public class UserService : IUserService
         {
             EventType = AuditEventTypes.AccountUnlocked,
             Entity = "User",
-            EntityId = user.Id.ToString(),
+            EntityId = user.Id.ToString(CultureInfo.InvariantCulture),
             UserId = user.Id,
             Username = user.Username,
             After = new { reason = "manual" }

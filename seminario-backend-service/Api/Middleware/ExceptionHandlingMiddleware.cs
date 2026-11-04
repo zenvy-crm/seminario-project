@@ -1,4 +1,5 @@
 using Seminario.Application.Common;
+using Seminario.Infrastructure.Logging;
 
 namespace Seminario.Api.Middleware;
 
@@ -25,9 +26,9 @@ public class ExceptionHandlingMiddleware
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error no controlado procesando {Path}", context.Request.Path);
+            _logger.ErrorNoControlado(ex, context.Request.Path);
             await WriteResponseAsync(context, StatusCodes.Status500InternalServerError,
-                "Ocurrio un error interno. Intente nuevamente.", new List<string>());
+                "Ocurrio un error interno. Intente nuevamente.", []);
         }
     }
 
@@ -44,6 +45,6 @@ public class ExceptionHandlingMiddleware
             Errors = errors
         };
 
-        return context.Response.WriteAsJsonAsync(response);
+        return context.Response.WriteAsJsonAsync(response, context.RequestAborted);
     }
 }

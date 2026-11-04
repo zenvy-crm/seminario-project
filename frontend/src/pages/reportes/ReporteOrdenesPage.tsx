@@ -1,13 +1,38 @@
 import { FormEvent, useRef, useState } from "react";
 import {
-  Alert, Box, Button, Chip, Grid, LinearProgress, MenuItem, Paper, Stack, Table, TableBody, TableCell,
-  TableContainer, TableHead, TablePagination, TableRow, TextField, Typography,
+  Alert,
+  Box,
+  Button,
+  Chip,
+  Grid,
+  LinearProgress,
+  MenuItem,
+  Paper,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  TextField,
+  Typography,
 } from "@mui/material";
 import { Download, FileBarChart, Search } from "lucide-react";
 import { mensajeError, reportesApi } from "../../api/reportesApi";
 import { industryColors } from "../../theme/industryTheme";
 import { ReporteOrdenesQuery, ReporteOrdenesResult } from "../../types";
-import { BODEGAS, BarraContexto, ESTADOS, colorEstado, dinero, entero, formatoFecha, statusHttp } from "./comunes";
+import {
+  BODEGAS,
+  BarraContexto,
+  ESTADOS,
+  colorEstado,
+  dinero,
+  entero,
+  formatoFecha,
+  statusHttp,
+} from "./comunes";
 
 const TAMANOS_PAGINA = [25, 50, 100, 200];
 const MAX_DIAS = 366;
@@ -22,13 +47,20 @@ interface Filtros {
   bodega: string;
 }
 
-const filtrosVacios: Filtros = { fechaDesde: "", fechaHasta: "", proveedorNit: "", estado: "", bodega: "" };
+const filtrosVacios: Filtros = {
+  fechaDesde: "",
+  fechaHasta: "",
+  proveedorNit: "",
+  estado: "",
+  bodega: "",
+};
 
 type ErroresFiltros = Partial<Record<"fechaDesde" | "fechaHasta", string>>;
 
 /** Dias entre dos fechas yyyy-MM-dd (en UTC para que el horario de verano no altere el resultado). */
 const diasEntre = (desde: string, hasta: string) =>
-  (Date.parse(`${hasta}T00:00:00Z`) - Date.parse(`${desde}T00:00:00Z`)) / 86_400_000;
+  (Date.parse(`${hasta}T00:00:00Z`) - Date.parse(`${desde}T00:00:00Z`)) /
+  86_400_000;
 
 function validar(f: Filtros): ErroresFiltros {
   if (!f.fechaDesde || !f.fechaHasta) {
@@ -37,22 +69,55 @@ function validar(f: Filtros): ErroresFiltros {
       ...(!f.fechaHasta && { fechaHasta: "Requerida" }),
     };
   }
-  if (f.fechaDesde > f.fechaHasta) return { fechaDesde: "La fecha desde no puede ser posterior a la fecha hasta", fechaHasta: " " };
+  if (f.fechaDesde > f.fechaHasta)
+    return {
+      fechaDesde: "La fecha desde no puede ser posterior a la fecha hasta",
+      fechaHasta: " ",
+    };
   if (diasEntre(f.fechaDesde, f.fechaHasta) > MAX_DIAS) {
-    return { fechaHasta: `El rango no puede superar ${MAX_DIAS} días`, fechaDesde: " " };
+    return {
+      fechaHasta: `El rango no puede superar ${MAX_DIAS} días`,
+      fechaDesde: " ",
+    };
   }
   return {};
 }
 
 function exportarCsv(res: ReporteOrdenesResult) {
   const comilla = String.fromCharCode(34);
-  const celda = (v: string | number) => comilla + String(v).split(comilla).join(comilla + comilla) + comilla;
-  const encabezado = ["Número de orden", "Fecha de emisión", "NIT", "Proveedor", "Bodega destino", "Estado", "Moneda", "Monto", "Líneas vigentes", "Líneas anuladas"];
+  const celda = (v: string | number) =>
+    comilla +
+    String(v)
+      .split(comilla)
+      .join(comilla + comilla) +
+    comilla;
+  const encabezado = [
+    "Número de orden",
+    "Fecha de emisión",
+    "NIT",
+    "Proveedor",
+    "Bodega destino",
+    "Estado",
+    "Moneda",
+    "Monto",
+    "Líneas vigentes",
+    "Líneas anuladas",
+  ];
   const filas = res.items.map((o) => [
-    o.numeroOrden, formatoFecha(o.fechaEmision), o.proveedorNit, o.proveedorNombre, o.bodegaDestino,
-    o.estado, o.moneda, o.monto.toFixed(2), o.lineasVigentes, o.lineasAnuladas,
+    o.numeroOrden,
+    formatoFecha(o.fechaEmision),
+    o.proveedorNit,
+    o.proveedorNombre,
+    o.bodegaDestino,
+    o.estado,
+    o.moneda,
+    o.monto.toFixed(2),
+    o.lineasVigentes,
+    o.lineasAnuladas,
   ]);
-  const csv = [encabezado, ...filas].map((f) => f.map(celda).join(",")).join("\r\n");
+  const csv = [encabezado, ...filas]
+    .map((f) => f.map(celda).join(","))
+    .join("\r\n");
   const blob = new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -108,7 +173,12 @@ export default function ReporteOrdenesPage() {
       if (id !== solicitud.current) return;
       setResultado(null);
       setErrorServidor(
-        mensajeError(e, statusHttp(e) === 400 ? "La consulta no es válida." : "No se pudo ejecutar el reporte."),
+        mensajeError(
+          e,
+          statusHttp(e) === 400
+            ? "La consulta no es válida."
+            : "No se pudo ejecutar el reporte."
+        )
       );
     } finally {
       if (id === solicitud.current) setCargando(false);
@@ -122,7 +192,11 @@ export default function ReporteOrdenesPage() {
     setErrorServidor(null);
     if (Object.keys(errs).length > 0) {
       // Se bloquea la consulta: no se llama al API sin un rango de fechas valido.
-      setAlerta(!form.fechaDesde || !form.fechaHasta ? MSG_RANGO_OBLIGATORIO : Object.values(errs).find((m) => m.trim()) ?? null);
+      setAlerta(
+        !form.fechaDesde || !form.fechaHasta
+          ? MSG_RANGO_OBLIGATORIO
+          : (Object.values(errs).find((m) => m.trim()) ?? null)
+      );
       return;
     }
     setAlerta(null);
@@ -133,68 +207,121 @@ export default function ReporteOrdenesPage() {
 
   return (
     <Box>
-      <Typography variant="h4" mb={0.5}>Reporte de órdenes</Typography>
+      <Typography variant="h4" mb={0.5}>
+        Reporte de órdenes
+      </Typography>
       <Typography variant="body1" color="text.secondary" mb={2}>
         Consulta de órdenes de compra por rango de fechas.
       </Typography>
 
       <BarraContexto />
 
-      <Paper variant="outlined" sx={{ p: 2.5, mb: 2, borderColor: industryColors.border }}>
+      <Paper
+        variant="outlined"
+        sx={{ p: 2.5, mb: 2, borderColor: industryColors.border }}
+      >
         <Stack direction="row" alignItems="center" spacing={1} mb={2}>
           <FileBarChart size={18} strokeWidth={1.5} />
           <Typography variant="h6">Filtros</Typography>
         </Stack>
 
-        {alerta && <Alert severity="error" sx={{ mb: 2 }}>{alerta}</Alert>}
+        {alerta && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {alerta}
+          </Alert>
+        )}
 
         <Box component="form" onSubmit={buscar} noValidate>
           <Grid container spacing={1.5}>
             <Grid item xs={12} sm={6} md={2.4}>
               <TextField
-                label="Fecha desde *" type="date" size="small" fullWidth value={form.fechaDesde}
-                onChange={(e) => set("fechaDesde", e.target.value)} InputLabelProps={{ shrink: true }}
-                error={!!errores.fechaDesde} helperText={errores.fechaDesde ?? " "}
+                label="Fecha desde *"
+                type="date"
+                size="small"
+                fullWidth
+                value={form.fechaDesde}
+                onChange={(e) => set("fechaDesde", e.target.value)}
+                InputLabelProps={{ shrink: true }}
+                error={!!errores.fechaDesde}
+                helperText={errores.fechaDesde ?? " "}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={2.4}>
               <TextField
-                label="Fecha hasta *" type="date" size="small" fullWidth value={form.fechaHasta}
-                onChange={(e) => set("fechaHasta", e.target.value)} InputLabelProps={{ shrink: true }}
-                error={!!errores.fechaHasta} helperText={errores.fechaHasta ?? " "}
+                label="Fecha hasta *"
+                type="date"
+                size="small"
+                fullWidth
+                value={form.fechaHasta}
+                onChange={(e) => set("fechaHasta", e.target.value)}
+                InputLabelProps={{ shrink: true }}
+                error={!!errores.fechaHasta}
+                helperText={errores.fechaHasta ?? " "}
               />
             </Grid>
             <Grid item xs={12} sm={4} md={2.4}>
               <TextField
-                label="NIT proveedor" size="small" fullWidth value={form.proveedorNit}
-                onChange={(e) => set("proveedorNit", e.target.value)} helperText=" "
+                label="NIT proveedor"
+                size="small"
+                fullWidth
+                value={form.proveedorNit}
+                onChange={(e) => set("proveedorNit", e.target.value)}
+                helperText=" "
               />
             </Grid>
             <Grid item xs={12} sm={4} md={2.4}>
               <TextField
-                label="Estado" select size="small" fullWidth value={form.estado} onChange={(e) => set("estado", e.target.value)}
-                helperText=" " SelectProps={{ displayEmpty: true }} InputLabelProps={{ shrink: true }}
+                label="Estado"
+                select
+                size="small"
+                fullWidth
+                value={form.estado}
+                onChange={(e) => set("estado", e.target.value)}
+                helperText=" "
+                SelectProps={{ displayEmpty: true }}
+                InputLabelProps={{ shrink: true }}
               >
                 <MenuItem value="">Todos</MenuItem>
-                {ESTADOS.map((s) => <MenuItem key={s} value={s}>{s}</MenuItem>)}
+                {ESTADOS.map((s) => (
+                  <MenuItem key={s} value={s}>
+                    {s}
+                  </MenuItem>
+                ))}
               </TextField>
             </Grid>
             <Grid item xs={12} sm={4} md={2.4}>
               <TextField
-                label="Bodega" select size="small" fullWidth value={form.bodega} onChange={(e) => set("bodega", e.target.value)}
-                helperText=" " SelectProps={{ displayEmpty: true }} InputLabelProps={{ shrink: true }}
+                label="Bodega"
+                select
+                size="small"
+                fullWidth
+                value={form.bodega}
+                onChange={(e) => set("bodega", e.target.value)}
+                helperText=" "
+                SelectProps={{ displayEmpty: true }}
+                InputLabelProps={{ shrink: true }}
               >
                 <MenuItem value="">Todas</MenuItem>
-                {BODEGAS.map((b) => <MenuItem key={b} value={b}>{b}</MenuItem>)}
+                {BODEGAS.map((b) => (
+                  <MenuItem key={b} value={b}>
+                    {b}
+                  </MenuItem>
+                ))}
               </TextField>
             </Grid>
           </Grid>
           <Stack direction="row" spacing={1}>
-            <Button type="submit" variant="contained" startIcon={<Search size={16} />} disabled={cargando}>
+            <Button
+              type="submit"
+              variant="contained"
+              startIcon={<Search size={16} />}
+              disabled={cargando}
+            >
               {cargando ? "Buscando..." : "Buscar"}
             </Button>
             <Button
-              variant="outlined" startIcon={<Download size={16} />}
+              variant="outlined"
+              startIcon={<Download size={16} />}
               disabled={!resultado || resultado.items.length === 0}
               onClick={() => resultado && exportarCsv(resultado)}
             >
@@ -204,23 +331,36 @@ export default function ReporteOrdenesPage() {
         </Box>
       </Paper>
 
-      {errorServidor && <Alert severity="error" sx={{ mb: 2 }}>{errorServidor}</Alert>}
+      {errorServidor && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {errorServidor}
+        </Alert>
+      )}
 
       <Paper variant="outlined" sx={{ borderColor: industryColors.border }}>
         {resultado && (
           <Box
             sx={{
-              px: 2, py: 1, bgcolor: industryColors.accent100, borderBottom: `1px solid ${industryColors.border}`,
-              display: "flex", flexWrap: "wrap", gap: 2, justifyContent: "space-between", alignItems: "center",
+              px: 2,
+              py: 1,
+              bgcolor: industryColors.accent100,
+              borderBottom: `1px solid ${industryColors.border}`,
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 2,
+              justifyContent: "space-between",
+              alignItems: "center",
             }}
           >
             <Typography variant="body2" sx={{ fontFamily: "monospace" }}>
-              {entero(resultado.total)} {resultado.total === 1 ? "orden" : "órdenes"} · monto total{" "}
+              {entero(resultado.total)}{" "}
+              {resultado.total === 1 ? "orden" : "órdenes"} · monto total{" "}
               <b>{dinero(resultado.montoTotal)}</b>
             </Typography>
             {aplicados && (
               <Typography variant="caption" color="text.secondary">
-                Del {formatoFecha(aplicados.fechaDesde)} al {formatoFecha(aplicados.fechaHasta)}
+                Del {formatoFecha(aplicados.fechaDesde)} al{" "}
+                {formatoFecha(aplicados.fechaHasta)}
               </Typography>
             )}
           </Box>
@@ -245,17 +385,46 @@ export default function ReporteOrdenesPage() {
             <TableBody>
               {items.map((o) => (
                 <TableRow key={o.id} hover>
-                  <TableCell sx={{ fontFamily: "monospace", whiteSpace: "nowrap" }}>{o.numeroOrden}</TableCell>
-                  <TableCell sx={{ whiteSpace: "nowrap" }}>{formatoFecha(o.fechaEmision)}</TableCell>
-                  <TableCell sx={{ fontFamily: "monospace" }}>{o.proveedorNit}</TableCell>
+                  <TableCell
+                    sx={{ fontFamily: "monospace", whiteSpace: "nowrap" }}
+                  >
+                    {o.numeroOrden}
+                  </TableCell>
+                  <TableCell sx={{ whiteSpace: "nowrap" }}>
+                    {formatoFecha(o.fechaEmision)}
+                  </TableCell>
+                  <TableCell sx={{ fontFamily: "monospace" }}>
+                    {o.proveedorNit}
+                  </TableCell>
                   <TableCell>{o.proveedorNombre}</TableCell>
                   <TableCell>{o.bodegaDestino}</TableCell>
-                  <TableCell><Chip size="small" label={o.estado} color={colorEstado[o.estado] ?? "default"} variant="outlined" /></TableCell>
-                  <TableCell align="right" sx={{ fontFamily: "monospace", whiteSpace: "nowrap" }}>
+                  <TableCell>
+                    <Chip
+                      size="small"
+                      label={o.estado}
+                      color={colorEstado[o.estado] ?? "default"}
+                      variant="outlined"
+                    />
+                  </TableCell>
+                  <TableCell
+                    align="right"
+                    sx={{ fontFamily: "monospace", whiteSpace: "nowrap" }}
+                  >
                     {dinero(o.monto, o.moneda === "USD" ? "$" : "Q")}
                   </TableCell>
-                  <TableCell align="right" sx={{ fontFamily: "monospace" }}>{entero(o.lineasVigentes)}</TableCell>
-                  <TableCell align="right" sx={{ fontFamily: "monospace", color: o.lineasAnuladas > 0 ? industryColors.danger : undefined }}>
+                  <TableCell align="right" sx={{ fontFamily: "monospace" }}>
+                    {entero(o.lineasVigentes)}
+                  </TableCell>
+                  <TableCell
+                    align="right"
+                    sx={{
+                      fontFamily: "monospace",
+                      color:
+                        o.lineasAnuladas > 0
+                          ? industryColors.danger
+                          : undefined,
+                    }}
+                  >
                     {entero(o.lineasAnuladas)}
                   </TableCell>
                 </TableRow>
@@ -265,7 +434,9 @@ export default function ReporteOrdenesPage() {
                   <TableCell colSpan={9} align="center">
                     <Typography variant="body2" color="text.secondary" py={3}>
                       {!resultado
-                        ? cargando ? "Ejecutando reporte..." : "Indique el rango de fechas y pulse Buscar para ejecutar el reporte."
+                        ? cargando
+                          ? "Ejecutando reporte..."
+                          : "Indique el rango de fechas y pulse Buscar para ejecutar el reporte."
                         : "No se encontraron órdenes con los filtros indicados."}
                     </Typography>
                   </TableCell>
@@ -283,9 +454,15 @@ export default function ReporteOrdenesPage() {
             rowsPerPage={tamano}
             rowsPerPageOptions={TAMANOS_PAGINA}
             labelRowsPerPage="Filas por página"
-            labelDisplayedRows={({ from, to, count }) => `${from}–${to} de ${count}`}
-            onPageChange={(_, p) => aplicados && void ejecutar(aplicados, p + 1, tamano)}
-            onRowsPerPageChange={(e) => aplicados && void ejecutar(aplicados, 1, Number(e.target.value))}
+            labelDisplayedRows={({ from, to, count }) =>
+              `${from}–${to} de ${count}`
+            }
+            onPageChange={(_, p) =>
+              aplicados && void ejecutar(aplicados, p + 1, tamano)
+            }
+            onRowsPerPageChange={(e) =>
+              aplicados && void ejecutar(aplicados, 1, Number(e.target.value))
+            }
           />
         )}
       </Paper>

@@ -209,7 +209,7 @@ public class ReporteService : IReporteService
         if (tipo is not (TipoOrdenes or TipoLineas or TipoDocumentos))
         {
             throw new ValidationApiException("Datos invalidos",
-                new List<string> { "tipo debe ser ordenes, lineas o documentos" });
+                ["tipo debe ser ordenes, lineas o documentos"]);
         }
 
         DateTime? desde = null;

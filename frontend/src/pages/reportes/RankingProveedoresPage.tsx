@@ -1,7 +1,21 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
-  Alert, Box, Button, Chip, LinearProgress, MenuItem, Paper, Stack, Table, TableBody, TableCell,
-  TableContainer, TableHead, TableRow, TextField, Typography,
+  Alert,
+  Box,
+  Button,
+  Chip,
+  LinearProgress,
+  MenuItem,
+  Paper,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+  Typography,
 } from "@mui/material";
 import { RefreshCw, Trophy } from "lucide-react";
 import { mensajeError, reportesApi } from "../../api/reportesApi";
@@ -24,19 +38,34 @@ function ChipPosicion({ posicion }: { posicion: number }) {
     <Chip
       size="small"
       label={`#${posicion}`}
-      icon={medalla ? <Trophy size={14} strokeWidth={1.75} color="currentColor" /> : undefined}
+      icon={
+        medalla ? (
+          <Trophy size={14} strokeWidth={1.75} color="currentColor" />
+        ) : undefined
+      }
       sx={{
-        minWidth: 64, fontWeight: 700, fontFamily: "monospace",
+        minWidth: 64,
+        fontWeight: 700,
+        fontFamily: "monospace",
         ...(medalla
-          ? { bgcolor: medalla.bg, color: medalla.color, "& .MuiChip-icon": { color: medalla.color } }
-          : { bgcolor: industryColors.accent100, color: industryColors.accent700 }),
+          ? {
+              bgcolor: medalla.bg,
+              color: medalla.color,
+              "& .MuiChip-icon": { color: medalla.color },
+            }
+          : {
+              bgcolor: industryColors.accent100,
+              color: industryColors.accent700,
+            }),
       }}
     />
   );
 }
 
 export default function RankingProveedoresPage() {
-  const [anio, setAnio] = useState(ANIOS.includes(EJERCICIO) ? EJERCICIO : ANIOS[ANIOS.length - 1]);
+  const [anio, setAnio] = useState(
+    ANIOS.includes(EJERCICIO) ? EJERCICIO : ANIOS[ANIOS.length - 1]
+  );
   const [top, setTop] = useState(20);
   const [filas, setFilas] = useState<RankingProveedor[]>([]);
   const [cargando, setCargando] = useState(false);
@@ -53,44 +82,101 @@ export default function RankingProveedoresPage() {
     } catch (e) {
       if (id === solicitud.current) {
         setFilas([]);
-        setError(mensajeError(e, "No se pudo cargar el ranking de proveedores."));
+        setError(
+          mensajeError(e, "No se pudo cargar el ranking de proveedores.")
+        );
       }
     } finally {
       if (id === solicitud.current) setCargando(false);
     }
   }, [anio, top]);
 
-  useEffect(() => { void cargar(); }, [cargar]);
+  useEffect(() => {
+    void cargar();
+  }, [cargar]);
 
   return (
     <Box>
-      <Typography variant="h4" mb={0.5}>Ranking de proveedores</Typography>
+      <Typography variant="h4" mb={0.5}>
+        Ranking de proveedores
+      </Typography>
       <Typography variant="body1" color="text.secondary" mb={2}>
-        Proveedores ordenados por el monto de sus órdenes vigentes en el ejercicio.
+        Proveedores ordenados por el monto de sus órdenes vigentes en el
+        ejercicio.
       </Typography>
 
       <BarraContexto />
 
-      <Paper variant="outlined" sx={{ p: 2.5, borderColor: industryColors.border }}>
-        <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5} alignItems={{ sm: "center" }} mb={2}>
+      <Paper
+        variant="outlined"
+        sx={{ p: 2.5, borderColor: industryColors.border }}
+      >
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={1.5}
+          alignItems={{ sm: "center" }}
+          mb={2}
+        >
           <Stack direction="row" alignItems="center" spacing={1}>
             <Trophy size={18} strokeWidth={1.5} />
-            <Typography variant="h6">Proveedores con mayor monto comprometido</Typography>
+            <Typography variant="h6">
+              Proveedores con mayor monto comprometido
+            </Typography>
           </Stack>
           <Box flexGrow={1} />
-          <TextField select size="small" label="Ejercicio" value={anio} onChange={(e) => setAnio(Number(e.target.value))} sx={{ width: 120 }}>
-            {ANIOS.map((a) => <MenuItem key={a} value={a}>{a}</MenuItem>)}
+          <TextField
+            select
+            size="small"
+            label="Ejercicio"
+            value={anio}
+            onChange={(e) => setAnio(Number(e.target.value))}
+            sx={{ width: 120 }}
+          >
+            {ANIOS.map((a) => (
+              <MenuItem key={a} value={a}>
+                {a}
+              </MenuItem>
+            ))}
           </TextField>
-          <TextField select size="small" label="Top" value={top} onChange={(e) => setTop(Number(e.target.value))} sx={{ width: 100 }}>
-            {TOPS.map((t) => <MenuItem key={t} value={t}>{t}</MenuItem>)}
+          <TextField
+            select
+            size="small"
+            label="Top"
+            value={top}
+            onChange={(e) => setTop(Number(e.target.value))}
+            sx={{ width: 100 }}
+          >
+            {TOPS.map((t) => (
+              <MenuItem key={t} value={t}>
+                {t}
+              </MenuItem>
+            ))}
           </TextField>
-          <Button size="small" variant="outlined" startIcon={<RefreshCw size={16} />} onClick={() => void cargar()} disabled={cargando}>
+          <Button
+            size="small"
+            variant="outlined"
+            startIcon={<RefreshCw size={16} />}
+            onClick={() => void cargar()}
+            disabled={cargando}
+          >
             Refrescar
           </Button>
         </Stack>
 
         {error && (
-          <Alert severity="error" sx={{ mb: 2 }} action={<Button color="inherit" size="small" onClick={() => void cargar()}>Reintentar</Button>}>
+          <Alert
+            severity="error"
+            sx={{ mb: 2 }}
+            action={
+              <Button
+                color="inherit"
+                size="small"
+                onClick={() => void cargar()}
+              >
+                Reintentar
+              </Button>
+            }
+          >
             {error}
           </Alert>
         )}
@@ -111,23 +197,61 @@ export default function RankingProveedoresPage() {
             </TableHead>
             <TableBody>
               {filas.map((f) => {
-                const pct = Number.isFinite(f.participacionPct) ? f.participacionPct : 0;
+                const pct = Number.isFinite(f.participacionPct)
+                  ? f.participacionPct
+                  : 0;
                 return (
-                  <TableRow key={`${f.posicionRanking}-${f.proveedorNit}`} hover>
-                    <TableCell><ChipPosicion posicion={f.posicionRanking} /></TableCell>
-                    <TableCell sx={{ fontFamily: "monospace" }}>{f.proveedorNit}</TableCell>
-                    <TableCell sx={{ fontWeight: f.posicionRanking <= 3 ? 600 : 400 }}>{f.proveedorNombre}</TableCell>
-                    <TableCell align="right" sx={{ fontFamily: "monospace" }}>{entero(f.ordenes)}</TableCell>
-                    <TableCell align="right" sx={{ fontFamily: "monospace" }}>{entero(f.lineas)}</TableCell>
-                    <TableCell align="right" sx={{ fontFamily: "monospace", fontWeight: 600 }}>{dinero(f.totalComprometido)}</TableCell>
+                  <TableRow
+                    key={`${f.posicionRanking}-${f.proveedorNit}`}
+                    hover
+                  >
+                    <TableCell>
+                      <ChipPosicion posicion={f.posicionRanking} />
+                    </TableCell>
+                    <TableCell sx={{ fontFamily: "monospace" }}>
+                      {f.proveedorNit}
+                    </TableCell>
+                    <TableCell
+                      sx={{ fontWeight: f.posicionRanking <= 3 ? 600 : 400 }}
+                    >
+                      {f.proveedorNombre}
+                    </TableCell>
+                    <TableCell align="right" sx={{ fontFamily: "monospace" }}>
+                      {entero(f.ordenes)}
+                    </TableCell>
+                    <TableCell align="right" sx={{ fontFamily: "monospace" }}>
+                      {entero(f.lineas)}
+                    </TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{ fontFamily: "monospace", fontWeight: 600 }}
+                    >
+                      {dinero(f.totalComprometido)}
+                    </TableCell>
                     <TableCell>
                       <Stack direction="row" alignItems="center" spacing={1}>
                         <LinearProgress
-                          variant="determinate" value={Math.min(100, Math.max(0, pct))}
-                          sx={{ flexGrow: 1, height: 6, bgcolor: industryColors.accent100 }}
+                          variant="determinate"
+                          value={Math.min(100, Math.max(0, pct))}
+                          sx={{
+                            flexGrow: 1,
+                            height: 6,
+                            bgcolor: industryColors.accent100,
+                          }}
                         />
-                        <Typography variant="caption" sx={{ width: 52, textAlign: "right", fontFamily: "monospace" }}>
-                          {pct.toLocaleString("es-GT", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            width: 52,
+                            textAlign: "right",
+                            fontFamily: "monospace",
+                          }}
+                        >
+                          {pct.toLocaleString("es-GT", {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}
+                          %
                         </Typography>
                       </Stack>
                     </TableCell>
@@ -146,7 +270,9 @@ export default function RankingProveedoresPage() {
               {cargando && filas.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={7} align="center">
-                    <Typography variant="body2" color="text.secondary" py={3}>Cargando ranking...</Typography>
+                    <Typography variant="body2" color="text.secondary" py={3}>
+                      Cargando ranking...
+                    </Typography>
                   </TableCell>
                 </TableRow>
               )}

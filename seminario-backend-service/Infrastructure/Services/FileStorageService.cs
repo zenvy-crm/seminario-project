@@ -1,5 +1,6 @@
-using Microsoft.AspNetCore.Http;
+using System.Globalization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Seminario.Application.Common;
 using Seminario.Application.Interfaces;
 
@@ -33,14 +34,14 @@ public class FileStorageService : IFileStorageService
     {
         var (originalName, extension, expectedContentType, content) = await ValidateAsync(file);
 
-        var userFolder = Path.Combine(_uploadsRoot, userId.ToString());
+        var userFolder = Path.Combine(_uploadsRoot, userId.ToString(CultureInfo.InvariantCulture));
         Directory.CreateDirectory(userFolder);
 
         var storedFileName = $"{Guid.NewGuid():N}{extension.ToLowerInvariant()}";
         var fullPath = Path.Combine(userFolder, storedFileName);
         await File.WriteAllBytesAsync(fullPath, content);
 
-        var relativePath = Path.Combine(userId.ToString(), storedFileName).Replace('\\', '/');
+        var relativePath = Path.Combine(userId.ToString(CultureInfo.InvariantCulture), storedFileName).Replace('\\', '/');
 
         return new StoredFile(originalName, storedFileName, expectedContentType, content.LongLength, relativePath);
     }
@@ -49,36 +50,36 @@ public class FileStorageService : IFileStorageService
     {
         if (file.Length == 0)
         {
-            throw new ValidationApiException("El archivo esta vacio", new List<string> { "file" });
+            throw new ValidationApiException("El archivo esta vacio", ["file"]);
         }
 
         if (file.Length > MaxFileSizeBytes)
         {
-            throw new ValidationApiException("El archivo supera el tamano maximo permitido de 5MB", new List<string> { "file" });
+            throw new ValidationApiException("El archivo supera el tamano maximo permitido de 5MB", ["file"]);
         }
 
         var originalName = Path.GetFileName(file.FileName);
 
         if (string.IsNullOrWhiteSpace(originalName) || originalName.Any(c => char.IsControl(c)))
         {
-            throw new ValidationApiException("El nombre del archivo no es valido", new List<string> { "file" });
+            throw new ValidationApiException("El nombre del archivo no es valido", ["file"]);
         }
 
         if (originalName.Length > MaxFileNameLength)
         {
-            throw new ValidationApiException($"El nombre del archivo no puede superar los {MaxFileNameLength} caracteres", new List<string> { "file" });
+            throw new ValidationApiException($"El nombre del archivo no puede superar los {MaxFileNameLength} caracteres", ["file"]);
         }
 
         var extension = Path.GetExtension(originalName);
 
         if (string.IsNullOrEmpty(extension) || !AllowedExtensionsToContentType.TryGetValue(extension, out var expectedContentType))
         {
-            throw new ValidationApiException("Solo se permiten archivos PDF, JPG o JPEG", new List<string> { "file" });
+            throw new ValidationApiException("Solo se permiten archivos PDF, JPG o JPEG", ["file"]);
         }
 
         if (!string.Equals(file.ContentType, expectedContentType, StringComparison.OrdinalIgnoreCase))
         {
-            throw new ValidationApiException("El tipo de archivo no coincide con la extension declarada", new List<string> { "file" });
+            throw new ValidationApiException("El tipo de archivo no coincide con la extension declarada", ["file"]);
         }
 
         await using var stream = file.OpenReadStream();
@@ -88,7 +89,7 @@ public class FileStorageService : IFileStorageService
 
         if (!MatchesFileSignature(content, extension))
         {
-            throw new ValidationApiException("El contenido del archivo no corresponde con su extension", new List<string> { "file" });
+            throw new ValidationApiException("El contenido del archivo no corresponde con su extension", ["file"]);
         }
 
         return (originalName, extension, expectedContentType, content);

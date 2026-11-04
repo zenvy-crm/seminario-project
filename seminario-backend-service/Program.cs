@@ -5,19 +5,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Seminario.Infrastructure.Health;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Seminario.Api;
 using Seminario.Api.Middleware;
 using Seminario.Application.Common;
 using Seminario.Application.Interfaces;
 using Seminario.Application.Services;
 using Seminario.Infrastructure.Auth;
+using Seminario.Infrastructure.Health;
 using Seminario.Infrastructure.MongoDB;
 using Seminario.Infrastructure.Persistence;
 using Seminario.Infrastructure.Repositories;
 using Seminario.Infrastructure.Services;
-using Microsoft.OpenApi.Models;
 
 DotNetEnv.Env.TraversePath().Load();
 
@@ -203,4 +203,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();
+
+// Expone la clase Program generada por los top-level statements para WebApplicationFactory (pruebas de integracion).
+public partial class Program { }

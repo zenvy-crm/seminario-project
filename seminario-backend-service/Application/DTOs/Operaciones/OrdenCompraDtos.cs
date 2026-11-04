@@ -88,7 +88,7 @@ public class OrdenCompraDto
     public string RowVer { get; set; } = string.Empty;
 
     /// <summary>Lineas del detalle, incluidas las anuladas (EstadoLinea = false). Vacio en el listado paginado.</summary>
-    public List<LineaOrdenDto> Lineas { get; set; } = new();
+    public List<LineaOrdenDto> Lineas { get; set; } = [];
 
     /// <summary>Presupuesto de la bodega/anio de la orden. Solo en el detalle, POST, PUT y DELETE; null en el listado.</summary>
     public PresupuestoBodegaDto? Presupuesto { get; set; }
@@ -165,10 +165,10 @@ public class OrdenCompraQueryDto
     public DateTime? Hasta { get; set; }
     public string? Estado { get; set; }
     public string? ProveedorNit { get; set; }
-    public bool SoloMias { get; set; }
+    public bool? SoloMias { get; set; }
 
     /// <summary>Solo ordenes maestro-detalle (creadas por el SP). Excluye las filas del stress test, que no tienen lineas.</summary>
-    public bool ConDetalle { get; set; }
+    public bool? ConDetalle { get; set; }
 
     /// <summary>Busqueda exacta por numero de orden (ej. OC-2026-000001).</summary>
     [StringLength(30)]
@@ -206,5 +206,5 @@ public class SeedDataResultDto
     public long DuracionMs { get; set; }
     public int Lotes { get; set; }
     public double RegistrosPorSegundo { get; set; }
-    public List<ParticionInfoDto> Particiones { get; set; } = new();
+    public List<ParticionInfoDto> Particiones { get; set; } = [];
 }
