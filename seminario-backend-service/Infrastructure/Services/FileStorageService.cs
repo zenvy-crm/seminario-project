@@ -1,5 +1,6 @@
-using Microsoft.AspNetCore.Http;
+using System.Globalization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Seminario.Application.Common;
 using Seminario.Application.Interfaces;
 
@@ -33,14 +34,14 @@ public class FileStorageService : IFileStorageService
     {
         var (originalName, extension, expectedContentType, content) = await ValidateAsync(file);
 
-        var userFolder = Path.Combine(_uploadsRoot, userId.ToString());
+        var userFolder = Path.Combine(_uploadsRoot, userId.ToString(CultureInfo.InvariantCulture));
         Directory.CreateDirectory(userFolder);
 
         var storedFileName = $"{Guid.NewGuid():N}{extension.ToLowerInvariant()}";
         var fullPath = Path.Combine(userFolder, storedFileName);
         await File.WriteAllBytesAsync(fullPath, content);
 
-        var relativePath = Path.Combine(userId.ToString(), storedFileName).Replace('\\', '/');
+        var relativePath = Path.Combine(userId.ToString(CultureInfo.InvariantCulture), storedFileName).Replace('\\', '/');
 
         return new StoredFile(originalName, storedFileName, expectedContentType, content.LongLength, relativePath);
     }

@@ -1,4 +1,5 @@
 using Seminario.Application.Interfaces;
+using Seminario.Infrastructure.Logging;
 
 namespace Seminario.Infrastructure.MongoDB;
 
@@ -26,7 +27,7 @@ public class AuditBackgroundService : BackgroundService
             }
             catch (Exception ex) when (ex is not OperationCanceledException)
             {
-                _logger.LogError(ex, "No se pudo escribir el evento de auditoria {EventType} en MongoDB", evt.EventType);
+                _logger.AuditoriaNoEscrita(ex, evt.EventType);
             }
         }
     }

@@ -81,7 +81,7 @@ public static class DbSeeder
     private static async Task AgregarSiNoExisteAsync(
         AppDbContext db,
         IPasswordHasher passwordHasher,
-        IReadOnlyDictionary<string, int> roles,
+        Dictionary<string, int> roles,
         (string Username, string Password, string Role, string FirstName, string LastName, string Email) u)
     {
         var existe = await db.Users.AnyAsync(x => x.Username == u.Username || x.Email == u.Email);

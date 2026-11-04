@@ -1,3 +1,4 @@
+using System.Globalization;
 using Seminario.Application.Audit;
 using Seminario.Application.Common;
 using Seminario.Application.DTOs.Auth;
@@ -72,7 +73,7 @@ public class AuthService : IAuthService
         {
             EventType = AuditEventTypes.UserCreated,
             Entity = "User",
-            EntityId = user.Id.ToString(),
+            EntityId = user.Id.ToString(CultureInfo.InvariantCulture),
             UserId = user.Id,
             Username = user.Username,
             After = new { user.Username, user.Email, Role = userRole.Name }
@@ -109,7 +110,7 @@ public class AuthService : IAuthService
             {
                 EventType = AuditEventTypes.AccountDisabled,
                 Entity = "User",
-                EntityId = user.Id.ToString(),
+                EntityId = user.Id.ToString(CultureInfo.InvariantCulture),
                 UserId = user.Id,
                 Username = user.Username
             });
@@ -124,7 +125,7 @@ public class AuthService : IAuthService
                 {
                     EventType = AuditEventTypes.LoginFailed,
                     Entity = "User",
-                    EntityId = user.Id.ToString(),
+                    EntityId = user.Id.ToString(CultureInfo.InvariantCulture),
                     UserId = user.Id,
                     Username = user.Username
                 });
@@ -140,7 +141,7 @@ public class AuthService : IAuthService
             {
                 EventType = AuditEventTypes.AccountUnlocked,
                 Entity = "User",
-                EntityId = user.Id.ToString(),
+                EntityId = user.Id.ToString(CultureInfo.InvariantCulture),
                 UserId = user.Id,
                 Username = user.Username,
                 After = new { reason = "auto" }
@@ -156,7 +157,7 @@ public class AuthService : IAuthService
             {
                 EventType = AuditEventTypes.LoginFailed,
                 Entity = "User",
-                EntityId = user.Id.ToString(),
+                EntityId = user.Id.ToString(CultureInfo.InvariantCulture),
                 UserId = user.Id,
                 Username = user.Username
             });
@@ -170,7 +171,7 @@ public class AuthService : IAuthService
                 {
                     EventType = AuditEventTypes.AccountLocked,
                     Entity = "User",
-                    EntityId = user.Id.ToString(),
+                    EntityId = user.Id.ToString(CultureInfo.InvariantCulture),
                     UserId = user.Id,
                     Username = user.Username,
                     After = new { lockedUntil = user.LockedUntil, failedAttempts = user.FailedLoginAttempts }
@@ -203,7 +204,7 @@ public class AuthService : IAuthService
             {
                 EventType = AuditEventTypes.PasswordRehashed,
                 Entity = "User",
-                EntityId = user.Id.ToString(),
+                EntityId = user.Id.ToString(CultureInfo.InvariantCulture),
                 UserId = user.Id,
                 Username = user.Username,
                 After = new { algorithm = "bcrypt" }
@@ -239,7 +240,7 @@ public class AuthService : IAuthService
         {
             EventType = AuditEventTypes.MfaSuccess,
             Entity = "User",
-            EntityId = user.Id.ToString(),
+            EntityId = user.Id.ToString(CultureInfo.InvariantCulture),
             UserId = user.Id,
             Username = user.Username
         });
@@ -247,7 +248,7 @@ public class AuthService : IAuthService
         {
             EventType = AuditEventTypes.LoginSuccess,
             Entity = "User",
-            EntityId = user.Id.ToString(),
+            EntityId = user.Id.ToString(CultureInfo.InvariantCulture),
             UserId = user.Id,
             Username = user.Username
         });
@@ -296,7 +297,7 @@ public class AuthService : IAuthService
             {
                 EventType = AuditEventTypes.Logout,
                 Entity = "User",
-                EntityId = existing.UserId.ToString(),
+                EntityId = existing.UserId.ToString(CultureInfo.InvariantCulture),
                 UserId = existing.UserId,
                 Username = existing.User.Username
             });

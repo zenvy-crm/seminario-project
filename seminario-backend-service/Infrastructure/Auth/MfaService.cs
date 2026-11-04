@@ -1,3 +1,5 @@
+using System.Globalization;
+using System.Security.Cryptography;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -5,8 +7,8 @@ using Seminario.Application.Audit;
 using Seminario.Application.Common;
 using Seminario.Application.Interfaces;
 using Seminario.Domain.Entities;
+using Seminario.Infrastructure.Logging;
 using Seminario.Infrastructure.Persistence;
-using System.Security.Cryptography;
 
 namespace Seminario.Infrastructure.Auth;
 
@@ -28,7 +30,7 @@ public class MfaService : IMfaService
 
     public async Task<string> GenerateAsync(int userId)
     {
-        var code = RandomNumberGenerator.GetInt32(0, 1_000_000).ToString("D6");
+        var code = RandomNumberGenerator.GetInt32(0, 1_000_000).ToString("D6", CultureInfo.InvariantCulture);
         var mfaToken = Convert.ToHexString(RandomNumberGenerator.GetBytes(32));
 
         var mfaCode = new MfaCode
@@ -43,7 +45,7 @@ public class MfaService : IMfaService
         _db.MfaCodes.Add(mfaCode);
         await _db.SaveChangesAsync();
 
-        _logger.LogInformation("Codigo MFA para el usuario {UserId}: {Code} (valido {Minutes} min)", userId, code, CodeExpirationMinutes);
+        _logger.CodigoMfaEmitido(userId, code, CodeExpirationMinutes);
 
         return mfaToken;
     }
@@ -94,7 +96,7 @@ public class MfaService : IMfaService
         {
             EventType = AuditEventTypes.MfaFailed,
             Entity = "User",
-            EntityId = userId?.ToString(),
+            EntityId = userId?.ToString(CultureInfo.InvariantCulture),
             UserId = userId,
             Username = username
         });
