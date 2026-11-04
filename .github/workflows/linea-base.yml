@@ -13,7 +13,7 @@ on:
       ref_frontend:
         description: "Commit del monorepo con el frontend sin intervenir"
         required: false
-        default: "826501b"
+        default: "826501b07141a9f87e4ee5ee1996d08881ae6a29"
 
 jobs:
   linea-base:
