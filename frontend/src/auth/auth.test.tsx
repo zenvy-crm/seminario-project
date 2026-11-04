@@ -78,7 +78,11 @@ describe("AuthContext", () => {
     const login = vi.spyOn(authApi, "login");
     renderConProveedor();
 
-    login.mockResolvedValueOnce({ success: false, message: "Bloqueada", data: {} });
+    login.mockResolvedValueOnce({
+      success: false,
+      message: "Bloqueada",
+      data: {},
+    });
     await act(async () => {
       expect(await auth.login("a", "b")).toEqual({
         requiresMfa: false,
@@ -98,7 +102,13 @@ describe("AuthContext", () => {
       data: {
         accessToken: "jwt-directo",
         expiresAt: enUnaHora(),
-        user: { id: 2, username: "u", firstName: "U", lastName: "L", role: "USER" },
+        user: {
+          id: 2,
+          username: "u",
+          firstName: "U",
+          lastName: "L",
+          role: "USER",
+        },
       },
     });
     renderConProveedor();
@@ -117,7 +127,11 @@ describe("AuthContext", () => {
     const verify = vi.spyOn(authApi, "verifyMfa");
     renderConProveedor();
 
-    verify.mockResolvedValueOnce({ success: false, message: "Codigo incorrecto", data: {} });
+    verify.mockResolvedValueOnce({
+      success: false,
+      message: "Codigo incorrecto",
+      data: {},
+    });
     await act(async () => {
       expect(await auth.verifyMfa("t", "000000")).toEqual({
         success: false,
@@ -136,7 +150,13 @@ describe("AuthContext", () => {
       data: {
         accessToken: "jwt-mfa",
         expiresAt: enUnaHora(),
-        user: { id: 1, username: "admin", firstName: "A", lastName: "S", role: "ADMIN" },
+        user: {
+          id: 1,
+          username: "admin",
+          firstName: "A",
+          lastName: "S",
+          role: "ADMIN",
+        },
       },
     });
     await act(async () => {
@@ -146,7 +166,9 @@ describe("AuthContext", () => {
   });
 
   it("FE-AUTH-07 logout y el evento auth:unauthorized cierran la sesion", async () => {
-    const logout = vi.spyOn(authApi, "logout").mockRejectedValue(new Error("red"));
+    const logout = vi
+      .spyOn(authApi, "logout")
+      .mockRejectedValue(new Error("red"));
     guardarSesion("USER");
     renderConProveedor();
     await waitFor(() => expect(auth.isAuthenticated).toBe(true));

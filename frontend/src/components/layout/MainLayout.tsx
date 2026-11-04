@@ -19,7 +19,11 @@ export default function MainLayout() {
         sx={{
           display: { xs: "none", md: "block" },
           width: DRAWER_WIDTH,
-          "& .MuiDrawer-paper": { width: DRAWER_WIDTH, boxSizing: "border-box", borderRight: `1px solid ${industryColors.border}` },
+          "& .MuiDrawer-paper": {
+            width: DRAWER_WIDTH,
+            boxSizing: "border-box",
+            borderRight: `1px solid ${industryColors.border}`,
+          },
         }}
       >
         <Toolbar />
@@ -30,12 +34,19 @@ export default function MainLayout() {
         variant="temporary"
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
-        sx={{ display: { xs: "block", md: "none" }, "& .MuiDrawer-paper": { width: DRAWER_WIDTH } }}
+        sx={{
+          display: { xs: "block", md: "none" },
+          "& .MuiDrawer-paper": { width: DRAWER_WIDTH },
+        }}
       >
         <Sidebar onNavigate={() => setMobileOpen(false)} />
       </Drawer>
 
-      <Box component="main" flexGrow={1} sx={{ width: { md: `calc(100% - ${DRAWER_WIDTH}px)` } }}>
+      <Box
+        component="main"
+        flexGrow={1}
+        sx={{ width: { md: `calc(100% - ${DRAWER_WIDTH}px)` } }}
+      >
         <Toolbar />
         <Box p={{ xs: 2, md: 4 }}>
           <Outlet />

@@ -15,7 +15,12 @@ const cornerStyle = {
 
 export default function Blueprint({ children, sx, ...rest }: BoxProps) {
   return (
-    <Box position="relative" border={`1px solid ${industryColors.border}`} sx={sx} {...rest}>
+    <Box
+      position="relative"
+      border={`1px solid ${industryColors.border}`}
+      sx={sx}
+      {...rest}
+    >
       <Box sx={{ ...cornerStyle, top: -6, left: -6 }}>+</Box>
       <Box sx={{ ...cornerStyle, top: -6, right: -6 }}>+</Box>
       <Box sx={{ ...cornerStyle, bottom: -6, left: -6 }}>+</Box>

@@ -32,10 +32,16 @@ export default function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/operaciones" element={<Operaciones />} />
           <Route path="/ordenes-compra" element={<OrdenCompraPage />} />
-          <Route path="/reportes/ranking" element={<RankingProveedoresPage />} />
+          <Route
+            path="/reportes/ranking"
+            element={<RankingProveedoresPage />}
+          />
           <Route path="/reportes/ordenes" element={<ReporteOrdenesPage />} />
           {/* Sin RoleRoute a proposito: el 403 lo debe devolver el backend y mostrarse en la pagina. */}
-          <Route path="/reportes/auditoria" element={<AuditoriaAnulacionesPage />} />
+          <Route
+            path="/reportes/auditoria"
+            element={<AuditoriaAnulacionesPage />}
+          />
           <Route path="/profile" element={<Profile />} />
 
           <Route element={<RoleRoute allowed={["ADMIN"]} />}>

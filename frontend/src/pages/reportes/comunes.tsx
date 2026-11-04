@@ -7,7 +7,13 @@ import { NIVEL_ROL, NOMBRE_ROL, OrdenEstado } from "../../types";
 export const EJERCICIO = new Date().getFullYear();
 export const ANIOS = [2024, 2025, 2026, 2027];
 
-export const ESTADOS: OrdenEstado[] = ["CREADA", "EMITIDA", "RECIBIDA", "PAGADA", "ANULADA"];
+export const ESTADOS: OrdenEstado[] = [
+  "CREADA",
+  "EMITIDA",
+  "RECIBIDA",
+  "PAGADA",
+  "ANULADA",
+];
 
 export const BODEGAS = [
   "Bodega Central Zona 12",
@@ -17,7 +23,10 @@ export const BODEGAS = [
   "Cross-dock Puerto Barrios",
 ];
 
-export const colorEstado: Record<OrdenEstado, "default" | "info" | "success" | "error" | "warning"> = {
+export const colorEstado: Record<
+  OrdenEstado,
+  "default" | "info" | "success" | "error" | "warning"
+> = {
   CREADA: "warning",
   EMITIDA: "info",
   RECIBIDA: "default",
@@ -29,7 +38,8 @@ export function dinero(n: number | undefined | null, simbolo = "Q") {
   return `${simbolo} ${(n ?? 0).toLocaleString("es-GT", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
-export const entero = (n: number | undefined | null) => (n ?? 0).toLocaleString("es-GT");
+export const entero = (n: number | undefined | null) =>
+  (n ?? 0).toLocaleString("es-GT");
 
 /** yyyy-MM-dd en hora local (toISOString devolveria la fecha UTC). */
 export function fechaLocal(d: Date) {
@@ -49,10 +59,13 @@ export function formatoFecha(iso: string | undefined | null) {
 export function formatoFechaHora(iso: string | undefined | null) {
   if (!iso) return "-";
   const f = new Date(/[zZ]|[+-]\d{2}:\d{2}$/.test(iso) ? iso : `${iso}Z`);
-  return Number.isNaN(f.getTime()) ? iso : f.toLocaleString("es-GT", { dateStyle: "short", timeStyle: "short" });
+  return Number.isNaN(f.getTime())
+    ? iso
+    : f.toLocaleString("es-GT", { dateStyle: "short", timeStyle: "short" });
 }
 
-export const statusHttp = (e: unknown) => (e as { response?: { status?: number } })?.response?.status;
+export const statusHttp = (e: unknown) =>
+  (e as { response?: { status?: number } })?.response?.status;
 
 /** Cabecera de contexto global (usuario, rol, nivel y ejercicio), igual a la de Orden de Compra. */
 export function BarraContexto() {
@@ -61,11 +74,18 @@ export function BarraContexto() {
   return (
     <Box
       sx={{
-        bgcolor: industryColors.accent900, color: "#fff", px: 2, py: 1, mb: 2,
-        fontFamily: "monospace", fontSize: 13, letterSpacing: 0.3,
+        bgcolor: industryColors.accent900,
+        color: "#fff",
+        px: 2,
+        py: 1,
+        mb: 2,
+        fontFamily: "monospace",
+        fontSize: 13,
+        letterSpacing: 0.3,
       }}
     >
-      [ Usuario: {user?.username ?? "-"} | Rol: {role ? NOMBRE_ROL[role] : "-"} ({role}) | Nivel: {nivel} | Ejercicio: {EJERCICIO} ]
+      [ Usuario: {user?.username ?? "-"} | Rol: {role ? NOMBRE_ROL[role] : "-"}{" "}
+      ({role}) | Nivel: {nivel} | Ejercicio: {EJERCICIO} ]
     </Box>
   );
 }

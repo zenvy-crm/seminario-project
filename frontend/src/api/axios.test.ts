@@ -3,7 +3,10 @@ import type { AxiosError, InternalAxiosRequestConfig } from "axios";
 import { AxiosHeaders } from "axios";
 import { api } from "./axios";
 
-type Handler<T> = { fulfilled: (v: T) => unknown; rejected?: (e: unknown) => unknown };
+type Handler<T> = {
+  fulfilled: (v: T) => unknown;
+  rejected?: (e: unknown) => unknown;
+};
 const interceptoresPeticion = (
   api.interceptors.request as unknown as {
     handlers: Handler<InternalAxiosRequestConfig>[];
