@@ -16,14 +16,12 @@ public class AuthController : ControllerBase
     private readonly IAuthService _authService;
     private readonly IDocumentService _documentService;
     private readonly IFileStorageService _fileStorageService;
-    private readonly IWebHostEnvironment _env;
 
-    public AuthController(IAuthService authService, IDocumentService documentService, IFileStorageService fileStorageService, IWebHostEnvironment env)
+    public AuthController(IAuthService authService, IDocumentService documentService, IFileStorageService fileStorageService)
     {
         _authService = authService;
         _documentService = documentService;
         _fileStorageService = fileStorageService;
-        _env = env;
     }
 
     [AllowAnonymous]
