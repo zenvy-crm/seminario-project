@@ -1124,3 +1124,78 @@ $ git checkout -b fix/sonar-code-smells-main
 Switched to a new branch 'fix/sonar-code-smells-main'
 ```
 
+### G72 — Fase 5 · Commit — corregir 8 code smells IDE0028 y las cifras de SonarCloud del proyecto completo
+- Fecha/hora: 2026-11-05 18:43:45 (America/Guatemala)
+- Codigo de salida: 0
+```bash
+$ git add -A seminario-backend-service docs && git -c user.name='Alder Solis' -c user.email='alder.solis@bowpi.com' commit -q -m 'fix: 8 code smells IDE0028 del analisis completo de main y cifras de SonarCloud corregidas' -m '- Expresiones de coleccion en ApiException, PagedResult, OrdenCompra, Role y User.
+- Reporte de mejora y guion: cobertura global 77.4 % y duplicacion 1.2 % (proyecto completo); 91 % es la cobertura del codigo nuevo del PR #1.
+- Manual tecnico y reporte: la proteccion de main ya esta aplicada (ruleset enforce_main_security).' && git push -q -u origin fix/sonar-code-smells-main 2>&1 | grep -v 'acknowledgments\|negotiation\|remote:'; git log --oneline -1
+```
+```text
+2c1189b fix: 8 code smells IDE0028 del analisis completo de main y cifras de SonarCloud corregidas
+```
+
+### G73 — Fase 5 · Abrir PR #2
+- Fecha/hora: 2026-11-05 18:43:54 (America/Guatemala)
+- Codigo de salida: 0
+```bash
+$ gh api repos/zenvy-crm/seminario-project/pulls -f title='fix: code smells del análisis completo y cifras de SonarCloud' -f head=fix/sonar-code-smells-main -f base=main -F body=@/tmp/pr2.md --jq '{number, html_url}'
+```
+```text
+{"html_url":"https://github.com/zenvy-crm/seminario-project/pull/2","number":2}
+```
+
+### G74 — Fase 5 · Reescritura — clon espejo del repositorio (respaldo + base para reescribir)
+- Fecha/hora: 2026-11-05 19:18:31 (America/Guatemala)
+- Codigo de salida: 0
+```bash
+$ git clone -q --mirror https://github.com/zenvy-crm/seminario-project /home/claude/respaldo-antes-reescritura.git && git clone -q /home/claude/respaldo-antes-reescritura.git /home/claude/reescritura && cd /home/claude/reescritura && git branch -a | sed 's/^/  /' && git log origin/main --oneline | wc -l
+```
+```text
+  * main
+    remotes/origin/HEAD -> origin/main
+    remotes/origin/fix/sonar-code-smells-main
+    remotes/origin/main
+    remotes/origin/sqa/pruebas-y-pipeline
+52
+```
+
+### G75 — Fase 5 · Reescritura — quitar docs/Guion-Video.md del historial y limpiar mensajes de commit
+- Fecha/hora: 2026-11-05 19:18:40 (America/Guatemala)
+- Codigo de salida: 0
+```bash
+$ cd /home/claude/trabajo.git && git filter-repo --force --path docs/Guion-Video.md --invert-paths --replace-text /tmp/reemplazos.txt --message-callback <limpieza de mensajes> 2>&1 | tail -4
+```
+```text
+
+Parsed 54 commits
+New history written in 0.07 seconds; now repacking/cleaning...
+Repacking your repo and cleaning out old unneeded objects
+Completely finished after 0.12 seconds.
+```
+
+### G76 — Fase 5 · Reescritura — ajustar los mensajes que mencionaban el guion
+- Fecha/hora: 2026-11-05 19:19:02 (America/Guatemala)
+- Codigo de salida: 1
+```bash
+$ cd /home/claude/trabajo.git && git filter-repo --force --replace-message /tmp/mensajes.txt 2>&1 | tail -1 && git log --all --format='%s%n%b' | grep -ci guion
+```
+```text
+Completely finished after 0.06 seconds.
+0
+```
+
+### G77 — Fase 5 · Reescritura — limpiar los comandos registrados en la bitácora
+- Fecha/hora: 2026-11-05 19:21:46 (America/Guatemala)
+- Codigo de salida: 1
+```bash
+$ cd /home/claude/trabajo.git && git filter-repo --force --replace-text /tmp/reemplazos2.txt 2>&1 | tail -1 && for r in main fix/sonar-code-smells-main; do echo "$r: $(git grep -i -c 'co-authored' $r | wc -l) archivos con co-authored"; done; git log --all --format=%B | grep -ci 'co-authored'
+```
+```text
+Completely finished after 0.15 seconds.
+main: 0 archivos con co-authored
+fix/sonar-code-smells-main: 0 archivos con co-authored
+0
+```
+
