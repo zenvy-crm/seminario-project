@@ -118,7 +118,7 @@ pnpm build
 
 ## 6. Protección de la rama `main`
 
-Desde *Settings → Branches → Add rule* (`main`):
+**Aplicada** con el ruleset `enforce_main_security` (*Settings → Rules → Rulesets*), con target *Default branch* y la *bypass list* vacía. Para recrearla desde *Settings → Branches → Add rule* (`main`):
 
 - *Require a pull request before merging*.
 - *Require status checks to pass* + *Require branches to be up to date*, con los 8 checks del pipeline.

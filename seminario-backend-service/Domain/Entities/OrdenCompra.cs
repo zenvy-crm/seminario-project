@@ -41,5 +41,5 @@ public class OrdenCompra
     /// <summary>Token de concurrencia optimista (rowversion). Cambia tambien cuando el trigger recalcula Monto.</summary>
     public byte[] RowVer { get; set; } = Array.Empty<byte>();
 
-    public ICollection<OrdenCompraDetalle> Lineas { get; set; } = new List<OrdenCompraDetalle>();
+    public ICollection<OrdenCompraDetalle> Lineas { get; set; } = [];
 }

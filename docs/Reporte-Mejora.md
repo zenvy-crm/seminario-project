@@ -18,7 +18,8 @@
 | Cobertura de ramas, backend | 0 % | **79.1 %** | +79.1 pp |
 | Cobertura de líneas, frontend (alcance §7.3 del plan) | 0 % | **96.4 %** | +96.4 pp |
 | Cobertura combinada (ReportGenerator) | 0 % | **93.3 %** | +93.3 pp |
-| Cobertura global en SonarCloud | 0.0 % | **84.5 %** | +84.5 pp |
+| Cobertura global en SonarCloud (proyecto completo en `main`) | 0.0 % | **77.4 %** | +77.4 pp |
+| Cobertura del código nuevo en SonarCloud (PR #1) | — | **91.0 %** (umbral 80 %) | ✔ |
 | Advertencias de analizadores .NET | 56 | **0** (ahora rompen el build) | −56 |
 | Problemas de ESLint | No se podía ejecutar (11 al instalar el plugin) | **0** | −11 |
 | Archivos fuera del formato Prettier | 38 de 43 | **0** | −38 |
@@ -30,7 +31,7 @@
 | Calificación de seguridad | **C** | **A** | C → A |
 | Calificación de mantenibilidad | A | A | = |
 | Deuda técnica (SQALE) | 17 min | **0 min** | −17 min |
-| Duplicación (SonarCloud) | 1.5 % | 0.7 % | −0.8 pp |
+| Duplicación (SonarCloud, proyecto completo) | 1.5 % | 1.2 % | −0.3 pp |
 | Quality Gate de SonarCloud | No existía | **Passed** | ✔ |
 | Pipeline CI/CD | No existía | 8 jobs en 4 etapas, unos 4 min 20 s | ✔ |
 | Protección de `main` | No | PR obligatorio + 8 checks requeridos (ver §5) | ✔ |
@@ -50,10 +51,12 @@ xychart-beta
     x-axis ["Backend líneas", "Backend ramas", "Frontend", "Combinada", "SonarCloud"]
     y-axis "%" 0 --> 100
     bar [0, 0, 0, 0, 0]
-    bar [90.7, 79.1, 96.4, 93.3, 84.5]
+    bar [90.7, 79.1, 96.4, 93.3, 77.4]
 ```
 
 *(Primera barra: antes. Segunda barra: después.)*
+
+> **Nota sobre las cifras de SonarCloud.** El análisis de un pull request mide solo el código que cambia (*new code*). El análisis de `main` mide el proyecto completo. Las cifras de esta tabla son las del proyecto completo en `main`, salvo donde se indica "código nuevo".
 
 ## 2. Issues críticos y mayores corregidos
 
@@ -110,7 +113,7 @@ Durante la intervención solo falló una prueba en el pipeline: **UT-TKN-01**. L
 
 | # | Elemento | Severidad | Decisión |
 |---|---|---|---|
-| D1 | 5 code smells *info* `IDE0028` en `OrdenCompraService` y `OrdenCompraDtos` | Info | **Corregidos**: SonarCloud confirma 0 code smells en el [run 41780174068](https://github.com/zenvy-crm/seminario-project/actions/runs/41780174068). |
+| D1 | 13 code smells *info* `IDE0028` (inicialización de colecciones): 5 en el código del PR #1 y 8 en archivos que el PR no tocó, visibles solo en el análisis completo de `main` | Info | **Corregidos**: los 5 en el PR #1 y los 8 restantes en el PR #2 (`fix/sonar-code-smells-main`). |
 | D2 | Duplicación backend de 2.32 % (jscpd): `ProfileService` y `UserService` repiten la actualización de datos personales con auditoría | Menor | Pendiente: extraer un `UserFieldUpdater` común. Está por debajo del umbral de 3 % del Quality Gate. |
 | D3 | Páginas de React (`src/pages`) sin pruebas automatizadas, salvo `comunes.ts` | Media | Fuera del alcance de cobertura (§7.3 del plan). Siguiente paso: pruebas E2E con Playwright o Cypress. |
 | D4 | `SeedDataService` y `SeedDataController` (stress test) en 0 % de cobertura | Baja | Herramienta de carga masiva que tarda minutos. Las pruebas de carga están fuera del alcance del proyecto. |
@@ -119,7 +122,7 @@ Durante la intervención solo falló una prueba en el pipeline: **UT-TKN-01**. L
 
 ## 5. Protección de la rama principal
 
-Reglas definidas para `main` (se aplican desde *Settings → Branches* o con el comando de la sección 6 del [Manual técnico](Manual-Tecnico.md)):
+`main` está protegida por el ruleset **`enforce_main_security`** (activo desde el 5 de noviembre de 2026, sin excepciones en la *bypass list*). La verificación está en la bitácora de GitHub, entrada G70:
 
 - Pull request obligatorio para integrar cambios.
 - Checks requeridos: los 8 jobs del pipeline (`1 · Build backend`, `1 · Build frontend`, `1 · Build imagen Docker`, `2 · Pruebas backend…`, `2 · Pruebas frontend…`, `3 · Analisis estatico…`, `3 · SonarCloud + Quality Gate`, `4 · Reporte de calidad…`).

@@ -1083,3 +1083,44 @@ $ gh api -X PUT repos/zenvy-crm/seminario-project/branches/main/protection --inp
 {"message":"Write access to this GitHub API path is not permitted through this proxy.","documentation_url":"https://docs.anthropic.com/en/docs/claude-code/github-actions"}gh: Write access to this GitHub API path is not permitted through this proxy. (HTTP 403)
 ```
 
+### G68 — Fase 5 · Commit — guion del video
+- Fecha/hora: 2026-11-03 23:41:55 (America/Guatemala)
+- Codigo de salida: 0
+```bash
+$ git add README.md docs && git -c user.name='Alder Solis' -c user.email='alder.solis@bowpi.com' commit -q -m 'docs: guion del video explicativo' && git push -q 2>&1 | grep -v 'acknowledgments\|negotiation'; git log --oneline -1
+```
+```text
+d44a272 docs: guion del video explicativo
+```
+
+### G69 — Fase 3 · Integrar el PR #1 a main (autorizado por el usuario; 8 checks en verde, run 41780845186)
+- Fecha/hora: 2026-11-03 23:48:57 (America/Guatemala)
+- Codigo de salida: 0
+```bash
+$ gh api -X PUT repos/zenvy-crm/seminario-project/pulls/1/merge -f merge_method=merge -f commit_title='SQA: pruebas automatizadas y pipeline CI/CD con quality gates (#1)' --jq '{merged, sha, message}'
+```
+```text
+{"merged":true,"message":"Pull Request successfully merged","sha":"53f1b6e1abf24d8a8e5e58f741e77c4ef11c5ec0"}
+```
+
+### G70 — Fase 3 · Verificar ruleset de protección de main (creado por el usuario en la UI)
+- Fecha/hora: 2026-11-05 18:15:37 (America/Guatemala)
+- Codigo de salida: 0
+```bash
+$ gh api repos/zenvy-crm/seminario-project/rulesets --jq '.[] | {id, name, enforcement}' && for id in $(gh api repos/zenvy-crm/seminario-project/rulesets --jq '.[].id'); do gh api repos/zenvy-crm/seminario-project/rulesets/$id --jq '{target: .conditions.ref_name.include, bypass: (.bypass_actors|length), reglas: [.rules[] | {type, checks: (.parameters.required_status_checks // [] | map(.context)), estricto: .parameters.strict_required_status_checks_policy, conversaciones: .parameters.required_review_thread_resolution}]}'; done
+```
+```text
+{"enforcement":"active","id":26660742,"name":"enforce_main_security"}
+{"bypass":0,"reglas":[{"checks":[],"conversaciones":null,"estricto":null,"type":"deletion"},{"checks":[],"conversaciones":null,"estricto":null,"type":"non_fast_forward"},{"checks":[],"conversaciones":true,"estricto":null,"type":"pull_request"},{"checks":["1 · Build backend","1 · Build frontend","1 · Build imagen Docker","2 · Pruebas backend (unitarias + integracion + regresion)","2 · Pruebas frontend (Vitest + Testing Library)","3 · Analisis estatico (formato + ESLint)","3 · SonarCloud + Quality Gate","3 · SonarCloud + Quality Gate","4 · Reporte de calidad + gate de cobertura"],"conversaciones":null,"estricto":true,"type":"required_status_checks"}],"target":["~DEFAULT_BRANCH"]}
+```
+
+### G71 — Fase 5 · Rama para corregir los 8 code smells del análisis completo de main
+- Fecha/hora: 2026-11-05 18:43:20 (America/Guatemala)
+- Codigo de salida: 0
+```bash
+$ git checkout -b fix/sonar-code-smells-main
+```
+```text
+Switched to a new branch 'fix/sonar-code-smells-main'
+```
+
