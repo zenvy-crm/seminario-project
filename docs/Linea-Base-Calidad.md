@@ -5,7 +5,7 @@ Esta es la medición del código **tal como estaba al terminar el seminario**, a
 | Elemento | Commit medido |
 |---|---|
 | Backend | `0c8d137` — *chore: estado base del backend (Fases 2 y 3 del seminario) antes de la intervención SQA* |
-| Frontend | `826501b` — integración del frontend al monorepo, sin cambios de código |
+| Frontend | `252e6f0` — integración del frontend al monorepo, sin cambios de código |
 | Fecha de medición | 3 de noviembre de 2026 |
 
 ## Cómo se midió

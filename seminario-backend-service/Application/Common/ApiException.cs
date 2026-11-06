@@ -8,14 +8,14 @@ public class ApiException : Exception
     public ApiException(int statusCode, string message, List<string>? errors = null) : base(message)
     {
         StatusCode = statusCode;
-        Errors = errors ?? new List<string>();
+        Errors = errors ?? [];
     }
 
     public ApiException(int statusCode, string message, Exception innerException, List<string>? errors = null)
         : base(message, innerException)
     {
         StatusCode = statusCode;
-        Errors = errors ?? new List<string>();
+        Errors = errors ?? [];
     }
 }
 
