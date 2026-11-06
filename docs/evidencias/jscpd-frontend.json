@@ -1,0 +1,1197 @@
+{
+  "statistics": {
+    "detectionDate": "2026-11-04T04:44:13.767Z",
+    "formats": {
+      "javascript": {
+        "sources": {
+          "src/pages/users/UsersList.tsx": {
+            "lines": 118,
+            "tokens": 1628,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/users/UserEdit.tsx": {
+            "lines": 7,
+            "tokens": 96,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/users/UserDetail.tsx": {
+            "lines": 36,
+            "tokens": 890,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/users/UserCreate.tsx": {
+            "lines": 3,
+            "tokens": 55,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/reportes/comunes.tsx": {
+            "lines": 4,
+            "tokens": 46,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/reportes/ReporteOrdenesPage.tsx": {
+            "lines": 153,
+            "tokens": 2117,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/reportes/RankingProveedoresPage.tsx": {
+            "lines": 123,
+            "tokens": 1854,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 6,
+            "duplicatedTokens": 171,
+            "percentage": 4.88,
+            "percentageTokens": 9.22,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/reportes/AuditoriaAnulacionesPage.tsx": {
+            "lines": 128,
+            "tokens": 1643,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/profile/Profile.tsx": {
+            "lines": 62,
+            "tokens": 1474,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/ordenes/OrdenCompraPage.tsx": {
+            "lines": 442,
+            "tokens": 7604,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 6,
+            "duplicatedTokens": 171,
+            "percentage": 1.36,
+            "percentageTokens": 2.25,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/operaciones/Operaciones.tsx": {
+            "lines": 223,
+            "tokens": 2720,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/errors/NotFound.tsx": {
+            "lines": 4,
+            "tokens": 87,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/errors/Forbidden.tsx": {
+            "lines": 6,
+            "tokens": 140,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/dashboard/Dashboard.tsx": {
+            "lines": 7,
+            "tokens": 156,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/auth/Register.tsx": {
+            "lines": 46,
+            "tokens": 1179,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/auth/Mfa.tsx": {
+            "lines": 11,
+            "tokens": 302,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/auth/Login.tsx": {
+            "lines": 15,
+            "tokens": 358,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/users/UserForm.tsx": {
+            "lines": 43,
+            "tokens": 982,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 14,
+            "duplicatedTokens": 920,
+            "percentage": 32.56,
+            "percentageTokens": 93.69,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/layout/Sidebar.tsx": {
+            "lines": 67,
+            "tokens": 1047,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 66,
+            "duplicatedTokens": 1088,
+            "percentage": 98.51,
+            "percentageTokens": 103.92,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/layout/MainLayout.tsx": {
+            "lines": 27,
+            "tokens": 292,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/layout/Header.tsx": {
+            "lines": 22,
+            "tokens": 492,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/common/ToastProvider.tsx": {
+            "lines": 4,
+            "tokens": 141,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/common/StateViews.tsx": {
+            "lines": 20,
+            "tokens": 257,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/common/ErrorBoundary.tsx": {
+            "lines": 50,
+            "tokens": 341,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/common/ConfirmDialog.tsx": {
+            "lines": 8,
+            "tokens": 117,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/common/Badges.tsx": {
+            "lines": 5,
+            "tokens": 120,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/theme/Blueprint.tsx": {
+            "lines": 5,
+            "tokens": 144,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/auth/ProtectedRoute.tsx": {
+            "lines": 1,
+            "tokens": 8,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/auth/AuthContext.tsx": {
+            "lines": 1,
+            "tokens": 33,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/main.tsx": {
+            "lines": 1,
+            "tokens": 3,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/App.tsx": {
+            "lines": 27,
+            "tokens": 449,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          }
+        },
+        "total": {
+          "lines": 1669,
+          "tokens": 26775,
+          "sources": 31,
+          "clones": 3,
+          "duplicatedLines": 46,
+          "duplicatedTokens": 1175,
+          "percentage": 2.76,
+          "percentageTokens": 4.39,
+          "newDuplicatedLines": 0,
+          "newClones": 0
+        }
+      },
+      "tsx": {
+        "sources": {
+          "src/pages/users/UsersList.tsx": {
+            "lines": 182,
+            "tokens": 2544,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/users/UserEdit.tsx": {
+            "lines": 46,
+            "tokens": 549,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/users/UserDetail.tsx": {
+            "lines": 93,
+            "tokens": 1564,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/users/UserCreate.tsx": {
+            "lines": 34,
+            "tokens": 351,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/reportes/comunes.tsx": {
+            "lines": 71,
+            "tokens": 902,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/reportes/ReporteOrdenesPage.tsx": {
+            "lines": 294,
+            "tokens": 3887,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 7,
+            "duplicatedTokens": 76,
+            "percentage": 2.38,
+            "percentageTokens": 1.96,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/reportes/RankingProveedoresPage.tsx": {
+            "lines": 159,
+            "tokens": 2261,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/reportes/AuditoriaAnulacionesPage.tsx": {
+            "lines": 200,
+            "tokens": 2659,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 7,
+            "duplicatedTokens": 76,
+            "percentage": 3.5,
+            "percentageTokens": 2.86,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/profile/Profile.tsx": {
+            "lines": 139,
+            "tokens": 2471,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/ordenes/OrdenCompraPage.tsx": {
+            "lines": 756,
+            "tokens": 11845,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/operaciones/Operaciones.tsx": {
+            "lines": 403,
+            "tokens": 4703,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/errors/NotFound.tsx": {
+            "lines": 13,
+            "tokens": 205,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/errors/Forbidden.tsx": {
+            "lines": 16,
+            "tokens": 271,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/dashboard/Dashboard.tsx": {
+            "lines": 23,
+            "tokens": 313,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/auth/Register.tsx": {
+            "lines": 116,
+            "tokens": 2177,
+            "sources": 1,
+            "clones": 3,
+            "duplicatedLines": 23,
+            "duplicatedTokens": 336,
+            "percentage": 19.83,
+            "percentageTokens": 15.43,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/auth/Mfa.tsx": {
+            "lines": 51,
+            "tokens": 864,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 9,
+            "duplicatedTokens": 125,
+            "percentage": 17.65,
+            "percentageTokens": 14.47,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/auth/Login.tsx": {
+            "lines": 71,
+            "tokens": 1122,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 9,
+            "duplicatedTokens": 126,
+            "percentage": 12.68,
+            "percentageTokens": 11.23,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/users/UserForm.tsx": {
+            "lines": 90,
+            "tokens": 1651,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 5,
+            "duplicatedTokens": 85,
+            "percentage": 5.56,
+            "percentageTokens": 5.15,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/layout/Sidebar.tsx": {
+            "lines": 95,
+            "tokens": 1408,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/layout/MainLayout.tsx": {
+            "lines": 46,
+            "tokens": 460,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/layout/Header.tsx": {
+            "lines": 42,
+            "tokens": 810,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/common/ToastProvider.tsx": {
+            "lines": 33,
+            "tokens": 472,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/common/StateViews.tsx": {
+            "lines": 27,
+            "tokens": 355,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/common/ErrorBoundary.tsx": {
+            "lines": 97,
+            "tokens": 680,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/common/ConfirmDialog.tsx": {
+            "lines": 26,
+            "tokens": 291,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/common/Badges.tsx": {
+            "lines": 14,
+            "tokens": 239,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/theme/Blueprint.tsx": {
+            "lines": 26,
+            "tokens": 327,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/auth/RoleRoute.tsx": {
+            "lines": 9,
+            "tokens": 131,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/auth/ProtectedRoute.tsx": {
+            "lines": 10,
+            "tokens": 132,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/auth/AuthContext.tsx": {
+            "lines": 112,
+            "tokens": 1400,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/main.tsx": {
+            "lines": 26,
+            "tokens": 204,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/App.tsx": {
+            "lines": 54,
+            "tokens": 713,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          }
+        },
+        "total": {
+          "lines": 3374,
+          "tokens": 47961,
+          "sources": 32,
+          "clones": 4,
+          "duplicatedLines": 30,
+          "duplicatedTokens": 412,
+          "percentage": 0.89,
+          "percentageTokens": 0.86,
+          "newDuplicatedLines": 0,
+          "newClones": 0
+        }
+      },
+      "typescript": {
+        "sources": {
+          "src/types/index.ts": {
+            "lines": 241,
+            "tokens": 1631,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/theme/industryTheme.ts": {
+            "lines": 58,
+            "tokens": 850,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/api/usersApi.ts": {
+            "lines": 54,
+            "tokens": 623,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/api/reportesApi.ts": {
+            "lines": 34,
+            "tokens": 380,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/api/profileApi.ts": {
+            "lines": 18,
+            "tokens": 208,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/api/operacionesApi.ts": {
+            "lines": 74,
+            "tokens": 861,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/api/fileValidator.ts": {
+            "lines": 28,
+            "tokens": 311,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/api/documentsApi.ts": {
+            "lines": 37,
+            "tokens": 433,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/api/axios.ts": {
+            "lines": 34,
+            "tokens": 300,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/api/authApi.ts": {
+            "lines": 24,
+            "tokens": 328,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          }
+        },
+        "total": {
+          "lines": 602,
+          "tokens": 5925,
+          "sources": 10,
+          "clones": 0,
+          "duplicatedLines": 0,
+          "duplicatedTokens": 0,
+          "percentage": 0,
+          "percentageTokens": 0,
+          "newDuplicatedLines": 0,
+          "newClones": 0
+        }
+      }
+    },
+    "total": {
+      "lines": 5645,
+      "tokens": 80661,
+      "sources": 73,
+      "clones": 7,
+      "duplicatedLines": 76,
+      "duplicatedTokens": 1587,
+      "percentage": 1.35,
+      "percentageTokens": 1.97,
+      "newDuplicatedLines": 0,
+      "newClones": 0
+    }
+  },
+  "duplicates": [
+    {
+      "format": "tsx",
+      "lines": 8,
+      "fragment": "}</TableCell>\n                  </TableRow>\n                ))}\n                {items.length === 0 && (\n                  <TableRow>\n                    <TableCell colSpan={6} align=\"center\">\n                      <Typography variant=\"body2\" color=\"text.secondary\" py={3}>\n                        {cargando",
+      "tokens": 76,
+      "firstFile": {
+        "name": "src/pages/reportes/AuditoriaAnulacionesPage.tsx",
+        "start": 169,
+        "end": 176,
+        "startLoc": {
+          "line": 169,
+          "column": 48,
+          "position": 2371
+        },
+        "endLoc": {
+          "line": 176,
+          "column": 34,
+          "position": 2447
+        }
+      },
+      "secondFile": {
+        "name": "src/pages/reportes/ReporteOrdenesPage.tsx",
+        "start": 259,
+        "end": 267,
+        "startLoc": {
+          "line": 259,
+          "column": 46,
+          "position": 3591
+        },
+        "endLoc": {
+          "line": 267,
+          "column": 25,
+          "position": 3669
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 7,
+      "fragment": " : 400 }}>{p.bodega}</TableCell>\n                  <TableCell align=\"right\" sx={{ fontFamily: \"monospace\" }}>{dinero(p.montoAsignado)}</TableCell>\n                  <TableCell align=\"right\" sx={{ fontFamily: \"monospace\" }}>{dinero(p.montoComprometido)}</TableCell>\n                  <TableCell align=\"right\" sx={{ fontFamily: \"monospace\", fontWeight: 600 }}>{dinero(p.montoDisponible)}</TableCell>\n                  <TableCell>\n                    <Stack direction=\"row\" alignItems=\"center\" spacing={1}>\n                      <LinearProgress variant=\"determinate\" value={Math.min(100, pct",
+      "tokens": 171,
+      "firstFile": {
+        "name": "src/pages/ordenes/OrdenCompraPage.tsx",
+        "start": 689,
+        "end": 695,
+        "startLoc": {
+          "line": 689,
+          "column": 75,
+          "position": 10714
+        },
+        "endLoc": {
+          "line": 695,
+          "column": 85,
+          "position": 10885
+        }
+      },
+      "secondFile": {
+        "name": "src/pages/reportes/RankingProveedoresPage.tsx",
+        "start": 119,
+        "end": 126,
+        "startLoc": {
+          "line": 119,
+          "column": 78,
+          "position": 1745
+        },
+        "endLoc": {
+          "line": 126,
+          "column": 74,
+          "position": 1916
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 10,
+      "fragment": ");\r\n    } finally {\r\n      setSubmitting(false);\r\n    }\r\n  };\r\n\r\n  return (\r\n    <Box minHeight=\"100vh\" display=\"flex\" alignItems=\"center\" justifyContent=\"center\" bgcolor={industryColors.bg} p={2}>\r\n      <Blueprint sx={{ width: 400, p: 4, bgcolor: \"background.paper\" }}>\r\n        <Typography variant=\"h4\" mb={0.5}>Verificación",
+      "tokens": 125,
+      "firstFile": {
+        "name": "src/pages/auth/Mfa.tsx",
+        "start": 29,
+        "end": 38,
+        "startLoc": {
+          "line": 29,
+          "column": 56,
+          "position": 451
+        },
+        "endLoc": {
+          "line": 38,
+          "column": 55,
+          "position": 576
+        }
+      },
+      "secondFile": {
+        "name": "src/pages/auth/Register.tsx",
+        "start": 59,
+        "end": 68,
+        "startLoc": {
+          "line": 59,
+          "column": 81,
+          "position": 902
+        },
+        "endLoc": {
+          "line": 68,
+          "column": 48,
+          "position": 1018
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 10,
+      "fragment": "\"No fue posible conectar con el servidor. Intenta más tarde.\");\r\n    } finally {\r\n      setSubmitting(false);\r\n    }\r\n  };\r\n\r\n  return (\r\n    <Box minHeight=\"100vh\" display=\"flex\" alignItems=\"center\" justifyContent=\"center\" bgcolor={industryColors.bg} p={2}>\r\n      <Blueprint sx={{ width: 400, p: 4, bgcolor: \"background.paper\" }}>\r\n        <Typography variant=\"h4\" mb={0.5}>Iniciar",
+      "tokens": 126,
+      "firstFile": {
+        "name": "src/pages/auth/Login.tsx",
+        "start": 40,
+        "end": 49,
+        "startLoc": {
+          "line": 40,
+          "column": 76,
+          "position": 617
+        },
+        "endLoc": {
+          "line": 49,
+          "column": 50,
+          "position": 743
+        }
+      },
+      "secondFile": {
+        "name": "src/pages/auth/Register.tsx",
+        "start": 59,
+        "end": 68,
+        "startLoc": {
+          "line": 59,
+          "column": 20,
+          "position": 901
+        },
+        "endLoc": {
+          "line": 68,
+          "column": 48,
+          "position": 1018
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 8,
+      "fragment": "}><TextField label=\"Nombre\" fullWidth {...register(\"firstName\")} error={!!errors.firstName} helperText={errors.firstName?.message} /></Grid>\n        <Grid item xs={12} md={6}><TextField label=\"Apellido\" fullWidth {...register(\"lastName\")} error={!!errors.lastName} helperText={errors.lastName?.message} /></Grid>\n        <Grid item xs={12} md={6}><TextField label=\"Username\" fullWidth disabled={mode === \"edit\"} {...register(\"username\")} error={!!errors.username} helperText={errors.username?.message} /></Grid>\n        <Grid item xs={12} md={6}><TextField label=\"Email\" fullWidth {...register(\"email\")} error={!!errors.email} helperText={errors.email?.message} /></Grid>\n        <Grid item xs={12} md={6}><TextField label=\"Teléfono\" fullWidth {...register(\"phone\")} error={!!errors.phone} helperText={errors.phone?.message} /></Grid>\n        <Grid item xs={12} md={6}><TextField label=\"Fecha de nacimiento\" type=\"date\" fullWidth InputLabelProps={{ shrink: true }} {...register(\"birthDate\")} error={!!errors.birthDate} helperText={errors.birthDate?.message} /></Grid>\n        <Grid item xs={12} md={6}><TextField label=\"Identificación\" fullWidth {...register(\"identification\")} error={!!errors.identification} helperText={errors.identification?.message} /></Grid>\n        <Grid item xs={12} md={3",
+      "tokens": 460,
+      "firstFile": {
+        "name": "src/components/users/UserForm.tsx",
+        "start": 44,
+        "end": 51,
+        "startLoc": {
+          "line": 44,
+          "column": 33,
+          "position": 690
+        },
+        "endLoc": {
+          "line": 51,
+          "column": 33,
+          "position": 1150
+        }
+      },
+      "secondFile": {
+        "name": "src/components/users/UserForm.tsx",
+        "start": 43,
+        "end": 50,
+        "startLoc": {
+          "line": 43,
+          "column": 33,
+          "position": 671
+        },
+        "endLoc": {
+          "line": 50,
+          "column": 33,
+          "position": 1088
+        }
+      }
+    },
+    {
+      "format": "tsx",
+      "lines": 6,
+      "fragment": "{\n  firstName: z.string().min(1, \"Campo obligatorio.\"),\n  lastName: z.string().min(1, \"Campo obligatorio.\"),\n  username: z.string().min(3, \"Mínimo 3 caracteres.\"),\n  email: z.string().email(\"Correo inválido.\"),\n  phone: z.string().optional",
+      "tokens": 85,
+      "firstFile": {
+        "name": "src/components/users/UserForm.tsx",
+        "start": 6,
+        "end": 11,
+        "startLoc": {
+          "line": 6,
+          "column": 20,
+          "position": 86
+        },
+        "endLoc": {
+          "line": 11,
+          "column": 29,
+          "position": 171
+        }
+      },
+      "secondFile": {
+        "name": "src/pages/auth/Register.tsx",
+        "start": 16,
+        "end": 21,
+        "startLoc": {
+          "line": 16,
+          "column": 11,
+          "position": 197
+        },
+        "endLoc": {
+          "line": 21,
+          "column": 26,
+          "position": 282
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 34,
+      "fragment": "={18} strokeWidth={1.5} /> },\r\n    { to: \"/operaciones\", label: \"Operaciones\", icon: <ClipboardList size={18} strokeWidth={1.5} /> },\r\n    { to: \"/profile\", label: \"Mi perfil\", icon: <User size={18} strokeWidth={1.5} /> },\r\n    ...(role === \"ADMIN\" ? [{ to: \"/users\", label: \"Usuarios\", icon: <Users size={18} strokeWidth={1.5} /> }] : []),\r\n  ];\r\n\r\n  // Grupo \"Reportes\": ranking y reporte de ordenes para todos los niveles, auditoria solo para el nivel 3 (Administrador).\r\n  const nivel = role ? NIVEL_ROL[role] : 1;\r\n  const reportes = [\r\n    { to: \"/reportes/ranking\", label: \"Ranking de proveedores\", icon: <Trophy size={18} strokeWidth={1.5} /> },\r\n    { to: \"/reportes/ordenes\", label: \"Reporte de órdenes\", icon: <FileBarChart size={18} strokeWidth={1.5} /> },\r\n    ...(nivel === 3 ? [{ to: \"/reportes/auditoria\", label: \"Auditoría de anulaciones\", icon: <ShieldAlert size={18} strokeWidth={1.5} /> }] : []),\r\n  ];\r\n\r\n  const renderItem = (item: { to: string; label: string; icon: JSX.Element }) => {\r\n    const isActive = location.pathname === item.to;\r\n    return (\r\n      <ListItemButton\r\n        key={item.to}\r\n        onClick={() => {\r\n          navigate(item.to);\r\n          onNavigate?.();\r\n        }}\r\n        sx={{\r\n          py: 1,\r\n          color: industryColors.text,\r\n          ...(isActive && {\r\n            bgcolor: industryColors.accent100,\r\n            color: industryColors.accent700,\r\n            borderRight: `2px solid ${industryColors.accent700}`,\r\n          }),\r\n        }}\r\n      >\r\n        <ListItemIcon sx={{",
+      "tokens": 544,
+      "firstFile": {
+        "name": "src/components/layout/Sidebar.tsx",
+        "start": 15,
+        "end": 48,
+        "startLoc": {
+          "line": 15,
+          "column": 83,
+          "position": 293
+        },
+        "endLoc": {
+          "line": 48,
+          "column": 28,
+          "position": 837
+        }
+      },
+      "secondFile": {
+        "name": "src/components/layout/Sidebar.tsx",
+        "start": 14,
+        "end": 25,
+        "startLoc": {
+          "line": 14,
+          "column": 61,
+          "position": 254
+        },
+        "endLoc": {
+          "line": 25,
+          "column": 89,
+          "position": 551
+        }
+      }
+    }
+  ]
+}
