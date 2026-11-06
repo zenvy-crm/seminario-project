@@ -2,7 +2,7 @@
 
 Casos diseñados para el proyecto, con el resultado obtenido en el pipeline. Cada ID aparece en el nombre de la prueba (`DisplayName` en xUnit, descripción en Vitest), así que se puede buscar en el código y en los logs de GitHub Actions.
 
-**Resultado obtenido (backend):** [run 41779244372](https://github.com/zenvy-crm/seminario-project/actions/runs/41779244372), commit `1b418d2`.  
+**Resultado obtenido (backend):** [run 41779244372](https://github.com/zenvy-crm/seminario-project/actions/runs/41779244372), commit `044fdb7`.  
 **Resultado obtenido (frontend):** el mismo run (job *2 · Pruebas frontend*, 45/45), confirmado con el reporte JUnit local `frontend/coverage/junit.xml`.
 
 ## Resumen
