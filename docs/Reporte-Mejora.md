@@ -2,7 +2,7 @@
 
 | | Antes (línea base) | Después |
 |---|---|---|
-| Commit | `0c8d137` backend / `826501b` frontend | Rama `sqa/pruebas-y-pipeline`, PR #1 |
+| Commit | `0c8d137` backend / `252e6f0` frontend | Rama `sqa/pruebas-y-pipeline`, PR #1 |
 | Evidencia | [Linea-Base-Calidad.md](Linea-Base-Calidad.md) | [Run 41779244372](https://github.com/zenvy-crm/seminario-project/actions/runs/41779244372) y análisis de SonarCloud del PR #1 |
 
 ## 1. Comparativa general
